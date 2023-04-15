@@ -62,10 +62,29 @@ const ProductForm = props => {
 	const onFinish = () => {
 		setSubmitLoading(true)
 		form.validateFields().then(values => {
-			setTimeout(() => {
+			setTimeout(async() => {
 				setSubmitLoading(false)
 				if(mode === ADD) {
-					message.success(`Created ${values.name} to product list`);
+					try {
+						console.log("first", values)
+						const requestOptions = {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify({  
+					       "name": values.name,
+							"model": values.description,
+							"owner": values.category,
+							"price": values.price,
+							"status": "pending approval" })
+						};
+						await fetch('http://54.162.109.130/watch', requestOptions )
+							.then(response =>  response.json())
+							.then(data => console.log("result ==>" ,data));
+						//message.success(`Created ${values.name} to product list`);
+					} catch (error) {
+						message.success(`Created ${error} to product list`);
+					}
+					
 				}
 				if(mode === EDIT) {
 					message.success(`Product saved`);
