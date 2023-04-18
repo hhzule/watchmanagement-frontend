@@ -3,9 +3,9 @@ import PageHeaderAlt from 'components/layout-components/PageHeaderAlt'
 import { Tabs, Form, Button, message } from 'antd';
 import Flex from 'components/shared-components/Flex'
 import GeneralField from './GeneralField'
-import VariationField from './VariationField'
-import ShippingField from './ShippingField'
-import ProductListData from "assets/data/product-list.data.json"
+// import VariationField from './VariationField'
+// import ShippingField from './ShippingField'
+// import ProductListData from "assets/data/product-list.data.json"
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -24,25 +24,40 @@ const ProductForm = props => {
 	const [uploadedImg, setImage] = useState('')
 	const [uploadLoading, setUploadLoading] = useState(false)
 	const [submitLoading, setSubmitLoading] = useState(false)
+	const [list, setList] = useState()
 
 	useEffect(() => {
     	if(mode === EDIT) {
 			console.log('is edit')
-			console.log('props', props)
-			const { id } = param
-			const produtId = parseInt(id)
-			const productData = ProductListData.filter( product => product.id === produtId)
-			const product = productData[0]
-			form.setFieldsValue({
-				comparePrice: 0.00,
-				cost: 0.00,
-				taxRate: 6,
-				description: 'There are many variations of passages of Lorem Ipsum available.',
-				category: product.category,
-				name: product.name,
-				price: product.price
-			});
-			setImage(product.image)
+			// console.log('props', props)
+			// const { id } = param
+			// const produtId = parseInt(id)
+			// const productData = ProductListData.filter( product => product.id === produtId)
+			// const product = productData[0]
+			// form.setFieldsValue({
+			// 	comparePrice: 0.00,
+			// 	cost: 0.00,
+			// 	taxRate: 6,
+			// 	description: 'There are many variations of passages of Lorem Ipsum available.',
+			// 	category: product.category,
+			// 	name: product.name,
+			// 	price: product.price
+			// });
+			// setImage(product.image)
+			const fetchData = async () =>{
+				try {
+					await fetch('http://54.162.109.130/watches')
+						.then(response =>  response.json())
+						.then((data) => {
+							console.log("result ==>" ,data)
+							 setList(data)
+						});	
+				} catch (error) {
+					console.log(error)	
+				}
+			}
+	
+			fetchData()
 		}
   	}, [form, mode, param, props]);
 
@@ -72,8 +87,8 @@ const ProductForm = props => {
 							headers: { 'Content-Type': 'application/json' },
 							body: JSON.stringify({  
 					       "name": values.name,
-							"model": values.description,
-							"owner": values.category,
+							"model": values.model,
+							"owner": values.owner,
 							"price": values.price,
 							"status": "pending approval" })
 						};
@@ -87,7 +102,42 @@ const ProductForm = props => {
 					
 				}
 				if(mode === EDIT) {
-					message.success(`Product saved`);
+
+					try {
+						console.log("values", values)
+						const filters = {
+							name: values.name,
+							owner: values.owner,
+							model: values.model
+						}
+						const filteredId = list.filter(function(item) {
+							for (var key in filters) {
+							 if (item[key] === undefined || item[key] !== filters[key])
+								return false;
+							}
+							return true;
+						  });
+						  console.log("filtered", filteredId )
+						  
+						const requestOptions = {
+							method: 'PUT',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify({  
+					        "_id": filteredId[0]._id,
+							"name": values.name,
+							"model": values.model,
+							"owner": values.owner,
+							"price": values.price,
+							"status": "pending approval" })
+						};
+						console.log("options", requestOptions)
+						await fetch('http://54.162.109.130/watch', requestOptions )
+							.then(response =>  response.json())
+							.then(data => console.log("result ==>" ,data));
+						message.success(`Edited ${values.name} to product list`);
+					} catch (error) {
+						message.success(`Product saved`);
+					}
 				}
 			}, 1500);
 		}).catch(info => {
@@ -137,16 +187,16 @@ const ProductForm = props => {
 									handleUploadChange={handleUploadChange}
 								/>,
 							},
-							{
-								label: 'Variation',
-								key: '2',
-								children: <VariationField />,
-							},
-							{
-								label: 'Shipping',
-								key: '3',
-								children: <ShippingField />,
-							},
+							// {
+							// 	label: 'Variation',
+							// 	key: '2',
+							// 	children: <VariationField />,
+							// },
+							// {
+							// 	label: 'Shipping',
+							// 	key: '3',
+							// 	children: <ShippingField />,
+							// },
 						]}
 					/>
 				</div>
