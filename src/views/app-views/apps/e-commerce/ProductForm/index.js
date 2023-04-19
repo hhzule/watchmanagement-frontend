@@ -48,7 +48,7 @@ const ProductForm = props => {
 			// setImage(product.image)
 			const fetchData = async () =>{
 				try {
-					await fetch(`http://54.162.109.130/watches`)
+					await fetch(`/api/watches`)
 						.then(response =>  response.json())
 						.then((data) => {
 							// console.log("result ==>" ,data)
@@ -94,7 +94,7 @@ const ProductForm = props => {
 							"price": values.price,
 							"status": "pending approval" })
 						};
-						await fetch('http://54.162.109.130/watch', requestOptions )
+						await fetch('api/watch', requestOptions )
 							.then(response =>  response.json())
 							.then(data => console.log("result ==>" ,data));
 						message.success(`Created ${values.name} to product list`);
@@ -119,7 +119,7 @@ const ProductForm = props => {
 								"status": "pending approval" })
 							};
 							console.log("options", requestOptions)
-							await fetch('http://54.162.109.130/watch', requestOptions )
+							await fetch('/api/watch', requestOptions )
 								.then(response =>  response.json())
 								.then(data => console.log("result ==>" ,data));
 							message.success(`Edited ${values.name} to product list`);

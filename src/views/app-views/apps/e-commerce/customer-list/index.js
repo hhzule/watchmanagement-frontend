@@ -13,7 +13,7 @@ const CustomerList = () => {
 	useEffect(() => {
 		const fetchData = async () =>{
 			try {
-				await fetch('http://54.91.128.179/customers')
+				await fetch('/api/customers')
 					.then(response =>  response.json())
 					.then((data) => {
 						 setList(data)
@@ -68,7 +68,7 @@ const CustomerList = () => {
 				body: JSON.stringify({ _id})
 			};
 			
-				await fetch('http://54.91.128.179/customer', requestOptions)
+				await fetch('/api/customer', requestOptions)
 						.then(response =>  response.json())
 						.then((data) => {
 							console.log("result ==>" ,data)

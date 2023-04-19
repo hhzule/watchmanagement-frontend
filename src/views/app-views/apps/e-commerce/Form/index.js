@@ -32,7 +32,7 @@ const CustomForm = props => {
 			body: JSON.stringify({ auth})
 		};
 	
-		await fetch(`http://54.91.128.179/${userApi}s`, requestOptions )
+		await fetch(`/api/${userApi}s`, requestOptions )
 			.then(response =>  response.json())
 			.then((data) => {
 				// console.log("result ==>" ,data)
@@ -45,7 +45,7 @@ const CustomForm = props => {
 
 }else if(userApi == "customer"){
 	try {
-		await fetch(`http://54.162.109.130/${userApi}s`)
+		await fetch(`/api/${userApi}s`)
 			.then(response =>  response.json())
 			.then((data) => {
 				// console.log("result ==>" ,data)
@@ -100,7 +100,7 @@ const CustomForm = props => {
 						};
 						console.log(requestOptions)
 					
-						await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
+						await fetch(`/api/${userApi}`, requestOptions )
 							.then(response =>  response.json())
 							.then(data => console.log("result ==>" ,data));
 							setSubmitLoading(false)
@@ -144,7 +144,7 @@ const CustomForm = props => {
 									body: JSON.stringify(postBody)
 								};
 								console.log("options", requestOptions)
-								await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
+								await fetch(`/api/${userApi}`, requestOptions )
 									.then(response =>  response.json())
 									.then((data) => {
 										console.log("result ==>" ,data)

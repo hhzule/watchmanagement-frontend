@@ -42,7 +42,7 @@ const ProductList = () => {
 	useEffect(() => {
 		const fetchData = async () =>{
 			try {
-				await fetch('http://54.162.109.130/watches')
+				await fetch('/api/watches')
 					.then(response =>  response.json())
 					.then((data) => {
 						// console.log("result ==>" ,data)
@@ -114,7 +114,7 @@ const ProductList = () => {
 				body: JSON.stringify({ _id})
 			};
 			
-				await fetch('http://54.162.109.130/watch', requestOptions)
+				await fetch('/api/watch', requestOptions)
 						.then(response =>  response.json())
 						.then((data) => {
 							console.log("result ==>" ,data)

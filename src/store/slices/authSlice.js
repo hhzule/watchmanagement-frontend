@@ -14,7 +14,7 @@ export const signIn = createAsyncThunk('auth/signIn',async (fndata, { rejectWith
 	try {
 		let adminData=[];
 		console.log("first")
-		await fetch('http://54.162.109.130/admin')
+		await fetch('/api/admin')
 		.then(response =>  response.json())
 		.then(data => {
 			return  adminData.push(data[0])

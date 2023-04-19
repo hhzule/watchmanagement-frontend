@@ -21,7 +21,7 @@ const DealerList = () => {
 					body: JSON.stringify({ auth})
 				};
 				
-					await fetch('http://54.91.128.179/dealers', requestOptions)
+					await fetch('/api/dealers', requestOptions)
 							.then(response =>  response.json())
 							.then((data) => {
 								console.log("result ==>" ,data)
@@ -78,7 +78,7 @@ const DealerList = () => {
 				})
 			};
 			
-				await fetch('http://54.91.128.179/dealer', requestOptions)
+				await fetch('/api/dealer', requestOptions)
 						.then(response =>  response.json())
 						.then((data) => {
 							console.log("result ==>" ,data)
