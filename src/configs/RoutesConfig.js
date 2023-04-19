@@ -100,6 +100,39 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/apps/ecommerce`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce')),
     },
+    // dealers
+    {
+        key: 'apps.ecommerce.add-dealer',
+        path: `${APP_PREFIX_PATH}/apps/ecommerce/add-dealer`,
+        component: React.lazy(() => import('views/app-views/apps/e-commerce/add-dealer')),
+    },
+    {
+        key: 'apps.ecommerce.edit-dealer',
+        path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-dealer/:id`,
+        component: React.lazy(() => import('views/app-views/apps/e-commerce/edit-dealer')),
+    },
+    {
+        key: 'apps.ecommerce.dealer-list',
+        path: `${APP_PREFIX_PATH}/apps/ecommerce/dealer-list`,
+        component: React.lazy(() => import('views/app-views/apps/e-commerce/dealer-list')),
+    },
+        // customers
+        {
+            key: 'apps.ecommerce.add-customer',
+            path: `${APP_PREFIX_PATH}/apps/ecommerce/add-customer`,
+            component: React.lazy(() => import('views/app-views/apps/e-commerce/add-customer')),
+        },
+        {
+            key: 'apps.ecommerce.edit-customer',
+            path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-customer/:id`,
+            component: React.lazy(() => import('views/app-views/apps/e-commerce/edit-customer')),
+        },
+        {
+            key: 'apps.ecommerce.customer-list',
+            path: `${APP_PREFIX_PATH}/apps/ecommerce/customer-list`,
+            component: React.lazy(() => import('views/app-views/apps/e-commerce/customer-list')),
+        },
+    // products
     {
         key: 'apps.ecommerce.add-product',
         path: `${APP_PREFIX_PATH}/apps/ecommerce/add-product`,

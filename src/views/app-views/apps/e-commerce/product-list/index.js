@@ -7,7 +7,7 @@ import { Card, Table,
 // import ProductListData from "assets/data/product-list.data.json"
 import { 
 	// EyeOutlined, 
-	DeleteOutlined, SearchOutlined, PlusCircleOutlined } from '@ant-design/icons';
+	DeleteOutlined, SearchOutlined, EditOutlined,PlusCircleOutlined } from '@ant-design/icons';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
 import EllipsisDropdown from 'components/shared-components/EllipsisDropdown';
 import Flex from 'components/shared-components/Flex'
@@ -71,11 +71,23 @@ const ProductList = () => {
 					<span className="ml-2">{'Delete'}</span>
 				</Flex>
 			</Menu.Item>
+			<Menu.Item onClick={() => editRow(row)}>
+			<Flex alignItems="center">
+	<EditOutlined/>
+	
+	<span className="ml-2">{'Edit'}</span>
+</Flex>
+
+			</Menu.Item>
 		</Menu>
 	);
 	
 	const addProduct = () => {
 		navigate(`/app/apps/ecommerce/add-product`)
+	}
+	const editRow =(row)=>{
+		console.log("row", row)
+		navigate(`/app/apps/ecommerce/edit-product/${row._id}`)
 	}
 	
 	// const viewDetails = row => {

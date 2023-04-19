@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import { Button, Form, Input, Divider, Alert } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
-import { GoogleSVG, FacebookSVG } from 'assets/svg/icon';
-import CustomIcon from 'components/util-components/CustomIcon'
+// import { GoogleSVG, FacebookSVG } from 'assets/svg/icon';
+// import CustomIcon from 'components/util-components/CustomIcon'
 import { 
 	signIn, 
 	showLoading, 
 	showAuthMessage, 
 	hideAuthMessage, 
-	signInWithGoogle, 
-	signInWithFacebook 
+	// signInWithGoogle, 
+	// signInWithFacebook 
 } from 'store/slices/authSlice';
 import { useNavigate } from 'react-router-dom'
 import { motion } from "framer-motion"
@@ -26,8 +26,8 @@ export const LoginForm = props => {
 		hideAuthMessage,
 		onForgetPasswordClick,
 		showLoading,
-		signInWithGoogle,
-		signInWithFacebook,
+		// signInWithGoogle,
+		// signInWithFacebook,
 		extra, 
 		signIn, 
 		token, 
@@ -39,8 +39,8 @@ export const LoginForm = props => {
 	} = props
 
 	const initialCredential = {
-		email: 'user1@themenate.net',
-		password: '2005ipo'
+		email: 'admin@gmail.com',
+		password: 'adminadmin'
 	}
 
 	const onLogin = values => {
@@ -48,15 +48,15 @@ export const LoginForm = props => {
 		signIn(values);
 	};
 
-	const onGoogleLogin = () => {
-		showLoading()
-		signInWithGoogle()
-	}
+	// const onGoogleLogin = () => {
+	// 	showLoading()
+	// 	signInWithGoogle()
+	// }
 
-	const onFacebookLogin = () => {
-		showLoading()
-		signInWithFacebook()
-	}
+	// const onFacebookLogin = () => {
+	// 	showLoading()
+	// 	signInWithFacebook()
+	// }
 
 	useEffect(() => {
 		if (token !== null && allowRedirect) {
@@ -75,7 +75,7 @@ export const LoginForm = props => {
 			<Divider>
 				<span className="text-muted font-size-base font-weight-normal">or connect with</span>
 			</Divider>
-			<div className="d-flex justify-content-center">
+			{/* <div className="d-flex justify-content-center">
 				<Button 
 					onClick={() => onGoogleLogin()} 
 					className="mr-2" 
@@ -91,7 +91,7 @@ export const LoginForm = props => {
 				>
 					Facebook
 				</Button>
-			</div>
+			</div> */}
 		</div>
 	)
 
@@ -189,8 +189,8 @@ const mapDispatchToProps = {
 	showAuthMessage,
 	showLoading,
 	hideAuthMessage,
-	signInWithGoogle,
-	signInWithFacebook
+	// signInWithGoogle,
+	// signInWithFacebook
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm)

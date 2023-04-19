@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import PageHeaderAlt from 'components/layout-components/PageHeaderAlt'
-import { Tabs, Form, Button, message } from 'antd';
+import { Card, Tabs, Form, Button, message } from 'antd';
 import Flex from 'components/shared-components/Flex'
 import GeneralField from './GeneralField'
+import { useLocation } from 'react-router-dom';
 // import VariationField from './VariationField'
 // import ShippingField from './ShippingField'
 // import ProductListData from "assets/data/product-list.data.json"
 
-const getBase64 = (img, callback) => {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
+// const getBase64 = (img, callback) => {
+//   const reader = new FileReader();
+//   reader.addEventListener('load', () => callback(reader.result));
+//   reader.readAsDataURL(img);
+// }
 
 const ADD = 'ADD'
 const EDIT = 'EDIT'
@@ -19,10 +20,11 @@ const EDIT = 'EDIT'
 const ProductForm = props => {
 
 	const { mode = ADD, param } = props
-
+	const location = useLocation()
+	const lastSegmentId = location.pathname.split("/").pop();
 	const [form] = Form.useForm();
-	const [uploadedImg, setImage] = useState('')
-	const [uploadLoading, setUploadLoading] = useState(false)
+	// const [uploadedImg, setImage] = useState('')
+	// const [uploadLoading, setUploadLoading] = useState(false)
 	const [submitLoading, setSubmitLoading] = useState(false)
 	const [list, setList] = useState()
 
@@ -46,12 +48,12 @@ const ProductForm = props => {
 			// setImage(product.image)
 			const fetchData = async () =>{
 				try {
-					await fetch('http://54.162.109.130/watches')
+					await fetch(`http://54.162.109.130/watches`)
 						.then(response =>  response.json())
 						.then((data) => {
-							console.log("result ==>" ,data)
-							 setList(data)
-						});	
+							// console.log("result ==>" ,data)
+							setList(data)
+						});
 				} catch (error) {
 					console.log(error)	
 				}
@@ -61,18 +63,18 @@ const ProductForm = props => {
 		}
   	}, [form, mode, param, props]);
 
-	const handleUploadChange = info => {
-		if (info.file.status === 'uploading') {
-			setUploadLoading(true)
-			return;
-		}
-		if (info.file.status === 'done') {
-			getBase64(info.file.originFileObj, imageUrl =>{
-				setImage(imageUrl)
-				setUploadLoading(true)
-			});
-		}
-	};
+	// const handleUploadChange = info => {
+	// 	if (info.file.status === 'uploading') {
+	// 		setUploadLoading(true)
+	// 		return;
+	// 	}
+	// 	if (info.file.status === 'done') {
+	// 		getBase64(info.file.originFileObj, imageUrl =>{
+	// 			setImage(imageUrl)
+	// 			setUploadLoading(true)
+	// 		});
+	// 	}
+	// };
 
 	const onFinish = () => {
 		setSubmitLoading(true)
@@ -95,7 +97,7 @@ const ProductForm = props => {
 						await fetch('http://54.162.109.130/watch', requestOptions )
 							.then(response =>  response.json())
 							.then(data => console.log("result ==>" ,data));
-						//message.success(`Created ${values.name} to product list`);
+						message.success(`Created ${values.name} to product list`);
 					} catch (error) {
 						message.success(`Created ${error} to product list`);
 					}
@@ -104,39 +106,27 @@ const ProductForm = props => {
 				if(mode === EDIT) {
 
 					try {
-						console.log("values", values)
-						const filters = {
-							name: values.name,
-							owner: values.owner,
-							model: values.model
-						}
-						const filteredId = list.filter(function(item) {
-							for (var key in filters) {
-							 if (item[key] === undefined || item[key] !== filters[key])
-								return false;
-							}
-							return true;
-						  });
-						  console.log("filtered", filteredId )
-						  
-						const requestOptions = {
-							method: 'PUT',
-							headers: { 'Content-Type': 'application/json' },
-							body: JSON.stringify({  
-					        "_id": filteredId[0]._id,
-							"name": values.name,
-							"model": values.model,
-							"owner": values.owner,
-							"price": values.price,
-							"status": "pending approval" })
-						};
-						console.log("options", requestOptions)
-						await fetch('http://54.162.109.130/watch', requestOptions )
-							.then(response =>  response.json())
-							.then(data => console.log("result ==>" ,data));
-						message.success(`Edited ${values.name} to product list`);
+
+							const requestOptions = {
+								method: 'PUT',
+								headers: { 'Content-Type': 'application/json' },
+								body: JSON.stringify({  
+								"_id": lastSegmentId,
+								"name": values.name,
+								"model": values.model,
+								"owner": values.owner,
+								"price": values.price,
+								"status": "pending approval" })
+							};
+							console.log("options", requestOptions)
+							await fetch('http://54.162.109.130/watch', requestOptions )
+								.then(response =>  response.json())
+								.then(data => console.log("result ==>" ,data));
+							message.success(`Edited ${values.name} to product list`);
+
 					} catch (error) {
-						message.success(`Product saved`);
+						// message.success(`Product saved`);
+						console.log(error)
 					}
 				}
 			}, 1500);
@@ -182,9 +172,9 @@ const ProductForm = props => {
 								label: 'General',
 								key: '1',
 								children: <GeneralField 
-									uploadedImg={uploadedImg} 
-									uploadLoading={uploadLoading} 
-									handleUploadChange={handleUploadChange}
+									// uploadedImg={uploadedImg} 
+									// uploadLoading={uploadLoading} 
+									// handleUploadChange={handleUploadChange}
 								/>,
 							},
 							// {
@@ -200,6 +190,16 @@ const ProductForm = props => {
 						]}
 					/>
 				</div>
+				{mode == EDIT && list?.length > 0 ? <Card title="Product">
+				{list?.filter(obj=> obj._id == lastSegmentId).map((itm)=>{
+					return(
+						<div key={itm}>
+							<p>name : {itm.name}</p>
+							<p>owner : {itm.owner}</p>
+							</div>
+					)
+				})}
+				</Card> : null}
 			</Form>
 		</>
 	)

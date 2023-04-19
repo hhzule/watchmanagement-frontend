@@ -2,7 +2,9 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Alert } from "antd";
-import { signUp, showAuthMessage, showLoading, hideAuthMessage } from 'store/slices/authSlice';
+import { 
+	// signUp,
+	 showAuthMessage, showLoading, hideAuthMessage } from 'store/slices/authSlice';
 import { useNavigate } from 'react-router-dom'
 import { motion } from "framer-motion"
 
@@ -41,18 +43,25 @@ const rules = {
 
 export const RegisterForm = (props) => {
 
-	const { signUp, showLoading, token, loading, redirect, message, showMessage, hideAuthMessage, allowRedirect = true } = props
+	const { 
+		// signUp,
+		//  showLoading, 
+		 token, loading, 
+		 redirect, message, 
+		 showMessage, hideAuthMessage,
+		  allowRedirect = true } = props
 	const [form] = Form.useForm();
 
 	const navigate = useNavigate();
 
 	const onSignUp = () => {
-    	form.validateFields().then(values => {
-			showLoading()
-			signUp(values)
-		}).catch(info => {
-			console.log('Validate Failed:', info);
-		});
+		console.log("onSignUp")
+    	// form.validateFields().then(values => {
+		// 	showLoading()
+		// 	signUp(values)
+		// }).catch(info => {
+		// 	console.log('Validate Failed:', info);
+		// });
 	}
 
 	useEffect(() => {
@@ -118,7 +127,7 @@ const mapStateToProps = ({auth}) => {
 }
 
 const mapDispatchToProps = {
-	signUp,
+	// signUp,
 	showAuthMessage,
 	hideAuthMessage,
 	showLoading

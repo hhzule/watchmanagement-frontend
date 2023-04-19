@@ -5,7 +5,7 @@ import {
   googleAuthProvider, 
   facebookAuthProvider,
   signInWithPopup,
-  createUserWithEmailAndPassword
+  // createUserWithEmailAndPassword
 } from 'auth/FirebaseAuth';
 
 const FirebaseService = {}
@@ -23,7 +23,7 @@ FirebaseService.signInGoogleRequest = async () =>
 FirebaseService.signInFacebookRequest = async () =>
   await signInWithPopup(auth, facebookAuthProvider).then(user => user).catch(err => err);
 
-FirebaseService.signUpEmailRequest = async (email, password) =>
-	await createUserWithEmailAndPassword(auth, email, password).then(user => user).catch(err => err);	
+// FirebaseService.signUpEmailRequest = async (email, password) =>
+// 	await createUserWithEmailAndPassword(auth, email, password).then(user => user).catch(err => err);	
 	
 export default FirebaseService
