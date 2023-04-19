@@ -13,6 +13,7 @@ export const initialState = {
 export const signIn = createAsyncThunk('auth/signIn',async (fndata, { rejectWithValue }) => {
 	try {
 		let adminData=[];
+		console.log("first")
 		await fetch('http://54.162.109.130/admin')
 		.then(response =>  response.json())
 		.then(data => {
