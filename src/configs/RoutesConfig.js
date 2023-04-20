@@ -132,6 +132,12 @@ export const protectedRoutes = [
             path: `${APP_PREFIX_PATH}/apps/ecommerce/customer-list`,
             component: React.lazy(() => import('views/app-views/apps/e-commerce/customer-list')),
         },
+        // commission
+                {
+                    key: 'apps.ecommerce.edit-commission',
+                    path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-commission`,
+                    component: React.lazy(() => import('views/app-views/apps/e-commerce/edit-commission')),
+                },
     // products
     {
         key: 'apps.ecommerce.add-product',

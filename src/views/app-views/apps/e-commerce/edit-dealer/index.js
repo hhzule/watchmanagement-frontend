@@ -5,7 +5,8 @@ const EditDealer = () => {
     const params = useParams();
 	return (
 		<CustomForm mode="EDIT" param={params}/>
-	)
+	
+		)
 }
 
 export default EditDealer

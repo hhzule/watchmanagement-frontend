@@ -5,11 +5,15 @@ import Flex from 'components/shared-components/Flex'
 import { useLocation } from 'react-router-dom';
 import DealerField from './DealerField'
 import CustomerField from "./CustomerField"
+import { useNavigate } from "react-router-dom";
+
+	
 
 const ADD = 'ADD'
 const EDIT = 'EDIT'
 
 const CustomForm = props => {
+	const navigate = useNavigate();
 	const auth = localStorage.getItem("auth_token")
     const location = useLocation()
 	const lastSegmentId = location.pathname.split("/").pop();
@@ -31,8 +35,9 @@ const CustomForm = props => {
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ auth})
 		};
-	
+		
 		await fetch(`/api/${userApi}s`, requestOptions )
+		// await fetch(`http://54.91.128.179/${userApi}s`, requestOptions )
 			.then(response =>  response.json())
 			.then((data) => {
 				// console.log("result ==>" ,data)
@@ -46,6 +51,7 @@ const CustomForm = props => {
 }else if(userApi == "customer"){
 	try {
 		await fetch(`/api/${userApi}s`)
+		// await fetch(`http://54.91.128.179/${userApi}s`)
 			.then(response =>  response.json())
 			.then((data) => {
 				// console.log("result ==>" ,data)
@@ -71,17 +77,14 @@ const CustomForm = props => {
 				if(mode === ADD) {
 					if(userApi == "dealer"){
 						console.log("in dealer")
-                if(values.commission >= 5 && values.commission <= 16){
       					 postBody =
 						{  
 						   "email": values.email,
 						   "name": values.name,
-						   "company": values.company,
-						   "commision": values.commission,
 						   "auth": adminId,
 						   "password": values.password
 						   } 
-							}}else if(userApi == "customer"){
+							}else if(userApi == "customer"){
 								console.log("in customer")
 								
 						postBody =	
@@ -101,10 +104,12 @@ const CustomForm = props => {
 						console.log(requestOptions)
 					
 						await fetch(`/api/${userApi}`, requestOptions )
+							// await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
 							.then(response =>  response.json())
-							.then(data => console.log("result ==>" ,data));
+							.then(data => console.log("add result ==>" ,data));
 							setSubmitLoading(false)
-						message.success(`Created ${values.name} to `);
+						message.success(`Created ${values.name} to `, [3]);
+						navigate(`/app/apps/ecommerce/${userApi}-list`)
 					} catch (error) {
 						console.log(error)
 						// message.success(`Created ${error.message} `);
@@ -115,18 +120,15 @@ const CustomForm = props => {
 				if(mode === EDIT) {
 					if(userApi == "dealer"){
 						console.log("values", values)
-						if(values.commission >= 5 && values.commission <= 16){
 							console.log("one")
 								   postBody =
 								{  
 								   "email": values.email,
 								   "name": values.name,
-								   "company": values.company,
-								   "commision": values.commission,
 								   "auth": adminId,
 								   "_id": lastSegmentId
 								   } 
-									}}else if(userApi == "customer"){
+									}else if(userApi == "customer"){
 										console.log("two")
 								postBody =	
 											{  
@@ -145,6 +147,7 @@ const CustomForm = props => {
 								};
 								console.log("options", requestOptions)
 								await fetch(`/api/${userApi}`, requestOptions )
+									// await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
 									.then(response =>  response.json())
 									.then((data) => {
 										console.log("result ==>" ,data)
@@ -153,7 +156,8 @@ const CustomForm = props => {
 									setSubmitLoading(false)
 									console.log("list", list)
 									
-								message.success(`Edited ${values.name}`);
+								message.success(`Edited ${values.name}`, [3]);
+								navigate(`/app/apps/ecommerce/${userApi}-list`)
 
 					} catch (error) {
 						message.error(error.message);

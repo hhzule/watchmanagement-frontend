@@ -103,20 +103,6 @@ const DealerList = () => {
 			dataIndex: 'email',
 			sorter: (a, b) => utils.antdTableSorter(a, b, 'name')
 		},
-		{
-			title: 'Password',
-			dataIndex: 'password'
-		},
-		{
-			title: 'Commission',
-			dataIndex: 'commision',
-			sorter: (a, b) => utils.antdTableSorter(a, b, 'price')
-		},
-		{
-			title: 'Company',
-			dataIndex: 'company',
-			sorter: (a, b) => utils.antdTableSorter(a, b, 'price')
-		},
 
 		{
 			title: '',

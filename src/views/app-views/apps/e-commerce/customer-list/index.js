@@ -13,7 +13,7 @@ const CustomerList = () => {
 	useEffect(() => {
 		const fetchData = async () =>{
 			try {
-				await fetch('/api/customers')
+				await fetch('http://54.91.128.179/customers')
 					.then(response =>  response.json())
 					.then((data) => {
 						 setList(data)
@@ -91,17 +91,14 @@ const CustomerList = () => {
 		{
 			title: 'Email',
 			dataIndex: 'email',
-			sorter: (a, b) => utils.antdTableSorter(a, b, 'name')
+			// sorter: (a, b) => utils.antdTableSorter(a, b, 'name')
 		},
-		{
-			title: 'Password',
-			dataIndex: 'password'
-		},
-		{
-			title: 'Commission',
-			dataIndex: 'commission',
-			sorter: (a, b) => utils.antdTableSorter(a, b, 'price')
-		},
+
+		// {
+		// 	title: 'Commission',
+		// 	dataIndex: 'commission',
+		// 	sorter: (a, b) => utils.antdTableSorter(a, b, 'price')
+		// },
 
 		{
 			title: '',

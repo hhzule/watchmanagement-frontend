@@ -337,22 +337,22 @@ const appsNavTree = [{
           breadcrumb: false,
           submenu: []
         },
-        // {
-        //   key: 'apps-ecommerce-editProduct',
-        //   path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-product/12`,
-        //   title: 'sidenav.apps.ecommerce.editProduct',
-        //   icon: '',
-        //   breadcrumb: false,
-        //   submenu: []
-        // },
         {
-          key: 'apps-ecommerce-orders',
-          path: `${APP_PREFIX_PATH}/apps/ecommerce/orders`,
-          title: 'sidenav.apps.ecommerce.orders',
+          key: 'apps-ecommerce-editCommission',
+          path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-commission`,
+          title: 'sidenav.apps.ecommerce.editCommission',
           icon: '',
           breadcrumb: false,
           submenu: []
-        }
+        },
+        // {
+        //   key: 'apps-ecommerce-orders',
+        //   path: `${APP_PREFIX_PATH}/apps/ecommerce/orders`,
+        //   title: 'sidenav.apps.ecommerce.orders',
+        //   icon: '',
+        //   breadcrumb: false,
+        //   submenu: []
+        // }
       ]
     }
   ]
