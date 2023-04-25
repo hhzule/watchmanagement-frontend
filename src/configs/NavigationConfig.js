@@ -266,13 +266,50 @@ const appsNavTree = [{
     //     }
     //   ]
     // },
+    // {
+      // key: 'apps-ecommerce',
+      // path: `${APP_PREFIX_PATH}/apps/ecommerce`,
+      // title: 'sidenav.apps.ecommerce',
+    //    key: 'apps-watches',
+    //   path: `${APP_PREFIX_PATH}/apps/watches`,
+    //   title: 'sidenav.apps.watches',
+    //   icon: ShoppingCartOutlined,
+    //   breadcrumb: true,
+    //   submenu: []
+    // },
     {
-      key: 'apps-ecommerce',
-      path: `${APP_PREFIX_PATH}/apps/ecommerce`,
-      title: 'sidenav.apps.ecommerce',
-      icon: ShoppingCartOutlined,
+      key: 'apps-watches-customerList',
+      path: `${APP_PREFIX_PATH}/apps/watches/customer-list`,
+      title: 'sidenav.apps.watches.customerList',
+      icon: '',
       breadcrumb: true,
-      submenu: [
+      submenu: []
+    }, 
+       {
+      key: 'apps-watches-dealerList',
+      path: `${APP_PREFIX_PATH}/apps/watches/dealer-list`,
+      title: 'sidenav.apps.watches.dealerList',
+      icon: '',
+      breadcrumb: true,
+      submenu: []
+    },
+    {
+      key: 'apps-watches-productList',
+      path: `${APP_PREFIX_PATH}/apps/watches/product-list`,
+      title: 'sidenav.apps.watches.productList',
+      icon: '',
+      breadcrumb: true,
+      submenu: []
+    },
+    {
+      key: 'apps-watches-editCommission',
+      path: `${APP_PREFIX_PATH}/apps/watches/edit-commission`,
+      title: 'sidenav.apps.watches.editCommission',
+      icon: '',
+      breadcrumb: false,
+      submenu: []
+    },
+    
         // {
         //   key: 'apps-ecommerce-editCustomer',
         //   path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-customer/12`,
@@ -281,22 +318,15 @@ const appsNavTree = [{
         //   breadcrumb: true,
         //   submenu: []
         // },
-        {
-          key: 'apps-ecommerce-addCustomer',
-          path: `${APP_PREFIX_PATH}/apps/ecommerce/add-customer`,
-          title: 'sidenav.apps.ecommerce.addCustomer',
-          icon: '',
-          breadcrumb: true,
-          submenu: []
-        },
-        {
-          key: 'apps-ecommerce-customerList',
-          path: `${APP_PREFIX_PATH}/apps/ecommerce/customer-list`,
-          title: 'sidenav.apps.ecommerce.customerList',
-          icon: '',
-          breadcrumb: true,
-          submenu: []
-        },
+        // {
+        //   key: 'apps-watches-addCustomer',
+        //   path: `${APP_PREFIX_PATH}/apps/watches/add-customer`,
+        //   title: 'sidenav.apps.watches.addCustomer',
+        //   icon: '',
+        //   breadcrumb: true,
+        //   submenu: []
+        // },
+
         // {
         //   key: 'apps-ecommerce-editDealer',
         //   path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-dealer/12`,
@@ -305,46 +335,24 @@ const appsNavTree = [{
         //   breadcrumb: true,
         //   submenu: []
         // },
-        {
-          key: 'apps-ecommerce-addDealer',
-          path: `${APP_PREFIX_PATH}/apps/ecommerce/add-dealer`,
-          title: 'sidenav.apps.ecommerce.addDealer',
-          icon: '',
-          breadcrumb: true,
-          submenu: []
-        },
-        {
-          key: 'apps-ecommerce-dealerList',
-          path: `${APP_PREFIX_PATH}/apps/ecommerce/dealer-list`,
-          title: 'sidenav.apps.ecommerce.dealerList',
-          icon: '',
-          breadcrumb: true,
-          submenu: []
-        },
-        {
-          key: 'apps-ecommerce-productList',
-          path: `${APP_PREFIX_PATH}/apps/ecommerce/product-list`,
-          title: 'sidenav.apps.ecommerce.productList',
-          icon: '',
-          breadcrumb: true,
-          submenu: []
-        },
-        {
-          key: 'apps-ecommerce-addProduct',
-          path: `${APP_PREFIX_PATH}/apps/ecommerce/add-product`,
-          title: 'sidenav.apps.ecommerce.addProduct',
-          icon: '',
-          breadcrumb: false,
-          submenu: []
-        },
-        {
-          key: 'apps-ecommerce-editCommission',
-          path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-commission`,
-          title: 'sidenav.apps.ecommerce.editCommission',
-          icon: '',
-          breadcrumb: false,
-          submenu: []
-        },
+        // {
+        //   key: 'apps-watches-addDealer',
+        //   path: `${APP_PREFIX_PATH}/apps/watches/add-dealer`,
+        //   title: 'sidenav.apps.watches.addDealer',
+        //   icon: '',
+        //   breadcrumb: true,
+        //   submenu: []
+        // },
+
+        // {
+        //   key: 'apps-watches-addProduct',
+        //   path: `${APP_PREFIX_PATH}/apps/watches/add-product`,
+        //   title: 'sidenav.apps.watches.addProduct',
+        //   icon: '',
+        //   breadcrumb: false,
+        //   submenu: []
+        // },
+
         // {
         //   key: 'apps-ecommerce-orders',
         //   path: `${APP_PREFIX_PATH}/apps/ecommerce/orders`,
@@ -356,7 +364,7 @@ const appsNavTree = [{
       ]
     }
   ]
-}]
+
 
 // const componentsNavTree = [
 //   {

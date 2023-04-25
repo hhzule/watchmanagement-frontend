@@ -83,11 +83,11 @@ const ProductList = () => {
 	);
 	
 	const addProduct = () => {
-		navigate(`/app/apps/ecommerce/add-product`)
+		navigate(`/app/apps/watches/add-product`)
 	}
 	const editRow =(row)=>{
 		console.log("row", row)
-		navigate(`/app/apps/ecommerce/edit-product/${row._id}`)
+		navigate(`/app/apps/watches/edit-product/${row._id}`)
 	}
 	
 	// const viewDetails = row => {

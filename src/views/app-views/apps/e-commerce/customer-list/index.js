@@ -51,12 +51,12 @@ const CustomerList = () => {
 
 	
 	const addCustomer = () => {
-		navigate(`/app/apps/ecommerce/add-customer`)
+		navigate(`/app/apps/watches/add-customer`)
 	}
 
 	const editRow =(row)=>{
 		console.log("row", row)
-		navigate(`/app/apps/ecommerce/edit-customer/${row._id}`)
+		navigate(`/app/apps/watches/edit-customer/${row._id}`)
 	}
 
 	const deleteRow = async (row) => {

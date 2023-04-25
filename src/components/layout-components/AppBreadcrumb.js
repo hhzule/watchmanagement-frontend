@@ -9,6 +9,10 @@ let breadcrumbData = {
 };
 
 navigationConfig.forEach((elm, i) => {
+	// console.log("obj.title", {
+	// 	title:elm.title,
+	// 	path: breadcrumbData[elm.path]
+	// })
 	const assignBreadcrumb = (obj) => breadcrumbData[obj.path] = <IntlMessage id={obj.title} />;
 	assignBreadcrumb(elm);
 	if (elm.submenu) {
@@ -25,6 +29,7 @@ navigationConfig.forEach((elm, i) => {
 
 const BreadcrumbRoute = props => {
 	const location = useLocation();
+	console.log("first", location.pathname)
 	const pathSnippets = location.pathname.split('/').filter(i => i);
 	const breadcrumbItems = pathSnippets.map((_, index) => {
 		const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;

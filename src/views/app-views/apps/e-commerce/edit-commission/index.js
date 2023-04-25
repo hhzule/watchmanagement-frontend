@@ -1,13 +1,39 @@
 import React, { useState, useEffect } from 'react'
 import PageHeaderAlt from 'components/layout-components/PageHeaderAlt'
-import { Tabs, Form, Button, message, Card } from 'antd';
+import { Tabs, Form, Button, message } from 'antd';
 import Flex from 'components/shared-components/Flex'
 import CommissionField from './CommissionField';
+
+
 const EditCommission = props => {
 
 	const auth = localStorage.getItem("auth_token")
 	const [form] = Form.useForm();
 	const [submitLoading, setSubmitLoading] = useState(false)
+	const [defaultCommission, setDefaultCommission] = useState()
+  
+  useEffect(() => {
+
+	const fetchData = async()=>{
+try {
+
+	await fetch(`/api/admin`)
+	// await fetch(`http://54.91.128.179/admin`)
+		.then(response =>  response.json())
+		.then((data) => {
+			console.log("result ==>" ,data[0].commission)
+			setDefaultCommission(data[0].commission)
+		});
+	
+} catch (error) {
+	console.log(error)	
+}		
+}
+	fetchData()
+
+  }, [form]);
+
+
 
 	const onFinish = () => {
 		setSubmitLoading(true)
@@ -60,8 +86,10 @@ const EditCommission = props => {
 				initialValues={{
 					heightUnit: 'cm',
 					widthUnit: 'cm',
-					weightUnit: 'kg'
+					weightUnit: 'kg',
+					commission : props.defaultValue
 				}}
+			
 			>
 				<PageHeaderAlt className="border-bottom" overlap>
 					<div className="container">
@@ -86,7 +114,7 @@ const EditCommission = props => {
 							{
 								label: 'General',
 								key: '1',
-								children: <CommissionField /> ,
+								children: <CommissionField defaultValue={defaultCommission}/> ,
 							},
 						]}
 					/>

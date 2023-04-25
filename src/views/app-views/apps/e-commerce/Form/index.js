@@ -109,7 +109,7 @@ const CustomForm = props => {
 							.then(data => console.log("add result ==>" ,data));
 							setSubmitLoading(false)
 						message.success(`Created ${values.name} to `, [3]);
-						navigate(`/app/apps/ecommerce/${userApi}-list`)
+						navigate(`/app/apps/watches/${userApi}-list`)
 					} catch (error) {
 						console.log(error)
 						// message.success(`Created ${error.message} `);
@@ -157,7 +157,7 @@ const CustomForm = props => {
 									console.log("list", list)
 									
 								message.success(`Edited ${values.name}`, [3]);
-								navigate(`/app/apps/ecommerce/${userApi}-list`)
+								navigate(`/app/apps/watches/${userApi}-list`)
 
 					} catch (error) {
 						message.error(error.message);

@@ -96,62 +96,62 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/app-views/apps/project/scrumboard')),
     },
     {
-        key: 'apps.ecommerce',
-        path: `${APP_PREFIX_PATH}/apps/ecommerce`,
+        key: 'apps.watches',
+        path: `${APP_PREFIX_PATH}/apps/watches`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce')),
     },
     // dealers
     {
-        key: 'apps.ecommerce.add-dealer',
-        path: `${APP_PREFIX_PATH}/apps/ecommerce/add-dealer`,
+        key: 'apps.watches.add-dealer',
+        path: `${APP_PREFIX_PATH}/apps/watches/add-dealer`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/add-dealer')),
     },
     {
-        key: 'apps.ecommerce.edit-dealer',
-        path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-dealer/:id`,
+        key: 'apps.watches.edit-dealer',
+        path: `${APP_PREFIX_PATH}/apps/watches/edit-dealer/:id`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/edit-dealer')),
     },
     {
-        key: 'apps.ecommerce.dealer-list',
-        path: `${APP_PREFIX_PATH}/apps/ecommerce/dealer-list`,
+        key: 'apps.watches.dealer-list',
+        path: `${APP_PREFIX_PATH}/apps/watches/dealer-list`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/dealer-list')),
     },
         // customers
         {
-            key: 'apps.ecommerce.add-customer',
-            path: `${APP_PREFIX_PATH}/apps/ecommerce/add-customer`,
+            key: 'apps.watches.add-customer',
+            path: `${APP_PREFIX_PATH}/apps/watches/add-customer`,
             component: React.lazy(() => import('views/app-views/apps/e-commerce/add-customer')),
         },
         {
-            key: 'apps.ecommerce.edit-customer',
-            path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-customer/:id`,
+            key: 'apps.watches.edit-customer',
+            path: `${APP_PREFIX_PATH}/apps/watches/edit-customer/:id`,
             component: React.lazy(() => import('views/app-views/apps/e-commerce/edit-customer')),
         },
         {
-            key: 'apps.ecommerce.customer-list',
-            path: `${APP_PREFIX_PATH}/apps/ecommerce/customer-list`,
+            key: 'apps.watches.customer-list',
+            path: `${APP_PREFIX_PATH}/apps/watches/customer-list`,
             component: React.lazy(() => import('views/app-views/apps/e-commerce/customer-list')),
         },
         // commission
                 {
-                    key: 'apps.ecommerce.edit-commission',
-                    path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-commission`,
+                    key: 'apps.watches.edit-commission',
+                    path: `${APP_PREFIX_PATH}/apps/watches/edit-commission`,
                     component: React.lazy(() => import('views/app-views/apps/e-commerce/edit-commission')),
                 },
     // products
     {
-        key: 'apps.ecommerce.add-product',
-        path: `${APP_PREFIX_PATH}/apps/ecommerce/add-product`,
+        key: 'apps.watches.add-product',
+        path: `${APP_PREFIX_PATH}/apps/watches/add-product`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/add-product')),
     },
     {
-        key: 'apps.ecommerce.edit-product',
-        path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-product/:id`,
+        key: 'apps.watches.edit-product',
+        path: `${APP_PREFIX_PATH}/apps/watches/edit-product/:id`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/edit-product')),
     },
     {
-        key: 'apps.ecommerce.product-list',
-        path: `${APP_PREFIX_PATH}/apps/ecommerce/product-list`,
+        key: 'apps.watches.product-list',
+        path: `${APP_PREFIX_PATH}/apps/watches/product-list`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/product-list')),
     },
     {

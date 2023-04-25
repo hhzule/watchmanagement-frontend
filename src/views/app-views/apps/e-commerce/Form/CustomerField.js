@@ -1,5 +1,5 @@
-import React ,{ useState}from 'react'
-import { Input, Row, Col, Card, Form,InputNumber} from 'antd';
+import React from 'react'
+import { Input, Row, Col, Card, Form} from 'antd';
 const rules = {
 	name: [
 		{

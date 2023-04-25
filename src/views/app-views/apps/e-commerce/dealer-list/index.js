@@ -57,11 +57,11 @@ const DealerList = () => {
 	);
 	
 	const addDealer = () => {
-		navigate(`/app/apps/ecommerce/add-dealer`)
+		navigate(`/app/apps/watches/add-dealer`)
 	}
 	const editRow =(row)=>{
 		console.log("row", row)
-		navigate(`/app/apps/ecommerce/edit-dealer/${row._id}`)
+		navigate(`/app/apps/watches/edit-dealer/${row._id}`)
 	}
 
 	const deleteRow = async (row) => {
