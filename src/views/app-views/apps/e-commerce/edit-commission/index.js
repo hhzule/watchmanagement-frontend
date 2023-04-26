@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect} from 'react'
 import PageHeaderAlt from 'components/layout-components/PageHeaderAlt'
 import { Tabs, Form, Button, message } from 'antd';
 import Flex from 'components/shared-components/Flex'
@@ -12,27 +12,25 @@ const EditCommission = props => {
 	const [submitLoading, setSubmitLoading] = useState(false)
 	const [defaultCommission, setDefaultCommission] = useState()
   
-  useEffect(() => {
+	useEffect(() => {
 
-	const fetchData = async()=>{
-try {
-
-	await fetch(`/api/admin`)
-	// await fetch(`http://54.91.128.179/admin`)
-		.then(response =>  response.json())
-		.then((data) => {
-			console.log("result ==>" ,data[0].commission)
-			setDefaultCommission(data[0].commission)
-		});
+		const fetchData = async()=>{
+	try {
 	
-} catch (error) {
-	console.log(error)	
-}		
-}
-	fetchData()
-
-  }, [form]);
-
+		await fetch(`/api/admin`)
+		// await fetch(`http://54.91.128.179/admin`)
+			.then(response =>  response.json())
+			.then((data) => {
+				console.log("result ==>" ,data[0].commission)
+				setDefaultCommission(data[0].commission)
+			});
+	} catch (error) {
+		console.log(error)	
+	}		
+	}
+		fetchData()
+		
+	  }, []);
 
 
 	const onFinish = () => {
@@ -86,9 +84,14 @@ try {
 				initialValues={{
 					heightUnit: 'cm',
 					widthUnit: 'cm',
-					weightUnit: 'kg',
-					commission : props.defaultValue
+					weightUnit: 'kg'
 				}}
+				fields={[
+					{
+					  name: ["commission"],
+					  value: defaultCommission,
+					},
+				  ]}
 			
 			>
 				<PageHeaderAlt className="border-bottom" overlap>
@@ -114,7 +117,9 @@ try {
 							{
 								label: 'General',
 								key: '1',
-								children: <CommissionField defaultValue={defaultCommission}/> ,
+								children: <CommissionField 
+								// defaultValue={defaultCommission}
+								/> ,
 							},
 						]}
 					/>

@@ -1,17 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect} from 'react'
 import { Row, Col, Card,Form,InputNumber} from 'antd';
 const rules = {
 	commission: [
 		{
 			required: true,
             type: 'number',
-			message: 'Please enter numbeer',
+			message: 'Please enter number',
 		}
 	]
 }
 
 const CommissionField = props =>{
-const [commissionVal, ] = useState(props.defaultValue)
 
 	return (
 	
@@ -20,7 +19,7 @@ const [commissionVal, ] = useState(props.defaultValue)
 			<Card title="Basic Info">
 			
                 <Form.Item name="commission" label="Commission" rules={rules.commission}>
-					<InputNumber  defaultValue={commissionVal}/>
+					<InputNumber/>
                    
 				</Form.Item>
 				
