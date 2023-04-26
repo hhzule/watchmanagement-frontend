@@ -19,7 +19,7 @@ const CommissionField = props =>{
 			<Card title="Basic Info">
 			
                 <Form.Item name="commission" label="Commission" rules={rules.commission}>
-					<InputNumber/>
+					<InputNumber onChange={props.setDefault}/>
                    
 				</Form.Item>
 				

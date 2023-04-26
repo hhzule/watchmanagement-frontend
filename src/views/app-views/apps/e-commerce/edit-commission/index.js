@@ -3,15 +3,17 @@ import PageHeaderAlt from 'components/layout-components/PageHeaderAlt'
 import { Tabs, Form, Button, message } from 'antd';
 import Flex from 'components/shared-components/Flex'
 import CommissionField from './CommissionField';
+import { useNavigate } from "react-router-dom";
 
 
 const EditCommission = props => {
+	const navigate = useNavigate();
 
 	const auth = localStorage.getItem("auth_token")
 	const [form] = Form.useForm();
 	const [submitLoading, setSubmitLoading] = useState(false)
 	const [defaultCommission, setDefaultCommission] = useState()
-  
+
 	useEffect(() => {
 
 		const fetchData = async()=>{
@@ -37,11 +39,10 @@ const EditCommission = props => {
 		setSubmitLoading(true)
 		form.validateFields().then(values => {
 			setTimeout(async() => {
-				console.log("valuse", values)
 				const postBody =
 						{  
 						   "auth": auth,
-						   "commission": values.commission
+						   "commission": defaultCommission
 						   } 
 						
 					try {
@@ -53,13 +54,14 @@ const EditCommission = props => {
 						};
 						console.log(requestOptions)
 					
-					
-							await fetch(`/api/adjustcommission`, requestOptions )
+						
+						await fetch(`/api/adjustcommission`, requestOptions )
+							// await fetch(`http://54.91.128.179/adjustcommission`, requestOptions )
 							.then(response =>  response.json())
 							.then(data => console.log("add result ==>" ,data));
 							setSubmitLoading(false)
 						message.success(`Updated commission`, [3]);
-						// navigate(`/app/apps/ecommerce/${userApi}-list`)
+						navigate(`/app/apps/dashboards/default`)
 					} catch (error) {
 						console.log(error)
 						// message.success(`Created ${error.message} `);
@@ -118,6 +120,7 @@ const EditCommission = props => {
 								label: 'General',
 								key: '1',
 								children: <CommissionField 
+								setDefault={setDefaultCommission}
 								// defaultValue={defaultCommission}
 								/> ,
 							},
