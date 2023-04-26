@@ -7,7 +7,7 @@ import { Card, Table,
 // import ProductListData from "assets/data/product-list.data.json"
 import { 
 	// EyeOutlined, 
-	DeleteOutlined, SearchOutlined, EditOutlined,PlusCircleOutlined } from '@ant-design/icons';
+	DeleteOutlined, SearchOutlined, EditOutlined,PlusCircleOutlined ,ApartmentOutlined} from '@ant-design/icons';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
 import EllipsisDropdown from 'components/shared-components/EllipsisDropdown';
 import Flex from 'components/shared-components/Flex'
@@ -43,6 +43,7 @@ const ProductList = () => {
 		const fetchData = async () =>{
 			try {
 				await fetch('/api/watches')
+				// await fetch('http://54.91.128.179/watches')
 					.then(response =>  response.json())
 					.then((data) => {
 						// console.log("result ==>" ,data)
@@ -79,6 +80,14 @@ const ProductList = () => {
 </Flex>
 
 			</Menu.Item>
+			<Menu.Item onClick={() => trxRow(row)}>
+			<Flex alignItems="center">
+			<ApartmentOutlined />
+	
+	<span className="ml-2">{'Transtactions'}</span>
+</Flex>
+
+			</Menu.Item>
 		</Menu>
 	);
 	
@@ -88,6 +97,11 @@ const ProductList = () => {
 	const editRow =(row)=>{
 		console.log("row", row)
 		navigate(`/app/apps/watches/edit-product/${row._id}`)
+	}
+
+	const trxRow =(row)=>{
+		console.log("row", row)
+		navigate(`/app/apps/watches/transactions/${row._id}`)
 	}
 	
 	// const viewDetails = row => {

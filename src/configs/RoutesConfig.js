@@ -140,6 +140,11 @@ export const protectedRoutes = [
                 },
     // products
     {
+        key: 'apps.watches.transactions',
+        path: `${APP_PREFIX_PATH}/apps/watches/transactions/:id`,
+        component: React.lazy(() => import('views/app-views/apps/e-commerce/transactions')),
+    },
+    {
         key: 'apps.watches.add-product',
         path: `${APP_PREFIX_PATH}/apps/watches/add-product`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/add-product')),
