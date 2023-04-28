@@ -38,6 +38,12 @@ const rules = {
 			message: 'Please enter product status',
 		}
 	],
+	media: [
+		{
+			required: true,
+			message: 'Please upload picture',
+		}
+	],
 }
 
 const imageUploadProps = {
@@ -60,7 +66,9 @@ const dummyRequest = ({ file, onSuccess }) => {
 
 const beforeUpload = file => {
 	console.log("img before upload", file)
-
+	if (!isJpgOrPng) {
+		message.error('You can only upload JPG/PNG file!');
+	  }
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
     message.error('You can only upload JPG/PNG file!');
@@ -136,7 +144,7 @@ const GeneralField = props => {
 		</Col>
 		<Col xs={24} sm={24} md={7}>
 			<Card title="Media">
-				<Dragger {...imageUploadProps} customRequest={dummyRequest} beforeUpload={beforeUpload} onChange={e=> handleUploadChange(e)}>
+				<Dragger {...imageUploadProps} customRequest={dummyRequest} beforeUpload={beforeUpload} onChange={e=> handleUploadChange(e)} >
 					{
 						props.uploadedImg ? 
 						<img src={props.uploadedImg} alt="avatar" className="img-fluid" /> 

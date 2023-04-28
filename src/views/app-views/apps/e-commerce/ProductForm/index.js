@@ -31,8 +31,8 @@ const ProductForm = props => {
     	if(mode === EDIT) {
 			const fetchData = async () =>{
 				try {
-					// await fetch(`/api/watches`)
-					await fetch(`http://54.91.128.179/watches`)
+					await fetch(`/api/watches`)
+					// await fetch(`http://54.91.128.179/watches`)
 					
 						.then(response =>  response.json())
 						.then((data) => {
@@ -55,7 +55,10 @@ const ProductForm = props => {
 			setTimeout(async() => {
 				setSubmitLoading(false)
 				if(mode === ADD) {
-					try {
+					console.log("imgObj", imgObj)
+					if(imgObj){
+
+		
 						try {
 								// Create a reference to 'image'
 								const imgRef = ref(storage, imgObj.name);
@@ -109,22 +112,21 @@ const ProductForm = props => {
 								  }
 								});
 								
-							
-						} catch (error) {
-							console.log("error loading", error)
-							
-						}
+
 
 
 					} catch (error) {
 						message.success(`${error} creating product list`);
 					}
+				}else{
 					
+					message.error('Please upload media');
+				}
 				}
 				if(mode === EDIT) {
 					if(imgObj){
-						// console.log("imgObj", imgObj)
-						// console.log("uploadedImg", uploadedImg)
+						console.log("imgObj", imgObj)
+						console.log("uploadedImg", uploadedImg)
 					try {
 					 			const imgRef = ref(storage, imgObj.name);
 								const uploadTask = await uploadString(imgRef, uploadedImg, 'data_url').then((snapshot) => {
