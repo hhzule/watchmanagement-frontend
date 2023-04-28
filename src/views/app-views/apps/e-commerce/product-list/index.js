@@ -4,6 +4,7 @@ import { Card, Table,
 	 Input, Button, 
 	//  Badge, 
 	 Menu } from 'antd';
+	 import WatchImg from "../../../../../assets/svg/watch.jpeg"
 // import ProductListData from "assets/data/product-list.data.json"
 import { 
 	// EyeOutlined, 
@@ -43,7 +44,7 @@ const ProductList = () => {
 		const fetchData = async () =>{
 			try {
 				await fetch('/api/watches')
-				// await fetch('http://54.91.128.179/watches')
+				//  await fetch('http://54.91.128.179/watches')
 					.then(response =>  response.json())
 					.then((data) => {
 						// console.log("result ==>" ,data)
@@ -129,6 +130,7 @@ const ProductList = () => {
 			};
 			
 				await fetch('/api/watch', requestOptions)
+				// await fetch('http://54.91.128.179/watch', requestOptions)
 						.then(response =>  response.json())
 						.then((data) => {
 							console.log("result ==>" ,data)
@@ -151,18 +153,25 @@ const ProductList = () => {
 		{
 			title: 'Product',
 			dataIndex: 'name',
-			render: (_, record) => (
+			render: (_, record) => {
+				console.log("records", record)
+				return(
+			
 				<div className="d-flex">
-					<AvatarStatus size={60} type="square" src={record.image} name={record.name}/>
+
+					<AvatarStatus size={60} type="square" src={record.imgUrl} name={record.name}/>
 				</div>
-			),
+			)},
 			sorter: (a, b) => utils.antdTableSorter(a, b, 'name')
 		},
 		{
-			// title: 'Category',
-			// dataIndex: 'category',
 			title: 'Model',
 			dataIndex: 'model',
+			// sorter: (a, b) => utils.antdTableSorter(a, b, 'category')
+		},
+		{
+			title: 'Status',
+			dataIndex: 'status',
 			// sorter: (a, b) => utils.antdTableSorter(a, b, 'category')
 		},
 		{

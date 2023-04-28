@@ -1,16 +1,11 @@
 import React from 'react'
-import { Input, Row, Col, Card, Form,
-	//  Upload,
-	  InputNumber, 
-	//   message, 
-	//   Select 
-	} from 'antd';
-// import { ImageSvg } from 'assets/svg/icon';
-// import CustomIcon from 'components/util-components/CustomIcon'
-// import { LoadingOutlined } from '@ant-design/icons';
+import { Input, Row, Col, Card, Form,Upload,InputNumber, message, Select } from 'antd';
+import { ImageSvg } from 'assets/svg/icon';
+import CustomIcon from 'components/util-components/CustomIcon'
+import { LoadingOutlined } from '@ant-design/icons';
 
-// const { Dragger } = Upload;
-// const { Option } = Select;
+const { Dragger } = Upload;
+const { Option } = Select;
 
 const rules = {
 	name: [
@@ -22,7 +17,7 @@ const rules = {
 	description: [
 		{
 			required: true,
-			message: 'Please enter product description',
+			message: 'Please enter product model',
 		}
 	],
 	price: [
@@ -31,46 +26,76 @@ const rules = {
 			message: 'Please enter product price',
 		}
 	],
-	comparePrice: [		
+	owner: [
+		{
+			required: true,
+			message: 'Please enter product owner',
+		}
 	],
-	taxRate: [		
-		// {
-		// 	required: true,
-		// 	message: 'Please enter tax rate',
-		// }
+	status: [
+		{
+			required: true,
+			message: 'Please enter product status',
+		}
 	],
-	cost: [		
-		// {
-		// 	required: true,
-		// 	message: 'Please enter item cost',
-		// }
-	]
 }
 
-// const imageUploadProps = {
-//   name: 'file',
-// 	multiple: true,
-// 	listType: "picture-card",
-// 	showUploadList: false,
+const imageUploadProps = {
+  	name: 'file',
+	multiple: false,
+	listType: "picture-card",
+	showUploadList: false
 //   action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76'
-// }
+}
 
-// const beforeUpload = file => {
-//   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-//   if (!isJpgOrPng) {
-//     message.error('You can only upload JPG/PNG file!');
-//   }
-//   const isLt2M = file.size / 1024 / 1024 < 2;
-//   if (!isLt2M) {
-//     message.error('Image must smaller than 2MB!');
-//   }
-//   return isJpgOrPng && isLt2M;
-// }
 
-// const categories = ['Cloths', 'Bags', 'Shoes', 'Watches', 'Devices']
-// const tags = ['Cotton', 'Nike', 'Sales', 'Sports', 'Outdoor', 'Toys', 'Hobbies' ]
 
-const GeneralField = props => (
+
+const dummyRequest = ({ file, onSuccess }) => {
+
+	setTimeout(() => {
+	  onSuccess("ok");
+	}, 0);
+  };
+
+const beforeUpload = file => {
+	console.log("img before upload", file)
+
+  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  if (!isJpgOrPng) {
+    message.error('You can only upload JPG/PNG file!');
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error('Image must smaller than 2MB!');
+  }
+  return isJpgOrPng && isLt2M;
+}
+
+const GeneralField = props => {
+	
+	const getBase64 = (img, callback) => {
+		console.log("img", img)
+	  const reader = new FileReader();
+	  reader.addEventListener('load', () => callback(reader.result));
+	  reader.readAsDataURL(img);
+	}
+	const handleUploadChange = info => {
+		console.log("info", info)
+		if (info.file.status === 'uploading') {
+			props.setUploadLoading(true)
+			return;
+		}
+		if (info.file.status === 'done') {
+			console.log("info.file.originFileObj", info.file.originFileObj)
+			props.setImgObj(info.file.originFileObj)
+			getBase64(info.file.originFileObj, imageUrl =>{
+				props.setImage(imageUrl)
+				props.setUploadLoading(true)
+			});
+		}
+	};
+	return(
 	<Row gutter={16}>
 		<Col xs={24} sm={24} md={17}>
 			<Card title="Basic Info">
@@ -78,10 +103,22 @@ const GeneralField = props => (
 					<Input placeholder="Product Name" />
 				</Form.Item>
 				<Form.Item name="model" label="Model" 
-				// rules={rules.description}
+				rules={rules.description}
 				>
-					<Input.TextArea rows={4} />
+					<Input placeholder="Model" />
+					
 				</Form.Item>
+				<Form.Item name="owner" label="Owner" 
+						rules={rules.owner}
+						>
+							<Input placeholder="Product Name" />
+						</Form.Item>
+
+						<Form.Item name="status" label="Status" 
+						rules={rules.status}
+						>
+							<Input placeholder="Product Status" />
+						</Form.Item>
 			</Card>
 			<Card title="Pricing">
 				<Row gutter={16}>
@@ -94,19 +131,12 @@ const GeneralField = props => (
 						/>
 						</Form.Item>
 					</Col>
-					<Col xs={24} sm={24} md={12}>
-						<Form.Item name="owner" label="Owner" 
-						// rules={rules.comparePrice}
-						>
-							<Input placeholder="Product Name" />
-						</Form.Item>
-					</Col>
 				</Row>
 			</Card>
 		</Col>
 		<Col xs={24} sm={24} md={7}>
-			{/* <Card title="Media">
-				<Dragger {...imageUploadProps} beforeUpload={beforeUpload} onChange={e=> props.handleUploadChange(e)}>
+			<Card title="Media">
+				<Dragger {...imageUploadProps} customRequest={dummyRequest} beforeUpload={beforeUpload} onChange={e=> handleUploadChange(e)}>
 					{
 						props.uploadedImg ? 
 						<img src={props.uploadedImg} alt="avatar" className="img-fluid" /> 
@@ -127,7 +157,7 @@ const GeneralField = props => (
 						</div>
 					}
 				</Dragger>
-			</Card> */}
+			</Card>
 			{/* <Card title="Organization">
 				<Form.Item name="category" label="Category" >
 					<Select className="w-100" placeholder="Category">
@@ -146,6 +176,6 @@ const GeneralField = props => (
 			</Card> */}
 		</Col>
 	</Row>
-)
+)}
 
 export default GeneralField
