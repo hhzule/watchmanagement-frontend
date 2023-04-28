@@ -80,7 +80,7 @@ const ProductForm = props => {
 									};
 								console.log("optons", requestOptions)
 									// await fetch('http://54.91.128.179/watch', requestOptions )
-									await fetch('api/watch', requestOptions )
+									await fetch('/api/watch', requestOptions )
 										.then(response =>  response.json())
 										.then(data => console.log("result ==>" ,data));
 									
