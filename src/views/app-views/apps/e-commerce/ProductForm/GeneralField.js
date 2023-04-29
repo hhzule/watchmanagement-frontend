@@ -65,10 +65,7 @@ const dummyRequest = ({ file, onSuccess }) => {
   };
 
 const beforeUpload = file => {
-	console.log("img before upload", file)
-	if (!isJpgOrPng) {
-		message.error('You can only upload JPG/PNG file!');
-	  }
+
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
     message.error('You can only upload JPG/PNG file!');
