@@ -119,10 +119,14 @@ const GeneralField = props => {
 							<Input placeholder="Product Name" />
 						</Form.Item>
 
-						<Form.Item name="status" label="Status" 
-						rules={rules.status}
+						<Form.Item name="status" label="Status" rules={rules.status} 
+						
 						>
-							<Input placeholder="Product Status" />
+					<Select placeholder="Please select a status">
+						<Option value="Good">Good</Option>
+						<Option value="Damaged">Damaged</Option>
+						<Option value="Approved">Approved</Option>
+           			 </Select>
 						</Form.Item>
 			</Card>
 			<Card title="Pricing">
