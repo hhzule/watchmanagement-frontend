@@ -123,8 +123,8 @@ const GeneralField = props => {
 						
 						>
 					<Select placeholder="Please select a status">
-						<Option value="Good">Good</Option>
-						<Option value="Damaged">Damaged</Option>
+						<Option value="Pending">Pending</Option>
+						<Option value="Stolen">Stolen</Option>
 						<Option value="Approved">Approved</Option>
            			 </Select>
 						</Form.Item>
