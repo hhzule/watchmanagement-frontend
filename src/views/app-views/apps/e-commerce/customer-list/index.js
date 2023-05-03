@@ -13,7 +13,8 @@ const CustomerList = () => {
 	useEffect(() => {
 		const fetchData = async () =>{
 			try {
-				await fetch('/api/customers')
+				await fetch('http://54.91.128.179/customers')
+				// await fetch('/api/customers')
 					.then(response =>  response.json())
 					.then((data) => {
 						 setList(data)

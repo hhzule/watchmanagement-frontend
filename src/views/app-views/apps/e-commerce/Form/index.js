@@ -36,26 +36,28 @@ const CustomForm = props => {
 			body: JSON.stringify({ auth})
 		};
 		
-		await fetch(`/api/${userApi}s`, requestOptions )
-		// await fetch(`http://54.91.128.179/${userApi}s`, requestOptions )
+		// await fetch(`/api/${userApi}s`, requestOptions )
+		await fetch(`http://54.91.128.179/${userApi}s`, requestOptions )
 			.then(response =>  response.json())
 			.then((data) => {
 				// console.log("result ==>" ,data)
-				setList(data)
+				const filteredItem = data.filter(obj=> obj._id == lastSegmentId)
+				setList(filteredItem)
 			});
 		
 	} catch (error) {
 		console.log(error)	
 	}
-
+	
 }else if(userApi == "customer"){
 	try {
-		await fetch(`/api/${userApi}s`)
-		// await fetch(`http://54.91.128.179/${userApi}s`)
+		// await fetch(`/api/${userApi}s`)
+		await fetch(`http://54.91.128.179/${userApi}s`)
 			.then(response =>  response.json())
 			.then((data) => {
 				// console.log("result ==>" ,data)
-				 setList(data)
+				const filteredItem = data.filter(obj=> obj._id == lastSegmentId)
+				setList(filteredItem)
 			});	
 	} catch (error) {
 		console.log(error)	
@@ -64,10 +66,14 @@ const CustomForm = props => {
 			}
 	
 			fetchData()
+			
 		}
   	}, [form, mode, param, props]);
 
-
+	  const onDiscard = async () => {
+		console.log("1")
+		setList([{}])
+	}
 	const onFinish = () => {
 		setSubmitLoading(true)
 		form.validateFields().then(values => {
@@ -103,8 +109,8 @@ const CustomForm = props => {
 						};
 						console.log(requestOptions)
 					
-						await fetch(`/api/${userApi}`, requestOptions )
-							// await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
+						// await fetch(`/api/${userApi}`, requestOptions )
+							await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
 							.then(response =>  response.json())
 							.then(data => console.log("add result ==>" ,data));
 							setSubmitLoading(false)
@@ -146,15 +152,15 @@ const CustomForm = props => {
 									body: JSON.stringify(postBody)
 								};
 								console.log("options", requestOptions)
-								await fetch(`/api/${userApi}`, requestOptions )
-									// await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
+								// await fetch(`/api/${userApi}`, requestOptions )
+									await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
 									.then(response =>  response.json())
 									.then((data) => {
 										console.log("result ==>" ,data)
 										return setList([data])}
 										);
 									setSubmitLoading(false)
-									console.log("list", list)
+									
 									
 								message.success(`Edited ${values.name}`, [3]);
 								navigate(`/app/apps/watches/${userApi}-list`)
@@ -174,7 +180,7 @@ const CustomForm = props => {
 
 	return (
 		<>
-			<Form
+		{ list?.length > 0 ? <Form
 				layout="vertical"
 				form={form}
 				name="advanced_search"
@@ -184,13 +190,28 @@ const CustomForm = props => {
 					widthUnit: 'cm',
 					weightUnit: 'kg'
 				}}
+				fields={[
+					{
+					  name: ["name"],
+					  value: list[0].name,
+					},
+					{
+						name: ["email"],
+						value: list[0].email,
+					  },
+					  {
+						name: ["password"],
+						value: list[0].password,
+					  }
+				  ]}
 			>
 				<PageHeaderAlt className="border-bottom" overlap>
 					<div className="container">
 						<Flex className="py-2" mobileFlex={false} justifyContent="space-between" alignItems="center">
 							<h2 className="mb-3">{mode === 'ADD'? `Add New ${userApi.toUpperCase()}` : `Edit ${userApi.toUpperCase()}`} </h2>
 							<div className="mb-3">
-								{/* <Button className="mr-2">Discard</Button> */}
+							
+								<Button className="mr-2" onClick={() => onDiscard()} >Discard</Button>
 								<Button type="primary" onClick={() => onFinish()} htmlType="submit" loading={submitLoading} >
 									{mode === 'ADD'? 'Add' : `Save`}
 								</Button>
@@ -213,17 +234,7 @@ const CustomForm = props => {
 						]}
 					/>
 				</div>
-				{mode == EDIT && list?.length > 0 ? <Card title={userApi}>
-				{list?.filter(obj=> obj._id == lastSegmentId).map((itm)=>{
-					return(
-						<div key={itm}>
-							<p>name : {itm.name}</p>
-							<p>email : {itm.email}</p>
-							</div>
-					)
-				})}
-				</Card> : null}
-			</Form>
+			</Form> : (<> <div></div></>) }
 		</>
 	)
 }

@@ -20,8 +20,8 @@ const DealerList = () => {
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({ auth})
 				};
-				
-					await fetch('/api/dealers', requestOptions)
+				await fetch('http://54.91.128.179/dealers', requestOptions)
+					// await fetch('/api/dealers', requestOptions)
 							.then(response =>  response.json())
 							.then((data) => {
 								console.log("result ==>" ,data)
