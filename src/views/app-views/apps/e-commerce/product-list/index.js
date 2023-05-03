@@ -134,7 +134,7 @@ const ProductList = () => {
 			dataIndex: 'owner'
 		},
 		{
-			title: 'Product',
+			title: 'Watch',
 			dataIndex: 'name',
 			render: (_, record) => {
 				console.log("records", record)
@@ -248,7 +248,7 @@ const ProductList = () => {
 					</div> */}
 				</Flex>
 				<div>
-					<Button onClick={addProduct} type="primary" icon={<PlusCircleOutlined />} block>Add product</Button>
+					<Button onClick={addProduct} type="primary" icon={<PlusCircleOutlined />} block>Add watch</Button>
 				</div>
 			</Flex>
 			<div className="table-responsive">

@@ -27,6 +27,7 @@ const ProductForm = props => {
 	const [fileUrl, setFileUrl] = useState("")
 	const [list, setList] = useState()
 
+
 	useEffect(() => {
     	if(mode === EDIT) {
 			const fetchData = async () =>{
@@ -36,8 +37,11 @@ const ProductForm = props => {
 					
 						.then(response =>  response.json())
 						.then((data) => {
-							// console.log("result ==>" ,data)
-							setList(data)
+							// console.log("result ==>" ,data.filter(obj=> obj._id == lastSegmentId))
+							const fetchedValues = data.filter(obj=> obj._id == lastSegmentId)
+							setImage(fetchedValues[0].imgUrl)
+							
+							return setList(fetchedValues)
 						});
 				} catch (error) {
 					console.log(error)	
@@ -45,9 +49,15 @@ const ProductForm = props => {
 			}
 	
 			fetchData()
+			
 		}
-  	}, [form, mode, param, props]);
+  	}, [ mode, param, props]);
 
+
+	const onDiscard = async () => {
+		console.log("1")
+		Promise.all([ setList([{}]),setImage()])		
+	}
 
 	const onFinish = async () => {
 		setSubmitLoading(true)
@@ -87,7 +97,7 @@ const ProductForm = props => {
 										.then(response =>  response.json())
 										.then(data => console.log("result ==>" ,data));
 									
-									message.success(`Created ${values.name} to product list`, [5]);
+									message.success(`Created ${values.name} to watches list`, [5]);
 									navigate(`/app/apps/watches/product-list`)	
 								})
 								.catch((error) => {
@@ -116,7 +126,7 @@ const ProductForm = props => {
 
 
 					} catch (error) {
-						message.success(`${error} creating product list`);
+						message.success(`${error} creating list`);
 					}
 				}else{
 					
@@ -155,7 +165,7 @@ const ProductForm = props => {
 							// await fetch('http://54.91.128.179/watch', requestOptions )
 								.then(response =>  response.json())
 								.then(data => console.log("result ==>" ,data));
-							message.success(`Edited ${values.name} to product list`, [5]);
+							message.success(`Edited ${values.name} to watches list`, [5]);
 							navigate(`/app/apps/watches/product-list`)	
 								})
 					} catch (error) {
@@ -185,7 +195,7 @@ const ProductForm = props => {
 					// await fetch('http://54.91.128.179/watch', requestOptions )
 						.then(response =>  response.json())
 						.then(data => console.log("result ==>" ,data));
-					message.success(`Edited ${values.name} to product list`, [5]);
+					message.success(`Edited ${values.name} to watches list`, [5]);
 					navigate(`/app/apps/watches/product-list`)	
 				} catch (error) {
 					console.log("error", error)
@@ -203,27 +213,7 @@ const ProductForm = props => {
 
 	return (
 		<>
-						{mode == EDIT && list?.length > 0 ? <Card title="Product">
-				{list?.filter(obj=> obj._id == lastSegmentId).map((itm)=>{
-					return(
-						<div key={itm}>
-	<Row gutter={16}>
-		<Col xs={24} sm={24} md={17}>
-			<Card >
-<span>Name:</span><span> {itm.name}</span><br/>
-<span>Model:</span><span> {itm.model}</span><br/>
-<span>Owner:</span><span> {itm.owner}</span><br/>
-<span>Price:</span><span> {itm.price}</span><br/>
-<span>Status:</span><span> {itm.status}</span><br/> 
-<img width={"150px"} height={"150px"} src={itm.imgUrl} alt={itm.name}></img>
-			</Card>
-
-		</Col></Row>
-							</div>
-					)
-				})}
-				</Card> : null}
-			<Form
+				{ list?.length > 0 ? <Form
 				layout="vertical"
 				form={form}
 				name="advanced_search"
@@ -233,13 +223,41 @@ const ProductForm = props => {
 					widthUnit: 'cm',
 					weightUnit: 'kg'
 				}}
+				fields={[
+					{
+					  name: ["name"],
+					  value: list[0].name,
+					},
+					{
+						name: ["model"],
+						value: list[0].model,
+					  },
+					  {
+						name: ["price"],
+						value: list[0].price,
+					  },
+					  {
+						name: ["owner"],
+						value:list[0].owner,
+					  },
+					  {
+						name: ["status"],
+						value: list[0].status,
+					  },
+					  {
+						name: ["media"],
+						value: list[0].imgUrl,
+						// value: <img width={"150px"} height={"150px"} src={list[0]?.imgUrl} alt={list[0]?.name}></img>
+					  }
+				  ]}
+
 			>
 				<PageHeaderAlt className="border-bottom" overlap>
 					<div className="container">
 						<Flex className="py-2" mobileFlex={false} justifyContent="space-between" alignItems="center">
-							<h2 className="mb-3">{mode === 'ADD'? 'Add New Product' : `Edit Product`} </h2>
+							<h2 className="mb-3">{mode === 'ADD'? 'Add New Watch' : `Edit Watch`} </h2>
 							<div className="mb-3">
-								<Button className="mr-2">Discard</Button>
+								<Button className="mr-2" onClick={() => onDiscard()} >Discard</Button>
 								<Button type="primary" onClick={() => onFinish()} htmlType="submit" loading={submitLoading} >
 									{mode === 'ADD'? 'Add' : `Save`}
 								</Button>
@@ -262,13 +280,14 @@ const ProductForm = props => {
 									setUploadLoading={setUploadLoading}
 									setImage={setImage}
 									setImgObj={setImgObj}
+									setList={setList}
 								/>,
 							},
 						]}
 					/>
 				</div>
 
-			</Form>
+			</Form> : (<> <div></div></>) }
 		</>
 	)
 }
