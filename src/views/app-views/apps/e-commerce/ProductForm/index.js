@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+﻿import React, { useState, useEffect } from 'react'
 import PageHeaderAlt from 'components/layout-components/PageHeaderAlt'
 import { Card, Tabs, Form, Button, message , Row, Col} from 'antd';
 import Flex from 'components/shared-components/Flex'
@@ -25,15 +25,15 @@ const ProductForm = props => {
 	const [uploadLoading, setUploadLoading] = useState(false)
 	const [submitLoading, setSubmitLoading] = useState(false)
 	const [fileUrl, setFileUrl] = useState("")
-	const [list, setList] = useState()
+	const [list, setList] = useState([{}])
 
 
 	useEffect(() => {
     	if(mode === EDIT) {
 			const fetchData = async () =>{
 				try {
-					await fetch(`/api/watches`)
-					// await fetch(`http://54.91.128.179/watches`)
+					// await fetch(`/api/watches`)
+					await fetch(`http://54.91.128.179/watches`)
 					
 						.then(response =>  response.json())
 						.then((data) => {
@@ -47,33 +47,27 @@ const ProductForm = props => {
 					console.log(error)	
 				}
 			}
-	
-			fetchData()
-			
+			fetchData()	
 		}
-  	}, [ mode, param, props]);
+  	}, [form]);
 
 
-	const onDiscard = async () => {
-		console.log("1")
+	const onDiscard = async () => {		
 		Promise.all([ setList([{}]),setImage()])		
 	}
 
 	const onFinish = async () => {
-		setSubmitLoading(true)
 		form.validateFields().then(values => {
+			console.log("values", values)
 			setTimeout(async() => {
-				setSubmitLoading(false)
+				setSubmitLoading(true)
 				if(mode === ADD) {
-					console.log("imgObj", imgObj)
 					if(imgObj){
-
-		
 						try {
 								// Create a reference to 'image'
 								const imgRef = ref(storage, imgObj.name);
 								const uploadTask = await uploadString(imgRef, uploadedImg, 'data_url').then((snapshot) => {
-								console.log('Uploaded a data_url string!');
+								// console.log('Uploaded a data_url string!');
 							
 								});
 								await getDownloadURL(imgRef)
@@ -89,14 +83,27 @@ const ProductForm = props => {
 										"owner": values.owner,
 										"price": values.price,
 										"imgUrl" : url,
-										"status": values.status})
+										"status": values.status,
+			
+										"serialNumber":values.serialNumber ,
+										"caseMaterial":values.caseMaterial ,
+										"braceletMaterial": values.braceletMaterial ,
+										"movementModel": values.movementModel ,
+										"movementSerial": values.movementSerial ,
+										"movementMechanism": values.movementMechanism ,
+										"dialColor": values.dialColor ,
+										"hands": values.hands ,
+										"feature": 	values.feature ,					
+									
+									
+									})
 									};
 								console.log("optons", requestOptions)
-									// await fetch('http://54.91.128.179/watch', requestOptions )
-									await fetch('/api/watch', requestOptions )
+									await fetch('http://54.91.128.179/watch', requestOptions )
+									// await fetch('/api/watch', requestOptions )
 										.then(response =>  response.json())
 										.then(data => console.log("result ==>" ,data));
-									
+										setSubmitLoading(false)
 									message.success(`Created ${values.name} to watches list`, [5]);
 									navigate(`/app/apps/watches/product-list`)	
 								})
@@ -135,8 +142,8 @@ const ProductForm = props => {
 				}
 				if(mode === EDIT) {
 					if(imgObj){
-						console.log("imgObj", imgObj)
-						console.log("uploadedImg", uploadedImg)
+						// console.log("imgObj", imgObj)
+						// console.log("uploadedImg", uploadedImg)
 					try {
 					 			const imgRef = ref(storage, imgObj.name);
 								const uploadTask = await uploadString(imgRef, uploadedImg, 'data_url').then((snapshot) => {
@@ -157,14 +164,27 @@ const ProductForm = props => {
 										"owner": values.owner,
 										"price": values.price,
 										"imgUrl" : url,
-										"status": values.status })
+										"status": values.status ,
+
+										"serialNumber":values.serialNumber ,
+										"caseMaterial":values.caseMaterial ,
+										"braceletMaterial": values.braceletMaterial ,
+										"movementModel": values.movementModel ,
+										"movementSerial": values.movementSerial ,
+										"movementMechanism": values.movementMechanism ,
+										"dialColor": values.dialColor ,
+										"hands": values.hands ,
+										"feature": 	values.feature 
+									
+									})
 									};
 									
-							console.log("options", requestOptions)
-							await fetch('/api/watch', requestOptions )
-							// await fetch('http://54.91.128.179/watch', requestOptions )
+						
+							// await fetch('/api/watch', requestOptions )
+							await fetch('http://54.91.128.179/watch', requestOptions )
 								.then(response =>  response.json())
 								.then(data => console.log("result ==>" ,data));
+								setSubmitLoading(false)
 							message.success(`Edited ${values.name} to watches list`, [5]);
 							navigate(`/app/apps/watches/product-list`)	
 								})
@@ -176,7 +196,7 @@ const ProductForm = props => {
 			else{
 				// console.log("list", list)
 				const img = list?.filter(obj=> obj._id == lastSegmentId)
-				console.log("list", img[0].imgUrl)
+			
 				const requestOptions = {
 					method: 'PUT',
 					headers: { 'Content-Type': 'application/json' },
@@ -187,14 +207,27 @@ const ProductForm = props => {
 					"owner": values.owner,
 					"price": values.price,
 					"imgUrl" : img[0].imgUrl,
-					"status": values.status })
+					"status": values.status ,
+
+					"serialNumber":values.serialNumber ,
+					"caseMaterial":values.caseMaterial ,
+					"braceletMaterial": values.braceletMaterial ,
+					"movementModel": values.movementModel ,
+					"movementSerial": values.movementSerial ,
+					"movementMechanism": values.movementMechanism ,
+					"dialColor": values.dialColor ,
+					"hands": values.hands ,
+					"feature": 	values.feature ,
+				
+				})
 				};
 				try {
-					console.log("options", requestOptions)
-					await fetch('/api/watch', requestOptions )
-					// await fetch('http://54.91.128.179/watch', requestOptions )
+					
+					// await fetch('/api/watch', requestOptions )
+					await fetch('http://54.91.128.179/watch', requestOptions )
 						.then(response =>  response.json())
 						.then(data => console.log("result ==>" ,data));
+						setSubmitLoading(false)
 					message.success(`Edited ${values.name} to watches list`, [5]);
 					navigate(`/app/apps/watches/product-list`)	
 				} catch (error) {
@@ -204,8 +237,8 @@ const ProductForm = props => {
 			}
 			}
 			}, 1500);
+			
 		}).catch(info => {
-			setSubmitLoading(false)
 			console.log('info', info)
 			message.error('Please enter all required field ');
 		});
@@ -219,11 +252,61 @@ const ProductForm = props => {
 				name="advanced_search"
 				className="ant-advanced-search-form"
 				initialValues={{
-					heightUnit: 'cm',
-					widthUnit: 'cm',
-					weightUnit: 'kg'
+					name:  list[0].name,
+					model: list[0].model,
+					price: list[0].price,
+					owner: list[0].owner,
+					status: list[0].status,
+					media: list[0].imgUrl,
+
+					serialNumber:list[0].serialNumber ,
+					caseMaterial:list[0].caseMaterial ,
+					braceletMaterial: list[0].braceletMaterial ,
+					movementModel: list[0].movementModel ,
+					movementSerial: list[0].movementSerial ,
+					movementMechanism: list[0].movementMechanism ,
+					dialColor: list[0].dialColor ,
+					hands: list[0].hands ,
+					featue: 	list[0].feature ,
 				}}
 				fields={[
+					{
+						name: ["serialNumber"],
+						value: list[0].serialNumber,
+					  },
+					  {
+						name: ["caseMaterial"],
+						value: list[0].caseMaterial,
+					  },
+					  {
+						name: ["braceletMaterial"],
+						value: list[0].braceletMaterial,
+					  },
+					  {
+						name: ["movementModel"],
+						value: list[0].movementModel,
+					  },
+					  {
+						name: ["movementSerial"],
+						value: list[0].movementSerial,
+					  },
+					  {
+						name: ["movementMechanism"],
+						value: list[0].movementMechanism,
+					  },
+					  {
+						name: ["dialColor"],
+						value: list[0].dialColor,
+					  },
+					  {
+						name: ["hands"],
+						value: list[0].hands,
+					  },
+					  {
+						name: ["featue"],
+						value: list[0].featue,
+					  },
+
 					{
 					  name: ["name"],
 					  value: list[0].name,
@@ -247,8 +330,7 @@ const ProductForm = props => {
 					  {
 						name: ["media"],
 						value: list[0].imgUrl,
-						// value: <img width={"150px"} height={"150px"} src={list[0]?.imgUrl} alt={list[0]?.name}></img>
-					  }
+						  }
 				  ]}
 
 			>
@@ -281,6 +363,7 @@ const ProductForm = props => {
 									setImage={setImage}
 									setImgObj={setImgObj}
 									setList={setList}
+									formVal = {form}
 								/>,
 							},
 						]}

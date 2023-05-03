@@ -23,7 +23,7 @@ const CustomForm = props => {
 	const { mode = ADD, param } = props
 	const [form] = Form.useForm();
 	const [submitLoading, setSubmitLoading] = useState(false)
-	const [list, setList] = useState()
+	const [list, setList] = useState([{}])
 
 	useEffect(() => {
     	if(mode === EDIT) {
@@ -88,7 +88,18 @@ const CustomForm = props => {
 						   "email": values.email,
 						   "name": values.name,
 						   "auth": adminId,
-						   "password": values.password
+						   "password": values.password,
+
+						'businessName':values.businessName ,
+						'businessRegCertificate':values.businessRegCertificate,
+						'phoneNumber':values.phoneNumber ,
+						'emergencyNumber':values.emergencyNumber ,
+						'businessAddress': values.businessAddress ,
+						'brandName': values.brandName ,
+						'serialNumber': values.serialNumber ,	
+						'model': values.model ,
+						'offers': values.offers ,
+
 						   } 
 							}else if(userApi == "customer"){
 								console.log("in customer")
@@ -132,7 +143,17 @@ const CustomForm = props => {
 								   "email": values.email,
 								   "name": values.name,
 								   "auth": adminId,
-								   "_id": lastSegmentId
+								   "_id": lastSegmentId,
+
+								   'businessName':values.businessName ,
+								   'businessRegCertificate':values.businessRegCertificate,
+								   'phoneNumber':values.phoneNumber ,
+								   'emergencyNumber':values.emergencyNumber ,
+								   'businessAddress': values.businessAddress ,
+								   'brandName': values.brandName ,
+								   'serialNumber': values.serialNumber ,	
+								   'model': values.model ,
+								   'offers': values.offers 
 								   } 
 									}else if(userApi == "customer"){
 										console.log("two")
@@ -202,7 +223,43 @@ const CustomForm = props => {
 					  {
 						name: ["password"],
 						value: list[0].password,
-					  }
+					  },
+					  {
+						name: ["businessName"],
+						value: list[0].businessName,
+					  },
+					  {
+						  name: ["businessRegCertificate"],
+						  value: list[0].businessRegCertificate,
+						},
+						{
+						  name: ["phoneNumber"],
+						  value: list[0].phoneNumber,
+						},
+						{
+							name: ["emergencyNumber"],
+							value: list[0].emergencyNumber,
+						  },
+						  {
+							  name: ["businessAddress"],
+							  value: list[0].businessAddress,
+							},
+							{
+							  name: ["brandName"],
+							  value: list[0].brandName,
+							},
+							{
+							  name: ["serialNumber"],
+							  value: list[0].serialNumber,
+							},
+							{
+								name: ["model"],
+								value: list[0].model,
+							  },
+							  {
+								name: ["offers"],
+								value: list[0].offers,
+							  }
 				  ]}
 			>
 				<PageHeaderAlt className="border-bottom" overlap>
