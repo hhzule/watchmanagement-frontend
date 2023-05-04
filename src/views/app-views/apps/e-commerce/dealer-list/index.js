@@ -20,8 +20,8 @@ const DealerList = () => {
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({ auth})
 				};
-				// await fetch('http://54.91.128.179/dealers', requestOptions)
-					await fetch('/api/dealers', requestOptions)
+				await fetch('http://54.91.128.179/dealers', requestOptions)
+					// await fetch('/api/dealers', requestOptions)
 							.then(response =>  response.json())
 							.then((data) => {
 								console.log("result ==>" ,data)
@@ -92,6 +92,7 @@ const DealerList = () => {
 			console.log(error)
 		}
 	}
+	
 
 	const tableColumns = [
 		{
@@ -101,9 +102,42 @@ const DealerList = () => {
 		{
 			title: 'Email',
 			dataIndex: 'email',
-			sorter: (a, b) => utils.antdTableSorter(a, b, 'name')
+		
+		},	
+		{
+			title: 'Business Name',
+			dataIndex: 'businessName'
 		},
-
+		{
+			title: 'Registration Certificate',
+			dataIndex: 'businessRegCertificate',
+			
+		},		{
+			title: 'Phone Number',
+			dataIndex: 'phoneNumber'
+		},
+		{
+			title: 'Emergency Number',
+			dataIndex: 'emergencyNumber',
+			
+		},		{
+			title: 'Business Address',
+			dataIndex: 'businessAddress'
+		},
+		{
+			title: 'Brand Name',
+			dataIndex: 'brandName'
+		},		{
+			title: 'Serial Number',
+			dataIndex: 'serialNumber'
+		},
+		{
+			title: 'Model',
+			dataIndex: 'model'
+		},		{
+			title: 'Offers',
+			dataIndex: 'offers'
+		},
 		{
 			title: '',
 			dataIndex: 'actions',

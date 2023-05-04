@@ -68,21 +68,21 @@ const CustomForm = props => {
 			fetchData()
 			
 		}
-  	}, [form, mode, param, props]);
+  	}, [form]);
 
 	  const onDiscard = async () => {
 		console.log("1")
 		setList([{}])
 	}
-	const onFinish = () => {
-		setSubmitLoading(true)
+	const onFinish = async () => {
+		
 		form.validateFields().then(values => {
+			console.log("in dealer", values)
 			setTimeout(async() => {
-				
+				setSubmitLoading(true)
 				let postBody;
 				if(mode === ADD) {
 					if(userApi == "dealer"){
-						console.log("in dealer")
       					 postBody =
 						{  
 						   "email": values.email,
@@ -121,10 +121,11 @@ const CustomForm = props => {
 						console.log(requestOptions)
 					
 						await fetch(`/api/${userApi}`, requestOptions )
-							// await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
+							await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
 							.then(response =>  response.json())
 							.then(data => console.log("add result ==>" ,data));
 							setSubmitLoading(false)
+							console.log("error")
 						message.success(`Created ${values.name} to `, [3]);
 						navigate(`/app/apps/watches/${userApi}-list`)
 					} catch (error) {
@@ -173,8 +174,8 @@ const CustomForm = props => {
 									body: JSON.stringify(postBody)
 								};
 								console.log("options", requestOptions)
-								await fetch(`/api/${userApi}`, requestOptions )
-									// await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
+								// await fetch(`/api/${userApi}`, requestOptions )
+									await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
 									.then(response =>  response.json())
 									.then((data) => {
 										console.log("result ==>" ,data)

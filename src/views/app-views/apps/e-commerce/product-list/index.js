@@ -172,19 +172,46 @@ const ProductList = () => {
 			),
 			sorter: (a, b) => utils.antdTableSorter(a, b, 'price')
 		},
-		// {
-		// 	title: 'Stock',
-		// 	dataIndex: 'stock',
-		// 	sorter: (a, b) => utils.antdTableSorter(a, b, 'stock')
-		// },
-		// {
-		// 	title: 'Status',
-		// 	dataIndex: 'stock',
-		// 	render: stock => (
-		// 		<Flex alignItems="center">{getStockStatus(stock)}</Flex>
-		// 	),
-		// 	sorter: (a, b) => utils.antdTableSorter(a, b, 'stock')
-		// },
+		{
+			title: 'Serial Number',
+			dataIndex: 'serialNumber',
+				},
+		{
+			title: 'Case Material',
+			dataIndex: 'caseMaterial',
+			},
+			{
+				title: 'Bracelet Material',
+				dataIndex: 'braceletMaterial',
+					},
+			{
+				title: 'Case Material',
+				dataIndex: 'caseMaterial',
+				},
+				{
+					title: 'Movement Model',
+					dataIndex: 'movementModel',
+						},
+				{
+					title: 'Movement Serial',
+					dataIndex: 'movementSerial',
+					},
+					{
+						title: 'Movement Mechanism',
+						dataIndex: 'movementMechanism',
+							},
+					{
+						title: 'Dial Color',
+						dataIndex: 'dialColor',
+						},
+						{
+							title: 'Hands',
+							dataIndex: 'hands',
+								},
+						{
+							title: 'Feature',
+							dataIndex: 'feature',
+							},
 		{
 			title: '',
 			dataIndex: 'actions',

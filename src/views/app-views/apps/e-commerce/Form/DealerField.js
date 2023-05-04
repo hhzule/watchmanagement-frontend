@@ -109,7 +109,7 @@ const DealerField = props => {
 						</Form.Item>
 
 						{/* added fields */}
-						<Form.Item name="businessName" label="Business name" rules={rules.businessName}>
+						 <Form.Item name="businessName" label="Business name" rules={rules.businessName}>
 					<Input placeholder="Business Name" />
 				</Form.Item>
 				<Form.Item name="businessRegCertificate" label="Business Registration Certificate" rules={rules.businessRegCertificate}>
@@ -121,10 +121,10 @@ const DealerField = props => {
 				<Form.Item name="emergencyNumber" label="Emergency Number" rules={rules.emergencyNumber}>
 					<Input placeholder="Emergency Number" />
 				</Form.Item>
-				<Form.Item name="businessAddress" label="Business Address" rules={rules.businessAddress}>
+			<Form.Item name="businessAddress" label="Business Address" rules={rules.businessAddress}>
 					<Input placeholder="Business Address" />
 				</Form.Item>
-				<Form.Item name="brandName" label="Brand name" rules={rules.brandName}>
+					<Form.Item name="brandName" label="Brand name" rules={rules.brandName}>
 				<Select placeholder="Please select a brand Name">
 						<Option value="Rolex">Rolex</Option>
 						<Option value="Patek Philippe">Patek Philippe</Option>
