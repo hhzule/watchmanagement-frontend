@@ -32,8 +32,8 @@ const ProductForm = props => {
     	if(mode === EDIT) {
 			const fetchData = async () =>{
 				try {
-					// await fetch(`/api/watches`)
-					await fetch(`http://54.91.128.179/watches`)
+					await fetch(`/api/watches`)
+					// await fetch(`http://54.91.128.179/watches`)
 					
 						.then(response =>  response.json())
 						.then((data) => {
@@ -99,8 +99,8 @@ const ProductForm = props => {
 									})
 									};
 								console.log("optons", requestOptions)
-									await fetch('http://54.91.128.179/watch', requestOptions )
-									// await fetch('/api/watch', requestOptions )
+									// await fetch('http://54.91.128.179/watch', requestOptions )
+									await fetch('/api/watch', requestOptions )
 										.then(response =>  response.json())
 										.then(data => console.log("result ==>" ,data));
 										setSubmitLoading(false)
@@ -180,8 +180,8 @@ const ProductForm = props => {
 									};
 									
 						
-							// await fetch('/api/watch', requestOptions )
-							await fetch('http://54.91.128.179/watch', requestOptions )
+							await fetch('/api/watch', requestOptions )
+							// await fetch('http://54.91.128.179/watch', requestOptions )
 								.then(response =>  response.json())
 								.then(data => console.log("result ==>" ,data));
 								setSubmitLoading(false)
@@ -223,8 +223,8 @@ const ProductForm = props => {
 				};
 				try {
 					
-					// await fetch('/api/watch', requestOptions )
-					await fetch('http://54.91.128.179/watch', requestOptions )
+					await fetch('/api/watch', requestOptions )
+					// await fetch('http://54.91.128.179/watch', requestOptions )
 						.then(response =>  response.json())
 						.then(data => console.log("result ==>" ,data));
 						setSubmitLoading(false)
