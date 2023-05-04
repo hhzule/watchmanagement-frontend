@@ -121,7 +121,7 @@ const CustomForm = props => {
 						console.log(requestOptions)
 					
 						await fetch(`/api/${userApi}`, requestOptions )
-							await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
+							// await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
 							.then(response =>  response.json())
 							.then(data => console.log("add result ==>" ,data));
 							setSubmitLoading(false)
@@ -174,8 +174,8 @@ const CustomForm = props => {
 									body: JSON.stringify(postBody)
 								};
 								console.log("options", requestOptions)
-								// await fetch(`/api/${userApi}`, requestOptions )
-									await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
+								await fetch(`/api/${userApi}`, requestOptions )
+									// await fetch(`http://54.91.128.179/${userApi}`, requestOptions )
 									.then(response =>  response.json())
 									.then((data) => {
 										console.log("result ==>" ,data)
