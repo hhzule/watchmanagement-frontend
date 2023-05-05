@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import DealerField from './DealerField'
 import CustomerField from "./CustomerField"
 import { useNavigate } from "react-router-dom";
+import { AUTH_TOKEN } from 'constants/AuthConstant';
 
 	
 
@@ -14,11 +15,11 @@ const EDIT = 'EDIT'
 
 const CustomForm = props => {
 	const navigate = useNavigate();
-	const auth = localStorage.getItem("auth_token")
+	const auth = localStorage.getItem(AUTH_TOKEN)
     const location = useLocation()
 	const lastSegmentId = location.pathname.split("/").pop();
     const res = location.pathname.includes("dealer")
-    const adminId = localStorage.getItem("auth_token") 
+    const adminId = localStorage.getItem(AUTH_TOKEN) 
     const userApi = res ? "dealer" : "customer"
 	const { mode = ADD, param } = props
 	const [form] = Form.useForm();

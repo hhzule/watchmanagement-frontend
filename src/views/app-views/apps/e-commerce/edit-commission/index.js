@@ -4,12 +4,13 @@ import { Tabs, Form, Button, message } from 'antd';
 import Flex from 'components/shared-components/Flex'
 import CommissionField from './CommissionField';
 import { useNavigate } from "react-router-dom";
+import { AUTH_TOKEN } from 'constants/AuthConstant';
 
 
 const EditCommission = props => {
 	const navigate = useNavigate();
 
-	const auth = localStorage.getItem("auth_token")
+	const auth = localStorage.getItem(AUTH_TOKEN)
 	const [form] = Form.useForm();
 	const [submitLoading, setSubmitLoading] = useState(false)
 	const [defaultCommission, setDefaultCommission] = useState()

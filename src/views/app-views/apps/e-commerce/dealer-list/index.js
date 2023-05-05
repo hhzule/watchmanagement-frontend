@@ -5,11 +5,12 @@ import EllipsisDropdown from 'components/shared-components/EllipsisDropdown';
 import Flex from 'components/shared-components/Flex'
 import { useNavigate } from "react-router-dom";
 import utils from 'utils'
+import { AUTH_TOKEN } from 'constants/AuthConstant';
 
 const DealerList = () => {
 	const navigate = useNavigate();
 	const [list, setList] = useState()
-	const auth = localStorage.getItem("auth_token")
+	const auth = localStorage.getItem(AUTH_TOKEN)
 	useEffect(() => {
 		const fetchData = async () =>{
 			try {
