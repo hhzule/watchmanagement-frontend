@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import {
   Card,
   Table,
-  // Select,
+  Select,
   Input,
   Button,
-  Badge,
+  //  Badge,
   Menu,
-  Checkbox,
 } from "antd";
 import WatchImg from "../../../../../assets/svg/watch.jpeg";
 // import ProductListData from "assets/data/product-list.data.json"
@@ -25,22 +24,25 @@ import Flex from "components/shared-components/Flex";
 import NumberFormat from "react-number-format";
 import { useNavigate } from "react-router-dom";
 import utils from "utils";
+import { AUTH_TOKEN } from "constants/AuthConstant";
+
+const { Option } = Select;
 
 const ProductList = () => {
   const navigate = useNavigate();
   const [list, setList] = useState();
   const [searchList, setSearchList] = useState();
-  const [selected, setSelected] = useState([]);
   // const [selectedRows, setSelectedRows] = useState([])
   // const [selectedRowKeys, setSelectedRowKeys] = useState([])
+  const categories = ["Approved", "Stolen", "Pending"];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetch(`${process.env.REACT_APP_BASE_PATH}/watches`)
+        const creatorId = localStorage.getItem(AUTH_TOKEN);
+        await fetch(`${process.env.REACT_APP_BASE_PATH}/watches/${creatorId}`)
           .then((response) => response.json())
           .then((data) => {
-            // console.log("result ==>" ,data)
             setList(data);
             setSearchList(data);
           });
@@ -54,37 +56,39 @@ const ProductList = () => {
 
   const dropdownMenu = (row) => (
     <Menu>
-      <Menu.Item onClick={() => {}}>
+      {/* <Menu.Item onClick={() => viewDetails(row)}>
+				<Flex alignItems="center">
+					<EyeOutlined />
+					<span className="ml-2">View Details</span>
+				</Flex>
+			</Menu.Item> */}
+      <Menu.Item onClick={() => deleteRow(row)}>
         <Flex alignItems="center">
-          <span className="ml-2">View Details</span>
+          <DeleteOutlined />
+          {/* <span className="ml-2">{selectedRows.length > 0 ? `Delete (${selectedRows.length})` : 'Delete'}</span> */}
+          <span className="ml-2">{"Delete"}</span>
         </Flex>
       </Menu.Item>
-      <Menu.Item onClick={() => {}}>
+      <Menu.Item onClick={() => editRow(row)}>
         <Flex alignItems="center">
-          <span className="ml-2">here</span>
+          <EditOutlined />
+
+          <span className="ml-2">{"Edit"}</span>
+        </Flex>
+      </Menu.Item>
+      <Menu.Item onClick={() => trxRow(row)}>
+        <Flex alignItems="center">
+          <ApartmentOutlined />
+
+          <span className="ml-2">{"Transtactions"}</span>
         </Flex>
       </Menu.Item>
     </Menu>
   );
 
-  const addToList = (elm) => {
-    console.log("elm", elm);
-    let res = selected.find((item) => item._id === elm._id);
-    console.log("res", res);
-    if (!res) {
-      console.log("inside");
-      setSelected((prev) => [...prev, { id: elm._id, creator: elm.creator }]);
-    }
-  };
-
   const addProduct = () => {
     navigate(`/app/apps/watches/add-product`);
   };
-
-  const approveWatch = () => {
-    console.log("first", selected);
-  };
-
   const editRow = (row) => {
     console.log("row", row);
     navigate(`/app/apps/watches/edit-product/${row._id}`);
@@ -154,7 +158,7 @@ const ProductList = () => {
           </div>
         );
       },
-      // sorter: (a, b) => utils.antdTableSorter(a, b, "name"),
+      sorter: (a, b) => utils.antdTableSorter(a, b, "name"),
     },
     {
       title: "Model",
@@ -164,18 +168,7 @@ const ProductList = () => {
     {
       title: "Status",
       dataIndex: "status",
-      render: (status, elm, i, e) => {
-        return (
-          <>
-            <div className="text-center">
-              <p>{status}</p>
-              {status == "Pending" ? (
-                <Checkbox onClick={() => addToList(elm, i)} />
-              ) : null}
-            </div>
-          </>
-        );
-      },
+      // sorter: (a, b) => utils.antdTableSorter(a, b, 'category')
     },
     {
       title: "Price",
@@ -232,15 +225,15 @@ const ProductList = () => {
       title: "Feature",
       dataIndex: "feature",
     },
-    // {
-    //   title: "",
-    //   dataIndex: "actions",
-    //   render: (_, elm) => (
-    //     <div className="text-right">
-    //       <EllipsisDropdown menu={dropdownMenu(elm)} />
-    //     </div>
-    //   ),
-    // },
+    {
+      title: "",
+      dataIndex: "actions",
+      render: (_, elm) => (
+        <div className="text-right">
+          <EllipsisDropdown menu={dropdownMenu(elm)} />
+        </div>
+      ),
+    },
   ];
 
   // const rowSelection = {
@@ -264,18 +257,19 @@ const ProductList = () => {
     // setSelectedRowKeys([])
   };
 
-  // const handleShowCategory = value => {
-  // 	if(value !== 'All') {
-  // 		const key = 'category'
-  // 		const data = utils.filterArray(ProductListData, key, value)
-  // 		setList(data)
-  // 	} else {
-  // 		setList(ProductListData)
-  // 	}
-  // }
+  const handleShowCategory = (value) => {
+    if (value !== "All") {
+      const key = "status";
+      const data = utils.filterArray(list, key, value);
+      setList(data);
+    } else {
+      setList(searchList);
+    }
+  };
 
   return (
     <Card>
+      {/* <h1>hello</h1> */}
       <Flex
         alignItems="center"
         justifyContent="space-between"
@@ -289,25 +283,24 @@ const ProductList = () => {
               onChange={(e) => onSearch(e)}
             />
           </div>
-          {/* <div className="mb-3">
-						<Select 
-							defaultValue="All" 
-							className="w-100" 
-							style={{ minWidth: 180 }} 
-							onChange={handleShowCategory} 
-							placeholder="Category"
-						>
-							<Option value="All">All</Option>
-							{
-								categories.map(elm => (
-									<Option key={elm} value={elm}>{elm}</Option>
-								))
-							}
-						</Select>
-					</div> */}
+          <div className="mb-3">
+            <Select
+              defaultValue="All"
+              className="w-100"
+              style={{ minWidth: 180 }}
+              onChange={handleShowCategory}
+              placeholder="Category"
+            >
+              <Option value="All">All</Option>
+              {categories.map((elm) => (
+                <Option key={elm} value={elm}>
+                  {elm}
+                </Option>
+              ))}
+            </Select>
+          </div>
         </Flex>
-        {/* only admin  */}
-        {/* <div>
+        <div>
           <Button
             onClick={addProduct}
             type="primary"
@@ -315,16 +308,6 @@ const ProductList = () => {
             block
           >
             Add watch
-          </Button>
-        </div> */}
-        <div>
-          <Button
-            onClick={approveWatch}
-            type="primary"
-            icon={<PlusCircleOutlined />}
-            block
-          >
-            Approve
           </Button>
         </div>
       </Flex>
