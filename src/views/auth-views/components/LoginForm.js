@@ -13,20 +13,20 @@ import {
   // signInWithGoogle,
   // signInWithFacebook
 } from "store/slices/authSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 
 export const LoginForm = (props) => {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  // const lastSegmentId = location.pathname.split("/").pop();
+  const res = location.pathname.includes("admin");
   const {
     otherSignIn,
     showForgetPassword,
     hideAuthMessage,
     onForgetPasswordClick,
     showLoading,
-    // signInWithGoogle,
-    // signInWithFacebook,
     extra,
     signIn,
     token,
@@ -37,27 +37,22 @@ export const LoginForm = (props) => {
     allowRedirect = true,
   } = props;
 
-  const initialCredential = {
-    email: "admin@gmail.com",
-    password: "adminadmin",
-    // email: "test@gmail.com",
-    // password: "testdealer",
-  };
+  const initialCredential = res
+    ? {
+        email: "admin@admin.com",
+        password: "adminadmin",
+      }
+    : {
+        email: "",
+        password: "",
+      };
 
   const onLogin = (values) => {
+    values.path = location.pathname;
+    console.log("login ran", values);
     showLoading();
     signIn(values);
   };
-
-  // const onGoogleLogin = () => {
-  // 	showLoading()
-  // 	signInWithGoogle()
-  // }
-
-  // const onFacebookLogin = () => {
-  // 	showLoading()
-  // 	signInWithFacebook()
-  // }
 
   useEffect(() => {
     if (token !== null && allowRedirect) {
@@ -78,23 +73,6 @@ export const LoginForm = (props) => {
           or connect with
         </span>
       </Divider>
-      {/* <div className="d-flex justify-content-center">
-				<Button 
-					onClick={() => onGoogleLogin()} 
-					className="mr-2" 
-					disabled={loading} 
-					icon={<CustomIcon svg={GoogleSVG}/>}
-				>
-					Google
-				</Button>
-				<Button 
-					onClick={() => onFacebookLogin()} 
-					icon={<CustomIcon svg={FacebookSVG}/>}
-					disabled={loading} 
-				>
-					Facebook
-				</Button>
-			</div> */}
     </div>
   );
 

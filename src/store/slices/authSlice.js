@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { AUTH_TOKEN } from "constants/AuthConstant";
+import { AUTH_TOKEN, AUTH_ROLE } from "constants/AuthConstant";
 import FirebaseService from "services/FirebaseService";
 import { Amplify, Auth } from "aws-amplify";
 import { AwsConfigAuth } from "../../configs/Auth";
@@ -18,64 +18,83 @@ export const initialState = {
 export const signIn = createAsyncThunk(
   "auth/signIn",
   async (fndata, { rejectWithValue }) => {
-    // admin
-    const { email, password, name } = fndata;
-    try {
-      let adminData = [];
-      //   await fetch(`${process.env.REACT_APP_BASE_PATH}/admin`)
-      await fetch(`${process.env.REACT_APP_BASE_PATH}/admin`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("data", data);
-          return adminData.push(data[0]);
+    let adminRole = window.location.pathname.includes("admin");
+    let dealerRole = window.location.pathname.includes("dealer");
+    console.log("path", adminRole);
+    if (adminRole === true) {
+      try {
+        console.log("ran admin");
+        let adminData = [];
+        //   await fetch(`${process.env.REACT_APP_BASE_PATH}/admin`)
+        await fetch(`${process.env.REACT_APP_BASE_PATH}/admin`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("data", data);
+            return adminData.push(data[0]);
+          });
+        const filteredId = adminData.filter(function (item) {
+          if (
+            item["email"] !== fndata["email"] ||
+            item["password"] !== fndata["password"]
+          ) {
+            return false;
+          } else {
+            return true;
+          }
         });
-      localStorage.setItem(AUTH_TOKEN, adminData[0]._id);
-      localStorage.setItem("WALLAT_ADDRRESS", adminData[0].walletAddress);
-      return adminData[0]._id;
-      // const filteredId = adminData.filter(function (item) {
-      //   if (
-      //     item["email"] !== fndata["email"] ||
-      //     item["password"] !== fndata["password"]
-      //   ) {
-      //     return false;
-      //   } else {
-      //     return true;
-      //   }
-      // });
-      // if (filteredId.length > 0) {
-      //   const token = filteredId[0]._id;
-      //   localStorage.setItem(AUTH_TOKEN, token);
-      //   return token;
-      // } else {
-      //   return rejectWithValue("Unauthenticated User");
-      // }
-
-      // dealer
-
-      // try {
-      //   console.log("fndata 1");
-      //   const response = await fetch(
-      //     `${process.env.REACT_APP_BASE_PATH}/signin/${fndata["email"]}`
-      //   );
-      //   let data = await response.json();
-      //   console.log("data", data);
-      //   if (!data["password"]) {
-      //     return rejectWithValue(data.message);
-      //   } else if (data && data["password"] !== fndata["password"]) {
-      //     return rejectWithValue("wrong password");
-      //   } else {
-      //     const token = data._id;
-      //     localStorage.setItem(AUTH_TOKEN, token);
-      //     return { token, data };
-      //   }
-      //   // const auth = useAuth();
-      //   // const result = await auth.signIn(name, password);
-      //   // if (result.success) {
-      //   //   // navigate({ pathname: "/success" });
-      //   //   console.log("cognito success");
-      //   // } else {
-      //   //   console.log("cognito failure");
-      //   // }
+        if (filteredId.length > 0) {
+          const token = filteredId[0]._id;
+          localStorage.setItem(AUTH_TOKEN, token);
+          localStorage.setItem(AUTH_ROLE, "admin");
+          localStorage.setItem("WALLAT_ADDRRESS", filteredId[0].walletAddress);
+          return token;
+        } else {
+          return rejectWithValue("Unauthenticated User");
+        }
+      } catch (err) {
+        return rejectWithValue(err.message || "Error");
+      }
+    } else if (dealerRole === true) {
+      try {
+        console.log("dealer ran");
+        const response = await fetch(
+          `${process.env.REACT_APP_BASE_PATH}/signin/${fndata["email"]}`
+        );
+        let data = await response.json();
+        console.log("data", data);
+        if (!data["password"]) {
+          return rejectWithValue(data.message);
+        } else if (data && data["password"] !== fndata["password"]) {
+          return rejectWithValue("wrong password");
+        } else {
+          const token = data._id;
+          localStorage.setItem(AUTH_TOKEN, token);
+          localStorage.setItem(AUTH_ROLE, "dealer");
+          localStorage.setItem("WALLAT_ADDRRESS", data.walletAddress);
+          return { token, data };
+        }
+      } catch (err) {
+        return rejectWithValue(err.message || "Error");
+      }
+    }
+    try {
+      console.log("customer ran");
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_PATH}/customer/${fndata["email"]}`
+      );
+      let data = await response.json();
+      console.log("data", data);
+      if (!data["password"]) {
+        return rejectWithValue(data.message);
+      } else if (data && data["password"] !== fndata["password"]) {
+        return rejectWithValue("wrong password");
+      } else {
+        const token = data._id;
+        localStorage.setItem(AUTH_TOKEN, token);
+        localStorage.setItem(AUTH_ROLE, "customer");
+        localStorage.setItem("WALLAT_ADDRRESS", data.walletAddress);
+        return { token, data };
+      }
     } catch (err) {
       return rejectWithValue(err.message || "Error");
     }
@@ -87,21 +106,6 @@ export const signUp = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     const { email, password, name, phone } = data;
     console.log("from sihn up", data);
-    // try {
-    //   const response = await FirebaseService.signUpEmailRequest(
-    //     email,
-    //     password
-    //   );
-    //   if (response.user) {
-    //     const token = response.user.refreshToken;
-    //     localStorage.setItem(AUTH_TOKEN, response.user.refreshToken);
-    //     return token;
-    //   } else {userData
-    //     return rejectWithValue(response.message?.replace("Firebase: ", ""));
-    //   }
-    // } catch (err) {
-    //   return rejectWithValue(err.message || "Error");
-    // }
     try {
       const requestOptions = {
         method: "POST",
@@ -113,36 +117,21 @@ export const signUp = createAsyncThunk(
         }),
       };
       const response = await fetch(
-        `${process.env.REACT_APP_BASE_PATH}/dealer`,
+        `${process.env.REACT_APP_BASE_PATH}/customersignup`,
         requestOptions
       );
 
       let data = await response.json();
-      console.log("data", data);
+      // console.log("data", data);
       if (!data) {
         return rejectWithValue(data.message);
       } else {
         const token = data._id;
         localStorage.setItem(AUTH_TOKEN, token);
+        localStorage.setItem(AUTH_ROLE, "customer");
+        localStorage.setItem("WALLAT_ADDRRESS", data.walletAddress);
         return { data, token };
       }
-      // try {
-      //   const result = await Auth.signUp({
-      //     username: email,
-      //     password,
-      //     attributes: {
-      //       email,
-      //       name,
-      //       phone_number: phone,
-      //     },
-      //   });
-      //   return { success: true, message: "" };
-      // } catch (error) {
-      //   return {
-      //     success: false,
-      //     message: "SIGNUP FAIL",
-      //   };
-      // }
     } catch (err) {
       return rejectWithValue(err.message || "Error");
     }
@@ -152,6 +141,8 @@ export const signUp = createAsyncThunk(
 export const signOut = createAsyncThunk("auth/signOut", async () => {
   const response = await FirebaseService.signOutRequest();
   localStorage.removeItem(AUTH_TOKEN);
+  localStorage.removeItem(AUTH_ROLE);
+  localStorage.removeItem("WALLAT_ADDRRESS");
   return response.data;
 });
 
@@ -250,32 +241,6 @@ export const authSlice = createSlice({
         state.showMessage = true;
         state.loading = false;
       });
-    // .addCase(signInWithGoogle.pending, (state) => {
-    // 	state.loading = true
-    // })
-    // .addCase(signInWithGoogle.fulfilled, (state, action) => {
-    // 	state.loading = false
-    // 	state.redirect = '/'
-    // 	state.token = action.payload
-    // })
-    // .addCase(signInWithGoogle.rejected, (state, action) => {
-    // 	state.message = action.payload
-    // 	state.showMessage = true
-    // 	state.loading = false
-    // })
-    // .addCase(signInWithFacebook.pending, (state) => {
-    // 	state.loading = true
-    // })
-    // .addCase(signInWithFacebook.fulfilled, (state, action) => {
-    // 	state.loading = false
-    // 	state.redirect = '/'
-    // 	state.token = action.payload
-    // })
-    // .addCase(signInWithFacebook.rejected, (state, action) => {
-    // 	state.message = action.payload
-    // 	state.showMessage = true
-    // 	state.loading = false
-    // })
   },
 });
 
@@ -289,3 +254,23 @@ export const {
 } = authSlice.actions;
 
 export default authSlice.reducer;
+
+// {
+//   "email": "dealer1@gmail.com",
+//   "name": "1dealerTest",
+//   "businessName": "string",
+//   "businessRegCertificate": "string",
+//   "phoneNumber": "string",
+//   "emergencyNumber": "string",
+//   "businessAddress": "string",
+//   "brandName": "string",
+//   "serialNumber": "string",
+//   "model": "string",
+//   "offers": "string",
+//   "walletAddress": "0x3bE264DCdf57F04dA5c3250df1Fe69b88104ac3D",
+//   "encryptedPrivateKey": "$2b$10$62HjaYfAkD..TYebVNZACO0NIgebdjN/WnBzQGMgN5m0KfjcmUxFK",
+//   "_id": "6471b507a3a1d0585cf697e3",
+//   "createdAt": "2023-05-27T07:45:11.264Z",
+//   "updatedAt": "2023-05-27T07:45:11.264Z",
+//   "__v": 0
+// }

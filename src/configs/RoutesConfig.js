@@ -18,7 +18,14 @@ export const publicRoutes = [
   },
   {
     key: "login-2",
-    path: `${AUTH_PREFIX_PATH}/login-2`,
+    path: `${AUTH_PREFIX_PATH}/admin/login`,
+    component: React.lazy(() =>
+      import("views/auth-views/authentication/login-2")
+    ),
+  },
+  {
+    key: "login-2",
+    path: `${AUTH_PREFIX_PATH}/dealer/login`,
     component: React.lazy(() =>
       import("views/auth-views/authentication/login-2")
     ),

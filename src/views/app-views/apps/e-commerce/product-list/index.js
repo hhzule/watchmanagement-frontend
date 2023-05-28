@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import {
   Card,
   Table,
-  // Select,
+  Select,
   Input,
   Button,
-  Badge,
-  Menu,
   Checkbox,
+  //  Badge,
+  message,
+  Menu,
 } from "antd";
 import WatchImg from "../../../../../assets/svg/watch.jpeg";
 // import ProductListData from "assets/data/product-list.data.json"
@@ -25,92 +26,168 @@ import Flex from "components/shared-components/Flex";
 import NumberFormat from "react-number-format";
 import { useNavigate } from "react-router-dom";
 import utils from "utils";
+import { AUTH_TOKEN, AUTH_ROLE } from "constants/AuthConstant";
 
+const { Option } = Select;
+const creatorId = localStorage.getItem(AUTH_TOKEN);
+const role = localStorage.getItem(AUTH_ROLE);
 const ProductList = () => {
   const navigate = useNavigate();
   const [list, setList] = useState();
   const [searchList, setSearchList] = useState();
   const [selected, setSelected] = useState([]);
-  // const [selectedRows, setSelectedRows] = useState([])
-  // const [selectedRowKeys, setSelectedRowKeys] = useState([])
+  const [loading, setLoading] = useState(false);
+  const categories = ["Approved", "Pending"];
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
+      if (role === "admin") {
         await fetch(`${process.env.REACT_APP_BASE_PATH}/watches`)
           .then((response) => response.json())
           .then((data) => {
-            // console.log("result ==>" ,data)
             setList(data);
             setSearchList(data);
           });
-      } catch (error) {
-        console.log(error);
+      } else {
+        await fetch(`${process.env.REACT_APP_BASE_PATH}/watches/${creatorId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setList(data);
+            setSearchList(data);
+          });
       }
     };
 
     fetchData();
-  }, []);
+  }, [selected]);
 
-  const dropdownMenu = (row) => (
-    <Menu>
-      <Menu.Item onClick={() => {}}>
-        <Flex alignItems="center">
-          <span className="ml-2">View Details</span>
-        </Flex>
-      </Menu.Item>
-      <Menu.Item onClick={() => {}}>
-        <Flex alignItems="center">
-          <span className="ml-2">here</span>
-        </Flex>
-      </Menu.Item>
-    </Menu>
-  );
+  const dropdownMenu1 = (row) => {
+    return (
+      <Menu>
+        <Menu.Item onClick={() => deleteRow(row)}>
+          <Flex alignItems="center">
+            <DeleteOutlined />
+            <span className="ml-2">{"Delete"}</span>
+          </Flex>
+        </Menu.Item>
+        <Menu.Item onClick={() => editRow(row)}>
+          <Flex alignItems="center">
+            <EditOutlined />
 
-  const addToList = (elm) => {
-    console.log("elm", elm);
-    let res = selected.find((item) => item._id === elm._id);
-    console.log("res", res);
-    if (!res) {
-      console.log("inside");
-      setSelected((prev) => [...prev, { id: elm._id, creator: elm.creator }]);
+            <span className="ml-2">{"Edit"}</span>
+          </Flex>
+        </Menu.Item>
+
+        <Menu.Item onClick={() => trxRow(row)}>
+          <Flex alignItems="center">
+            <ApartmentOutlined />
+
+            <span className="ml-2">{"Transtactions"}</span>
+          </Flex>
+        </Menu.Item>
+      </Menu>
+    );
+  };
+
+  const dropdownMenu = (row) => {
+    console.log("row", row.status);
+    return (
+      <Menu>
+        <Menu.Item onClick={() => deleteRow(row)}>
+          <Flex alignItems="center">
+            <DeleteOutlined />
+            <span className="ml-2">{"Delete"}</span>
+          </Flex>
+        </Menu.Item>
+        <Menu.Item onClick={() => editRow(row)}>
+          <Flex alignItems="center">
+            <EditOutlined />
+
+            <span className="ml-2">{"Edit"}</span>
+          </Flex>
+        </Menu.Item>
+      </Menu>
+    );
+  };
+
+  const approveWatch = async () => {
+    setLoading(true);
+    console.log("selected", selected);
+    if (selected.length === 0) {
+      message.success(`Select Watch to approve`, [5]);
+      setLoading(false);
+      return;
+    }
+    console.log("approve ran");
+    try {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          auth: localStorage.getItem(AUTH_TOKEN),
+          watches: selected,
+        }),
+      };
+      await fetch(
+        `${process.env.REACT_APP_BASE_PATH}/adminwatch`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("result ==>", data);
+
+          setList((prev) => [data, ...prev]);
+          setSelected([]);
+        });
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
     }
   };
 
   const addProduct = () => {
     navigate(`/app/apps/watches/add-product`);
   };
-
-  const approveWatch = () => {
-    console.log("first", selected);
-  };
-
   const editRow = (row) => {
     console.log("row", row);
     navigate(`/app/apps/watches/edit-product/${row._id}`);
   };
 
   const trxRow = (row) => {
-    console.log("row", row);
-    navigate(`/app/apps/watches/transactions/${row._id}`);
+    // console.log("row", row);
+    navigate(`/app/apps/watches/transactions/${row.tokenId}`);
   };
 
   // const viewDetails = row => {
   // 	navigate(`/app/apps/ecommerce/edit-product/${row.id}`)
   // }
 
+  function removeObjectWithId(arr, id) {
+    const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
+
+    if (objWithIdIndex > -1) {
+      arr.splice(objWithIdIndex, 1);
+    }
+
+    return arr;
+  }
+
+  const addToList = (elm) => {
+    let res = selected.find((item) => item._id === elm._id);
+    console.log("res", res);
+    if (!res) {
+      console.log("inside");
+      setSelected((prev) => [...prev, elm]);
+    } else {
+      console.log("outside");
+      let updatedArr = removeObjectWithId(selected, res.id);
+      console.log("updatedArr", updatedArr);
+      setSelected(updatedArr);
+    }
+  };
+
   const deleteRow = async (row) => {
-    console.log("row", row);
-    // if(selectedRows.length > 1) {
-    // 	selectedRows.forEach(elm => {
-    // 		data = utils.deleteArrayRow(data, objKey, elm.id)
-    // 		setList(data)
-    // 		setSelectedRows([])
-    // 	})
-    // } else {
-    // 	data = utils.deleteArrayRow(data, objKey, row.id)
-    // 	setList(data)
-    // }
     try {
       const _id = row._id;
       const requestOptions = {
@@ -154,7 +231,7 @@ const ProductList = () => {
           </div>
         );
       },
-      // sorter: (a, b) => utils.antdTableSorter(a, b, "name"),
+      sorter: (a, b) => utils.antdTableSorter(a, b, "name"),
     },
     {
       title: "Model",
@@ -169,7 +246,7 @@ const ProductList = () => {
           <>
             <div className="text-center">
               <p>{status}</p>
-              {status == "Pending" ? (
+              {role && role == "admin" && status == "Pending" ? (
                 <Checkbox onClick={() => addToList(elm, i)} />
               ) : null}
             </div>
@@ -232,15 +309,21 @@ const ProductList = () => {
       title: "Feature",
       dataIndex: "feature",
     },
-    // {
-    //   title: "",
-    //   dataIndex: "actions",
-    //   render: (_, elm) => (
-    //     <div className="text-right">
-    //       <EllipsisDropdown menu={dropdownMenu(elm)} />
-    //     </div>
-    //   ),
-    // },
+    {
+      title: "",
+      dataIndex: "actions",
+      render: (_, elm) => (
+        <div className="text-right">
+          {role && role == "admin" ? (
+            elm.status === "Approved" ? (
+              <EllipsisDropdown menu={dropdownMenu1(elm)} />
+            ) : (
+              <EllipsisDropdown menu={dropdownMenu(elm)} />
+            )
+          ) : null}
+        </div>
+      ),
+    },
   ];
 
   // const rowSelection = {
@@ -252,7 +335,7 @@ const ProductList = () => {
 
   const onSearch = (e) => {
     const value = e.currentTarget.value;
-    const searchArray = e.currentTarget.value ? list : list;
+    const searchArray = e.currentTarget.value && list;
     const data = utils.wildCardSearch(searchArray, value);
     if (value.length === 0) {
       setList(searchList);
@@ -261,21 +344,26 @@ const ProductList = () => {
     } else if (value.length > 0) {
       setList(searchList);
     }
-    // setSelectedRowKeys([])
   };
 
-  // const handleShowCategory = value => {
-  // 	if(value !== 'All') {
-  // 		const key = 'category'
-  // 		const data = utils.filterArray(ProductListData, key, value)
-  // 		setList(data)
-  // 	} else {
-  // 		setList(ProductListData)
-  // 	}
-  // }
+  const handleShowCategory = (value) => {
+    if (value !== "All") {
+      console.log("if");
+      const key = "status";
+      const data = utils.filterArray(searchList, key, value);
+      console.log("data", data);
+      setList(data);
+    } else if (list.length < 1) {
+      setList(searchList);
+    } else {
+      console.log("else");
+      setList(searchList);
+    }
+  };
 
   return (
     <Card>
+      {/* <h1>hello</h1> */}
       <Flex
         alignItems="center"
         justifyContent="space-between"
@@ -289,57 +377,56 @@ const ProductList = () => {
               onChange={(e) => onSearch(e)}
             />
           </div>
-          {/* <div className="mb-3">
-						<Select 
-							defaultValue="All" 
-							className="w-100" 
-							style={{ minWidth: 180 }} 
-							onChange={handleShowCategory} 
-							placeholder="Category"
-						>
-							<Option value="All">All</Option>
-							{
-								categories.map(elm => (
-									<Option key={elm} value={elm}>{elm}</Option>
-								))
-							}
-						</Select>
-					</div> */}
+          <div className="mb-3">
+            <Select
+              defaultValue="All"
+              className="w-100"
+              style={{ minWidth: 180 }}
+              onChange={handleShowCategory}
+              placeholder="Category"
+            >
+              <Option value="All">All</Option>
+              {categories.map((elm) => (
+                <Option key={elm} value={elm}>
+                  {elm}
+                </Option>
+              ))}
+            </Select>
+          </div>
         </Flex>
-        {/* only admin  */}
-        {/* <div>
-          <Button
-            onClick={addProduct}
-            type="primary"
-            icon={<PlusCircleOutlined />}
-            block
-          >
-            Add watch
-          </Button>
-        </div> */}
-        <div>
-          <Button
-            onClick={approveWatch}
-            type="primary"
-            icon={<PlusCircleOutlined />}
-            block
-          >
-            Approve
-          </Button>
-        </div>
+        <Flex>
+          {role == "admin" && (
+            <>
+              {/* <div> */}
+
+              <Button
+                onClick={approveWatch}
+                type="primary"
+                icon={<PlusCircleOutlined />}
+                disabled={loading}
+              >
+                Approve
+              </Button>
+
+              <Button
+                onClick={addProduct}
+                type="primary"
+                icon={<PlusCircleOutlined />}
+                block
+              >
+                Add watch
+              </Button>
+              {/* </div> */}
+            </>
+          )}
+
+          {/* <div> */}
+
+          {/* </div> */}
+        </Flex>
       </Flex>
       <div className="table-responsive">
-        <Table
-          columns={tableColumns}
-          dataSource={list}
-          rowKey="id"
-          // rowSelection={{
-          // 	selectedRowKeys: selectedRowKeys,
-          // 	type: 'checkbox',
-          // 	preserveSelectedRowKeys: false,
-          // 	...rowSelection,
-          // }}
-        />
+        <Table columns={tableColumns} dataSource={list} rowKey="id" />
       </div>
     </Card>
   );

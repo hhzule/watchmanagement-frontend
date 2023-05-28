@@ -93,7 +93,7 @@ const ProductForm = (props) => {
                         owner: values.owner,
                         price: values.price,
                         imgUrl: url,
-                        status: values.status,
+                        status: "Pending",
                         creator: creator,
                         serialNumber: values.serialNumber,
                         caseMaterial: values.caseMaterial,
@@ -106,6 +106,26 @@ const ProductForm = (props) => {
                         feature: values.feature,
                         holderAddress: localStorage.getItem("WALLAT_ADDRRESS"),
                       }),
+
+                      // body: JSON.stringify({
+                      //   name: "values.name",
+                      //   model: "values.model",
+                      //   owner: "values.owner",
+                      //   price: 111,
+                      //   imgUrl: url,
+                      //   status: "Pending",
+                      //   creator: creator,
+                      //   serialNumber: "values.serialNumber",
+                      //   caseMaterial: "values.caseMaterial",
+                      //   braceletMaterial: " values.braceletMaterial",
+                      //   movementModel: "values.movementModel",
+                      //   movementSerial: "values.movementSerial",
+                      //   movementMechanism: "values.movementMechanism",
+                      //   dialColor: "values.dialColor",
+                      //   hands: "values.hands",
+                      //   feature: "values.feature",
+                      //   holderAddress: localStorage.getItem("WALLAT_ADDRRESS"),
+                      // }),
                     };
                     console.log("optons", requestOptions);
 

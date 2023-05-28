@@ -32,9 +32,7 @@ const ProductList = () => {
   const navigate = useNavigate();
   const [list, setList] = useState();
   const [searchList, setSearchList] = useState();
-  // const [selectedRows, setSelectedRows] = useState([])
-  // const [selectedRowKeys, setSelectedRowKeys] = useState([])
-  const categories = ["Approved", "Stolen", "Pending"];
+  const categories = ["Approved", "Pending"];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,16 +54,9 @@ const ProductList = () => {
 
   const dropdownMenu = (row) => (
     <Menu>
-      {/* <Menu.Item onClick={() => viewDetails(row)}>
-				<Flex alignItems="center">
-					<EyeOutlined />
-					<span className="ml-2">View Details</span>
-				</Flex>
-			</Menu.Item> */}
       <Menu.Item onClick={() => deleteRow(row)}>
         <Flex alignItems="center">
           <DeleteOutlined />
-          {/* <span className="ml-2">{selectedRows.length > 0 ? `Delete (${selectedRows.length})` : 'Delete'}</span> */}
           <span className="ml-2">{"Delete"}</span>
         </Flex>
       </Menu.Item>
@@ -86,6 +77,24 @@ const ProductList = () => {
     </Menu>
   );
 
+  const dropdownMenu1 = (row) => (
+    <Menu>
+      <Menu.Item onClick={() => deleteRow(row)}>
+        <Flex alignItems="center">
+          <DeleteOutlined />
+          <span className="ml-2">{"Delete"}</span>
+        </Flex>
+      </Menu.Item>
+      <Menu.Item onClick={() => editRow(row)}>
+        <Flex alignItems="center">
+          <EditOutlined />
+
+          <span className="ml-2">{"Edit"}</span>
+        </Flex>
+      </Menu.Item>
+    </Menu>
+  );
+
   const addProduct = () => {
     navigate(`/app/apps/watches/add-product`);
   };
@@ -96,7 +105,7 @@ const ProductList = () => {
 
   const trxRow = (row) => {
     console.log("row", row);
-    navigate(`/app/apps/watches/transactions/${row._id}`);
+    navigate(`/app/apps/watches/transactions/${row.tokenId}`);
   };
 
   // const viewDetails = row => {
@@ -104,17 +113,6 @@ const ProductList = () => {
   // }
 
   const deleteRow = async (row) => {
-    console.log("row", row);
-    // if(selectedRows.length > 1) {
-    // 	selectedRows.forEach(elm => {
-    // 		data = utils.deleteArrayRow(data, objKey, elm.id)
-    // 		setList(data)
-    // 		setSelectedRows([])
-    // 	})
-    // } else {
-    // 	data = utils.deleteArrayRow(data, objKey, row.id)
-    // 	setList(data)
-    // }
     try {
       const _id = row._id;
       const requestOptions = {
@@ -228,11 +226,18 @@ const ProductList = () => {
     {
       title: "",
       dataIndex: "actions",
-      render: (_, elm) => (
-        <div className="text-right">
-          <EllipsisDropdown menu={dropdownMenu(elm)} />
-        </div>
-      ),
+      render: (_, elm) => {
+        console.log("elm", elm);
+        return (
+          <div className="text-right">
+            {elm.status === "Approved" ? (
+              <EllipsisDropdown menu={dropdownMenu(elm)} />
+            ) : (
+              <EllipsisDropdown menu={dropdownMenu1(elm)} />
+            )}
+          </div>
+        );
+      },
     },
   ];
 
@@ -254,15 +259,19 @@ const ProductList = () => {
     } else if (value.length > 0) {
       setList(searchList);
     }
-    // setSelectedRowKeys([])
   };
 
   const handleShowCategory = (value) => {
     if (value !== "All") {
+      console.log("if");
       const key = "status";
-      const data = utils.filterArray(list, key, value);
+      const data = utils.filterArray(searchList, key, value);
+      console.log("data", data);
       setList(data);
+    } else if (list.length < 1) {
+      setList(searchList);
     } else {
+      console.log("else");
       setList(searchList);
     }
   };
@@ -312,17 +321,7 @@ const ProductList = () => {
         </div>
       </Flex>
       <div className="table-responsive">
-        <Table
-          columns={tableColumns}
-          dataSource={list}
-          rowKey="id"
-          // rowSelection={{
-          // 	selectedRowKeys: selectedRowKeys,
-          // 	type: 'checkbox',
-          // 	preserveSelectedRowKeys: false,
-          // 	...rowSelection,
-          // }}
-        />
+        <Table columns={tableColumns} dataSource={list} rowKey="id" />
       </div>
     </Card>
   );

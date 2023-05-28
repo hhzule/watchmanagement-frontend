@@ -106,8 +106,9 @@ export const NavProfile = ({ mode }) => {
             <Avatar src="/img/avatars/thumb-1.jpg" />
 
             <UserInfo className="profile-text">
+              {/* <Name>Charlie Howard</Name>
+              <Title>Frontend Developer</Title> */}
               <Name>Charlie Howard</Name>
-              <Title>Frontend Developer</Title>
             </UserInfo>
           </Profile>
         </NavItem>

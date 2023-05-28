@@ -186,12 +186,12 @@ const GeneralField = (props) => {
             <Input placeholder="Product Name" />
           </Form.Item>
 
-          <Form.Item name="status" label="Status" rules={rules.status}>
+          {/* <Form.Item name="status" label="Status" rules={rules.status}>
             <Select placeholder="Please select a status">
               <Option value="Pending">Pending</Option>
               <Option value="Stolen">Stolen</Option>
             </Select>
-          </Form.Item>
+          </Form.Item> */}
 
           {/* addedd fields */}
           <Form.Item

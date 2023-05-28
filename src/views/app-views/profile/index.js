@@ -54,7 +54,7 @@ const Profile = () => {
     <main className="vh-100 py-5" style={backgroundStyle}>
       <div className="vh-100 vw-100 flex-column justify-content-center">
         <Row justify="center">
-          <Col xs={20} sm={20} md={20} lg={7}>
+          <Col xs={20} sm={20} md={20} lg={10}>
             <Card>
               <div className="my-4 ">
                 <div className="text-center">
@@ -65,7 +65,7 @@ const Profile = () => {
                   />
                 </div>
                 <Row gutter={16} justify="center">
-                  <Col xs={24} sm={24} md={20} lg={20}>
+                  <Col>
                     <Card title="Profile Info">
                       {profileData &&
                         profileData.map((itm, i) => {
@@ -87,7 +87,7 @@ const Profile = () => {
                         })}
                     </Card>
                   </Col>
-                  <Col xs={24} sm={24} md={7}></Col>
+                  {/* <Col xs={24} sm={24} md={7}></Col> */}
                 </Row>
               </div>
             </Card>

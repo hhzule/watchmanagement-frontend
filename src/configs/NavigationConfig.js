@@ -219,105 +219,38 @@ const appsNavTree = [
     breadcrumb: false,
     isGroupTitle: true,
     submenu: [
-      // {
-      //   key: 'apps-mail',
-      //   path: `${APP_PREFIX_PATH}/apps/mail/inbox`,
-      //   title: 'sidenav.apps.mail',
-      //   icon: MailOutlined,
-      //   breadcrumb: false,
-      //   submenu: []
-      // },
-      // {
-      //   key: 'apps-chat',
-      //   path: `${APP_PREFIX_PATH}/apps/chat`,
-      //   title: 'sidenav.apps.chat',
-      //   icon: MessageOutlined,
-      //   breadcrumb: false,
-      //   submenu: []
-      // },
-      // {
-      //   key: 'apps-calendar',
-      //   path: `${APP_PREFIX_PATH}/apps/calendar`,
-      //   title: 'sidenav.apps.calendar',
-      //   icon: CalendarOutlined,
-      //   breadcrumb: true,
-      //   submenu: []
-      // },
-      // {
-      //   key: 'apps-project',
-      //   path: `${APP_PREFIX_PATH}/apps/project`,
-      //   title: 'sidenav.apps.project',
-      //   icon: BulbOutlined,
-      //   breadcrumb: true,
-      //   submenu: [
-      //     {
-      //       key: 'apps-project-list',
-      //       path: `${APP_PREFIX_PATH}/apps/project/list`,
-      //       title: 'sidenav.apps.project.list',
-      //       icon: '',
-      //       breadcrumb: false,
-      //       submenu: []
-      //     },
-      //     {
-      //       key: 'apps-project-scrumboard',
-      //       path: `${APP_PREFIX_PATH}/apps/project/scrumboard`,
-      //       title: 'sidenav.apps.project.scrumboard',
-      //       icon: '',
-      //       breadcrumb: false,
-      //       submenu: []
-      //     }
-      //   ]
-      // },
-      // {
-      // key: 'apps-ecommerce',
-      // path: `${APP_PREFIX_PATH}/apps/ecommerce`,
-      // title: 'sidenav.apps.ecommerce',
-      //    key: 'apps-watches',
-      //   path: `${APP_PREFIX_PATH}/apps/watches`,
-      //   title: 'sidenav.apps.watches',
-      //   icon: ShoppingCartOutlined,
-      //   breadcrumb: true,
-      //   submenu: []
-      // },
-
-      // **********************Adim crud menu start*******************************************************
-      // {
-      //   key: 'apps-watches-customerList',
-      //   path: `${APP_PREFIX_PATH}/apps/watches/customer-list`,
-      //   title: 'sidenav.apps.watches.customerList',
-      //   icon: '',
-      //   breadcrumb: true,
-      //   submenu: []
-      // },
-      //    {
-      //   key: 'apps-watches-dealerList',
-      //   path: `${APP_PREFIX_PATH}/apps/watches/dealer-list`,
-      //   title: 'sidenav.apps.watches.dealerList',
-      //   icon: '',
-      //   breadcrumb: true,
-      //   submenu: []
-      // },
-      // {
-      //   key: 'apps-watches-productList',
-      //   path: `${APP_PREFIX_PATH}/apps/watches/product-list`,
-      //   title: 'sidenav.apps.watches.productList',
-      //   icon: '',
-      //   breadcrumb: true,
-      //   submenu: []
-      // },
-      // {
-      //   key: 'apps-watches-editCommission',
-      //   path: `${APP_PREFIX_PATH}/apps/watches/edit-commission`,
-      //   title: 'sidenav.apps.watches.editCommission',
-      //   icon: '',
-      //   breadcrumb: false,
-      //   submenu: []
-      // },
-
       // **********************Adim crud menu end*******************************************************
 
       // **********************Dealer menu start*******************************************************
 
+      // {
+      //   key: "apps-watches-customerList",
+      //   path: `${APP_PREFIX_PATH}/apps/watches/dealer-dashboard`,
+      //   title: "sidenav.apps.watches.dealerDashboard",
+      //   icon: "",
+      //   breadcrumb: true,
+      //   submenu: [],
+      // },
+      {
+        key: "apps-watches-productList",
+        path: `${APP_PREFIX_PATH}/apps/watches/product-list`,
+        title: "sidenav.apps.watches.productList",
+        icon: "",
+        breadcrumb: true,
+        submenu: [],
+      },
+    ],
+  },
+];
+const appsNavTreeDealer = [
+  {
+    key: "apps",
+    path: `${APP_PREFIX_PATH}/apps`,
+    title: "sidenav.apps",
+    icon: AppstoreOutlined,
+    breadcrumb: false,
+    isGroupTitle: true,
+    submenu: [
       {
         key: "apps-watches-customerList",
         path: `${APP_PREFIX_PATH}/apps/watches/dealer-dashboard`,
@@ -334,60 +267,79 @@ const appsNavTree = [
         breadcrumb: true,
         submenu: [],
       },
+    ],
+  },
+];
+const appsNavTreeAdmin = [
+  // **********************Adim crud menu start*******************************************************
 
+  {
+    key: "apps",
+    path: `${APP_PREFIX_PATH}/apps`,
+    title: "sidenav.apps",
+    icon: AppstoreOutlined,
+    breadcrumb: false,
+    isGroupTitle: true,
+    submenu: [
+      {
+        key: "apps-watches-customerList",
+        path: `${APP_PREFIX_PATH}/apps/watches/customer-list`,
+        title: "sidenav.apps.watches.customerList",
+        icon: "",
+        breadcrumb: true,
+        submenu: [],
+      },
+      {
+        key: "apps-watches-dealerList",
+        path: `${APP_PREFIX_PATH}/apps/watches/dealer-list`,
+        title: "sidenav.apps.watches.dealerList",
+        icon: "",
+        breadcrumb: true,
+        submenu: [],
+      },
+      {
+        key: "apps-watches-productList",
+        path: `${APP_PREFIX_PATH}/apps/watches/product-list`,
+        title: "sidenav.apps.watches.productList",
+        icon: "",
+        breadcrumb: true,
+        submenu: [],
+      },
+      {
+        key: "apps-watches-editCommission",
+        path: `${APP_PREFIX_PATH}/apps/watches/edit-commission`,
+        title: "sidenav.apps.watches.editCommission",
+        icon: "",
+        breadcrumb: false,
+        submenu: [],
+      },
       // **********************Dealer crud menu end*******************************************************
 
-      // {
-      //   key: 'apps-ecommerce-editCustomer',
-      //   path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-customer/12`,
-      //   title: 'sidenav.apps.ecommerce.editCustomer',
-      //   icon: '',
-      //   breadcrumb: true,
-      //   submenu: []
-      // },
-      // {
-      //   key: 'apps-watches-addCustomer',
-      //   path: `${APP_PREFIX_PATH}/apps/watches/add-customer`,
-      //   title: 'sidenav.apps.watches.addCustomer',
-      //   icon: '',
-      //   breadcrumb: true,
-      //   submenu: []
-      // },
+      {
+        key: "apps-watches-addCustomer",
+        path: `${APP_PREFIX_PATH}/apps/watches/add-customer`,
+        title: "sidenav.apps.watches.addCustomer",
+        icon: "",
+        breadcrumb: true,
+        submenu: [],
+      },
+      {
+        key: "apps-watches-addDealer",
+        path: `${APP_PREFIX_PATH}/apps/watches/add-dealer`,
+        title: "sidenav.apps.watches.addDealer",
+        icon: "",
+        breadcrumb: true,
+        submenu: [],
+      },
 
       // {
-      //   key: 'apps-ecommerce-editDealer',
-      //   path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-dealer/12`,
-      //   title: 'sidenav.apps.ecommerce.editDealer',
-      //   icon: '',
-      //   breadcrumb: true,
-      //   submenu: []
-      // },
-      // {
-      //   key: 'apps-watches-addDealer',
-      //   path: `${APP_PREFIX_PATH}/apps/watches/add-dealer`,
-      //   title: 'sidenav.apps.watches.addDealer',
-      //   icon: '',
-      //   breadcrumb: true,
-      //   submenu: []
-      // },
-
-      // {
-      //   key: 'apps-watches-addProduct',
+      //   key: "apps-watches-addProduct",
       //   path: `${APP_PREFIX_PATH}/apps/watches/add-product`,
-      //   title: 'sidenav.apps.watches.addProduct',
-      //   icon: '',
+      //   title: "sidenav.apps.watches.addProduct",
+      //   icon: "",
       //   breadcrumb: false,
-      //   submenu: []
+      //   submenu: [],
       // },
-
-      // {
-      //   key: 'apps-ecommerce-orders',
-      //   path: `${APP_PREFIX_PATH}/apps/ecommerce/orders`,
-      //   title: 'sidenav.apps.ecommerce.orders',
-      //   icon: '',
-      //   breadcrumb: false,
-      //   submenu: []
-      // }
     ],
   },
 ];
@@ -1017,12 +969,15 @@ const appsNavTree = [
 //   ]
 // }]
 
-const navigationConfig = [
-  // ...dashBoardNavTree,
-  ...appsNavTree,
-  // ...componentsNavTree,
-  // ...extraNavTree,
-  // ...docsNavTree
-];
+const navigationConfigCustomer = [...appsNavTree];
+const navigationConfigDealer = [...appsNavTreeDealer];
+
+const navigationConfigAdmin = [...appsNavTreeAdmin];
+
+const navigationConfig = {
+  navigationConfigDealer,
+  navigationConfigAdmin,
+  navigationConfigCustomer,
+};
 
 export default navigationConfig;
