@@ -20,7 +20,7 @@ import {
   SPACER,
   FONT_SIZES,
 } from "constants/ThemeConstant";
-
+import { EMILUS_USER } from "constants/AuthConstant";
 const Icon = styled.div(() => ({
   fontSize: FONT_SIZES.LG,
 }));
@@ -98,6 +98,7 @@ const items = [
 ];
 
 export const NavProfile = ({ mode }) => {
+  const user = localStorage.getItem(EMILUS_USER);
   return (
     <>
       <Dropdown placement="bottomRight" menu={{ items }} trigger={["click"]}>
@@ -106,9 +107,13 @@ export const NavProfile = ({ mode }) => {
             <Avatar src="/img/avatars/thumb-1.jpg" />
 
             <UserInfo className="profile-text">
-              {/* <Name>Charlie Howard</Name>
-              <Title>Frontend Developer</Title> */}
-              <Name>Charlie Howard</Name>
+              {user ? (
+                <>
+                  {" "}
+                  <Name>{user}</Name>
+                </>
+              ) : null}
+              {/* <Name>Charlie Howard</Name> */}
             </UserInfo>
           </Profile>
         </NavItem>

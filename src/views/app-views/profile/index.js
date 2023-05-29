@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Row, Col } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AUTH_TOKEN } from "../../../constants/AuthConstant";
+import { AUTH_TOKEN, AUTH_ROLE } from "../../../constants/AuthConstant";
 
 const backgroundStyle = {
   backgroundImage: "url(/img/others/img-17.jpg)",
@@ -15,29 +15,60 @@ const Profile = () => {
   // const userData = useSelector((state) => state);
   // console.log("data from selector: " + JSON.stringify(userData));
   const token = localStorage.getItem(AUTH_TOKEN);
+  const role = localStorage.getItem(AUTH_ROLE);
   const [profileData, setProfileData] = useState([]);
 
   const fetchData = async () => {
-    try {
-      // const requestOptions = {
-      //   method: "PATCH",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({
-      //     id: token,
-      //   }),
-      // };
-      await fetch(`${process.env.REACT_APP_BASE_PATH}/admin`)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data?.message) {
-            localStorage.removeItem(AUTH_TOKEN);
-            // navigate("/");
-          } else {
-            setProfileData([data]);
-          }
-        });
-    } catch (err) {
-      console.log("error", err);
+    if (role === "admin") {
+      try {
+        await fetch(`${process.env.REACT_APP_BASE_PATH}/admin`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("data from", data);
+            if (data?.message) {
+              localStorage.removeItem(AUTH_TOKEN);
+              // navigate("/");
+            } else {
+              setProfileData([data[0]]);
+            }
+          });
+      } catch (err) {
+        console.log("error", err);
+      }
+    } else if (role === "customer") {
+      try {
+        await fetch(
+          `${process.env.REACT_APP_BASE_PATH}/customerprofile/${token}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("data from", data);
+            if (data?.message) {
+              localStorage.removeItem(AUTH_TOKEN);
+              // navigate("/");
+            } else {
+              setProfileData([data]);
+            }
+          });
+      } catch (err) {
+        console.log("error", err);
+      }
+    } else {
+      try {
+        await fetch(`${process.env.REACT_APP_BASE_PATH}/dealersignin/${token}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("data from", data);
+            if (data?.message) {
+              localStorage.removeItem(AUTH_TOKEN);
+              // navigate("/");
+            } else {
+              setProfileData([data]);
+            }
+          });
+      } catch (err) {
+        console.log("error", err);
+      }
     }
   };
 
@@ -73,15 +104,15 @@ const Profile = () => {
                           return (
                             <div key={i}>
                               <h5>User Id</h5>
-                              <p>{itm[0]._id}</p>
+                              <p>{itm._id}</p>
                               <h5>User Email</h5>
-                              <p>{itm[0].email}</p>
+                              <p>{itm.email}</p>
                               <h5>User Name</h5>
-                              <p>{itm[0].name}</p>
+                              <p>{itm.name}</p>
                               <h5>User Wallet Address</h5>
-                              <p>{itm[0].walletAddress}</p>
+                              <p>{itm.walletAddress}</p>
                               <h5>User Encrypted Private Key</h5>
-                              <p>{itm[0].encryptedPrivateKey}</p>
+                              <p>{itm.encryptedPrivateKey}</p>
                             </div>
                           );
                         })}

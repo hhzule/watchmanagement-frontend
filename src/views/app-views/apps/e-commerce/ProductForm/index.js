@@ -64,7 +64,7 @@ const ProductForm = (props) => {
     form
       .validateFields()
       .then((values) => {
-        console.log("values", values);
+        // console.log("values", values);
         setTimeout(async () => {
           setSubmitLoading(true);
           if (mode === ADD) {
@@ -81,7 +81,7 @@ const ProductForm = (props) => {
                 });
                 await getDownloadURL(imgRef)
                   .then(async (url) => {
-                    console.log("url", url);
+                    // console.log("url", url);
                     setFileUrl(url);
                     const creator = localStorage.getItem(AUTH_TOKEN);
                     const requestOptions = {
@@ -127,7 +127,6 @@ const ProductForm = (props) => {
                       //   holderAddress: localStorage.getItem("WALLAT_ADDRRESS"),
                       // }),
                     };
-                    console.log("optons", requestOptions);
 
                     await fetch(
                       `${process.env.REACT_APP_BASE_PATH}/watch`,
@@ -181,10 +180,10 @@ const ProductForm = (props) => {
                   uploadedImg,
                   "data_url"
                 ).then((snapshot) => {
-                  console.log("Uploaded a data_url string!");
+                  // console.log("Uploaded a data_url string!");
                 });
                 await getDownloadURL(imgRef).then(async (url) => {
-                  console.log("url", url);
+                  // console.log("url", url);
                   setFileUrl(url);
                   const requestOptions = {
                     method: "PUT",
@@ -269,7 +268,7 @@ const ProductForm = (props) => {
         }, 1500);
       })
       .catch((info) => {
-        console.log("info", info);
+        // console.log("info", info);
         message.error("Please enter all required field ");
       });
   };

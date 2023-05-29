@@ -140,23 +140,20 @@ const GeneralField = (props) => {
   const [localVal, setLocalVal] = useState({});
 
   const getBase64 = (img, callback) => {
-    console.log("img", img);
     const reader = new FileReader();
     reader.addEventListener("load", () => callback(reader.result));
     reader.readAsDataURL(img);
   };
   const handleUploadChange = (info) => {
     const vall = props.formVal.getFieldValue();
-    console.log("first", vall);
     setLocalVal(vall);
-    console.log("second", localVal);
 
     if (info.file.status === "uploading") {
       props.setUploadLoading(true);
       return;
     }
     if (info.file.status === "done") {
-      console.log("info.file.originFileObj", info.file.originFileObj);
+      // console.log("info.file.originFileObj", info.file.originFileObj);
       props.setImgObj(info.file.originFileObj);
       getBase64(info.file.originFileObj, (imageUrl) => {
         props.setImage(imageUrl);

@@ -39,8 +39,8 @@ export const LoginForm = (props) => {
 
   const initialCredential = res
     ? {
-        email: "admin@admin.com",
-        password: "adminadmin",
+        email: "",
+        password: "",
       }
     : {
         email: "",
@@ -144,8 +144,8 @@ export const LoginForm = (props) => {
             Sign In
           </Button>
         </Form.Item>
-        {otherSignIn ? renderOtherSignIn : null}
-        {extra}
+        {/* {otherSignIn ? renderOtherSignIn : null}
+        {extra} */}
       </Form>
     </>
   );

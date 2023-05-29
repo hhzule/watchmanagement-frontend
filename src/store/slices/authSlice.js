@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { AUTH_TOKEN, AUTH_ROLE } from "constants/AuthConstant";
+import { AUTH_TOKEN, AUTH_ROLE, EMILUS_USER } from "constants/AuthConstant";
 import FirebaseService from "services/FirebaseService";
 import { Amplify, Auth } from "aws-amplify";
 import { AwsConfigAuth } from "../../configs/Auth";
@@ -47,6 +47,7 @@ export const signIn = createAsyncThunk(
           localStorage.setItem(AUTH_TOKEN, token);
           localStorage.setItem(AUTH_ROLE, "admin");
           localStorage.setItem("WALLAT_ADDRRESS", filteredId[0].walletAddress);
+          localStorage.setItem(EMILUS_USER, filteredId[0].name);
           return token;
         } else {
           return rejectWithValue("Unauthenticated User");
@@ -71,6 +72,7 @@ export const signIn = createAsyncThunk(
           localStorage.setItem(AUTH_TOKEN, token);
           localStorage.setItem(AUTH_ROLE, "dealer");
           localStorage.setItem("WALLAT_ADDRRESS", data.walletAddress);
+          localStorage.setItem(EMILUS_USER, data.name);
           return { token, data };
         }
       } catch (err) {
@@ -92,6 +94,7 @@ export const signIn = createAsyncThunk(
         const token = data._id;
         localStorage.setItem(AUTH_TOKEN, token);
         localStorage.setItem(AUTH_ROLE, "customer");
+        localStorage.setItem(EMILUS_USER, data.name);
         localStorage.setItem("WALLAT_ADDRRESS", data.walletAddress);
         return { token, data };
       }
@@ -126,9 +129,11 @@ export const signUp = createAsyncThunk(
       if (!data) {
         return rejectWithValue(data.message);
       } else {
+        console.log("auth data", data);
         const token = data._id;
         localStorage.setItem(AUTH_TOKEN, token);
         localStorage.setItem(AUTH_ROLE, "customer");
+        localStorage.setItem(EMILUS_USER, data.name);
         localStorage.setItem("WALLAT_ADDRRESS", data.walletAddress);
         return { data, token };
       }
@@ -142,6 +147,7 @@ export const signOut = createAsyncThunk("auth/signOut", async () => {
   const response = await FirebaseService.signOutRequest();
   localStorage.removeItem(AUTH_TOKEN);
   localStorage.removeItem(AUTH_ROLE);
+  localStorage.removeItem(EMILUS_USER);
   localStorage.removeItem("WALLAT_ADDRRESS");
   return response.data;
 });

@@ -99,12 +99,10 @@ const ProductList = () => {
     navigate(`/app/apps/watches/add-product`);
   };
   const editRow = (row) => {
-    console.log("row", row);
     navigate(`/app/apps/watches/edit-product/${row._id}`);
   };
 
   const trxRow = (row) => {
-    console.log("row", row);
     navigate(`/app/apps/watches/transactions/${row.tokenId}`);
   };
 
@@ -124,7 +122,6 @@ const ProductList = () => {
       await fetch(`${process.env.REACT_APP_BASE_PATH}/watch`, requestOptions)
         .then((response) => response.json())
         .then((data) => {
-          console.log("result ==>", data);
           data = list.filter((item) => item[_id] !== _id);
           setList(data);
         });
@@ -227,7 +224,6 @@ const ProductList = () => {
       title: "",
       dataIndex: "actions",
       render: (_, elm) => {
-        console.log("elm", elm);
         return (
           <div className="text-right">
             {elm.status === "Approved" ? (
@@ -262,18 +258,18 @@ const ProductList = () => {
   };
 
   const handleShowCategory = (value) => {
+    // console("list", list.length);
     if (value !== "All") {
-      console.log("if");
       const key = "status";
       const data = utils.filterArray(searchList, key, value);
-      console.log("data", data);
       setList(data);
-    } else if (list.length < 1) {
-      setList(searchList);
+      // console("list", list.length);
     } else {
-      console.log("else");
       setList(searchList);
     }
+    // else if (list.length < 1) {
+    //   // setList(searchList);
+    // }
   };
 
   return (
