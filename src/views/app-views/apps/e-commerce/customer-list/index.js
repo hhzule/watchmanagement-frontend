@@ -97,11 +97,11 @@ const CustomerList = () => {
       // sorter: (a, b) => utils.antdTableSorter(a, b, 'name')
     },
 
-    // {
-    // 	title: 'Commission',
-    // 	dataIndex: 'commission',
-    // 	sorter: (a, b) => utils.antdTableSorter(a, b, 'price')
-    // },
+    {
+      title: "Wallet Address",
+      dataIndex: "walletAddress",
+      // sorter: (a, b) => utils.antdTableSorter(a, b, 'price')
+    },
 
     {
       title: "",

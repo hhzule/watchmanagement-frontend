@@ -145,6 +145,11 @@ const DealerList = () => {
       dataIndex: "offers",
     },
     {
+      title: "Wallet Address",
+      dataIndex: "walletAddress",
+      // sorter: (a, b) => utils.antdTableSorter(a, b, 'price')
+    },
+    {
       title: "",
       dataIndex: "actions",
       render: (_, elm) => (
