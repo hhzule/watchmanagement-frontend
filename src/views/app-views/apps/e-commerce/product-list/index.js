@@ -10,7 +10,6 @@ import {
   message,
   Menu,
 } from "antd";
-// import ProductListData from "assets/data/product-list.data.json"
 import {
   // EyeOutlined,
   DeleteOutlined,

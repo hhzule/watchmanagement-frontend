@@ -138,7 +138,7 @@ const ProductForm = (props) => {
                     message.success(`Created ${values.name} to watches list`, [
                       5,
                     ]);
-                    navigate(`/app/apps/watches/product-list`);
+                    navigate(`/app/apps/watches/watch-list`);
                   })
                   .catch((error) => {
                     // A full list of error codes is available at
@@ -257,7 +257,7 @@ const ProductForm = (props) => {
                   .then((data) => console.log("result ==>", data));
                 setSubmitLoading(false);
                 message.success(`Edited ${values.name} to watches list`, [5]);
-                navigate(`/app/apps/watches/product-list`);
+                navigate(`/app/apps/watches/watch-list`);
               } catch (error) {
                 console.log("error", error);
               }

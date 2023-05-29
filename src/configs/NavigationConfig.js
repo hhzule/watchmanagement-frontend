@@ -233,7 +233,7 @@ const appsNavTree = [
       // },
       {
         key: "apps-watches-productList",
-        path: `${APP_PREFIX_PATH}/apps/watches/product-list`,
+        path: `${APP_PREFIX_PATH}/apps/watches/watch-list`,
         title: "sidenav.apps.watches.productList",
         icon: "",
         breadcrumb: true,
@@ -261,7 +261,7 @@ const appsNavTreeDealer = [
       },
       {
         key: "apps-watches-productList",
-        path: `${APP_PREFIX_PATH}/apps/watches/product-list`,
+        path: `${APP_PREFIX_PATH}/apps/watches/watch-list`,
         title: "sidenav.apps.watches.productList",
         icon: "",
         breadcrumb: true,
@@ -299,7 +299,7 @@ const appsNavTreeAdmin = [
       },
       {
         key: "apps-watches-productList",
-        path: `${APP_PREFIX_PATH}/apps/watches/product-list`,
+        path: `${APP_PREFIX_PATH}/apps/watches/watch-list`,
         title: "sidenav.apps.watches.productList",
         icon: "",
         breadcrumb: true,
