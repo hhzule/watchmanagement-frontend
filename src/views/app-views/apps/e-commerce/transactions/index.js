@@ -55,8 +55,20 @@ const TransactionsList = () => {
     {
       title: "TimeStamp",
       dataIndex: "time",
-      render: (_, record) => <div className="d-flex">{record.time}</div>,
-      // sorter: (a, b) => utils.antdTableSorter(a, b, 'timeStamp')
+      render: (_, record) => {
+        const dateString = record.time;
+        const date = new Date(dateString);
+        const options = {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+        };
+        const humanReadableDate = date.toLocaleString(options);
+        return <div className="d-flex">{humanReadableDate}</div>;
+      },
     },
     {
       title: "Token Id",
