@@ -71,7 +71,7 @@ const ProductForm = props => {
 							method: 'POST',
 							headers: { 'Content-Type': 'application/json' },
 							body: JSON.stringify({  
-					       "name": values.name,
+					       	"name": values.name,
 							"model": values.description,
 							"owner": values.category,
 							"price": values.price,
