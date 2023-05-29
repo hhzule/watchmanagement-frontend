@@ -119,23 +119,23 @@ const ProductList = () => {
     }
     try {
       console.log("approveran");
-      // const requestOptions = {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({
-      //     auth: localStorage.getItem(AUTH_TOKEN),
-      //     watches: selected,
-      //   }),
-      // };
-      // await fetch(
-      //   `${process.env.REACT_APP_BASE_PATH}/adminwatch`,
-      //   requestOptions
-      // )
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     setList((prev) => [data, ...prev]);
-      //     setSelected([]);
-      //   });
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          auth: localStorage.getItem(AUTH_TOKEN),
+          watches: selected,
+        }),
+      };
+      await fetch(
+        `${process.env.REACT_APP_BASE_PATH}/adminwatch`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setList((prev) => [data, ...prev]);
+          setSelected([]);
+        });
       setLoading(false);
     } catch (error) {
       console.log(error);
