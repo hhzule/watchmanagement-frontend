@@ -15,7 +15,7 @@ import AvatarStatus from "components/shared-components/AvatarStatus";
 import Flex from "components/shared-components/Flex";
 import NumberFormat from "react-number-format";
 import utils from "utils";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 const TransactionsList = () => {
@@ -33,10 +33,12 @@ const TransactionsList = () => {
       title: "Hash",
       dataIndex: "hash",
       render: (_, record) => (
-        <div className="d-flex">{`${record.hash.slice(
-          0,
-          4
-        )}...${record.hash.slice(-4)}`}</div>
+        <Link src={`https://mumbai.polygonscan.com/tx/${record.hash}`}>
+          <div className="d-flex">{`${record.hash.slice(
+            0,
+            4
+          )}...${record.hash.slice(-4)}`}</div>
+        </Link>
       ),
     },
     {
@@ -52,6 +54,7 @@ const TransactionsList = () => {
     {
       title: "TimeStamp",
       dataIndex: "time",
+      render: (_, record) => <div className="d-flex">{record.time}</div>,
       // sorter: (a, b) => utils.antdTableSorter(a, b, 'timeStamp')
     },
     {
@@ -81,6 +84,9 @@ const TransactionsList = () => {
             setQrcode(data[0].qrcode);
             // setList(data?.transactions);
             setDetail(data);
+            // setReplace({
+
+            // })
           });
       } catch (error) {
         console.log(error);
@@ -183,6 +189,10 @@ const TransactionsList = () => {
         </Flex> */}
       </Flex>
       <div className="table-responsive">
+        {/* {
+          list ?  <Table columns={tableColumns} dataSource={list} rowKey="id" /> :
+          <Table columns={tableColumns} dataSource={list} rowKey="id" />
+        } */}
         <Table columns={tableColumns} dataSource={list} rowKey="id" />
         {errorTx && <div>{errorTx}</div>}
       </div>

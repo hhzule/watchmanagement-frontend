@@ -111,8 +111,6 @@ const Profile = () => {
                               <p>{itm.name}</p>
                               <h5>User Wallet Address</h5>
                               <p>{itm.walletAddress}</p>
-                              <h5>User Encrypted Private Key</h5>
-                              <p>{itm.encryptedPrivateKey}</p>
                             </div>
                           );
                         })}
