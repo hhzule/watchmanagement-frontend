@@ -15,7 +15,7 @@ import AvatarStatus from "components/shared-components/AvatarStatus";
 import Flex from "components/shared-components/Flex";
 import NumberFormat from "react-number-format";
 import utils from "utils";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 const TransactionsList = () => {
@@ -25,6 +25,7 @@ const TransactionsList = () => {
   const [imgUrl, setImgUrl] = useState();
   const [qrcode, setQrcode] = useState();
   const [errorTx, setError] = useState();
+  const [replace, setReplace] = useState();
   const lastSegmentId = location.pathname.split("/").pop();
   const res = location.pathname.includes("dealer");
 
@@ -33,25 +34,64 @@ const TransactionsList = () => {
       title: "Hash",
       dataIndex: "hash",
       render: (_, record) => (
-        <div className="d-flex">{`${record.hash.slice(
-          0,
-          4
-        )}...${record.hash.slice(-4)}`}</div>
+        <a
+          href={`https://mumbai.polygonscan.com/tx/${record.hash}`}
+          // to={`https://mumbai.polygonscan.com/tx/${record.hash}`}
+          // src={`https://mumbai.polygonscan.com/tx/${record.hash}`}
+          target="_blank"
+        >
+          <div className="d-flex">{`${record.hash.slice(
+            0,
+            4
+          )}...${record.hash.slice(-4)}`}</div>
+        </a>
       ),
     },
     {
       title: "From",
       dataIndex: "from",
-      render: (_, record) => (
-        <div className="d-flex">{`${record.from.slice(
-          0,
-          4
-        )}...${record.from.slice(-4)}`}</div>
-      ),
+      render: (_, record) => <div className="d-flex">{record.from}</div>,
     },
     {
       title: "TimeStamp",
       dataIndex: "time",
+      render: (_, record) => {
+        const dateString = record.time;
+        const date = new Date(dateString);
+        const options = {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+        };
+        const humanReadableDate = date.toLocaleString(options);
+        return <div className="d-flex">{humanReadableDate}</div>;
+      },
+    },
+    {
+      title: "Token Id",
+      dataIndex: "tokenId",
+      // sorter: (a, b) => utils.antdTableSorter(a, b, 'value')
+    },
+    {
+      title: "To",
+      dataIndex: "to",
+      render: (_, record) => <div className="d-flex">{record.to}</div>,
+    },
+  ];
+
+  const tableColumns2 = [
+    {
+      title: "From",
+      dataIndex: "from",
+      render: (_, record) => <div className="d-flex">{record.from}</div>,
+    },
+    {
+      title: "TimeStamp",
+      dataIndex: "time",
+      render: (_, record) => <div className="d-flex">{record.time}</div>,
       // sorter: (a, b) => utils.antdTableSorter(a, b, 'timeStamp')
     },
     {
@@ -62,11 +102,7 @@ const TransactionsList = () => {
     {
       title: "To",
       dataIndex: "to",
-      render: (_, record) => (
-        <div className="d-flex">{`${record.to.slice(0, 4)}...${record.to.slice(
-          -4
-        )}`}</div>
-      ),
+      render: (_, record) => <div className="d-flex">{record.to}</div>,
     },
   ];
 
@@ -76,7 +112,7 @@ const TransactionsList = () => {
         await fetch(`${process.env.REACT_APP_BASE_PATH}/watch/${lastSegmentId}`)
           .then((response) => response.json())
           .then((data) => {
-            // console.log("result ==>", data);
+            console.log("result ==>", data);
             setImgUrl(data[0].imgUrl);
             setQrcode(data[0].qrcode);
             // setList(data?.transactions);
@@ -125,11 +161,11 @@ const TransactionsList = () => {
               <Col>
                 <Card title="WatchNFT">
                   {" "}
-                  <Image
+                  {/* <Image
                     className="img-fluid  max-width: 100%; height: auto"
                     // width={400}
                     src={imgUrl}
-                  />
+                  /> */}
                 </Card>
                 <h5>Watch</h5>
                 {detaii &&
@@ -139,7 +175,7 @@ const TransactionsList = () => {
                         <Flex>
                           <div className="">
                             <h5>Name</h5>
-                            <p>{itm.name}</p>
+                            <p>{itm.owner}</p>
                             <h5>Token Id</h5>
                             <p>{itm.tokenId}</p>
                             <h5>Holder Address</h5>
@@ -183,7 +219,11 @@ const TransactionsList = () => {
         </Flex> */}
       </Flex>
       <div className="table-responsive">
-        <Table columns={tableColumns} dataSource={list} rowKey="id" />
+        {res === "dealer" ? (
+          <Table columns={tableColumns2} dataSource={list} rowKey="id" />
+        ) : (
+          <Table columns={tableColumns} dataSource={list} rowKey="id" />
+        )}
         {errorTx && <div>{errorTx}</div>}
       </div>
     </Card>

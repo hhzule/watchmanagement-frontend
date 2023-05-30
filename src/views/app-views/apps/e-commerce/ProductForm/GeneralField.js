@@ -21,33 +21,40 @@ const rules = {
   name: [
     {
       required: true,
-      message: "Please enter product name",
+      message: "Please enter name",
+      validator: (_, value) => {
+        if (/^[a-zA-Z0-9]+$/.test(value)) {
+          return Promise.resolve();
+        } else {
+          return Promise.reject("Some message here");
+        }
+      },
     },
   ],
   description: [
     {
       required: true,
-      message: "Please enter product model",
+      message: "Please enter model",
     },
   ],
   price: [
     {
       required: true,
-      message: "Please enter product price",
+      message: "Please enter price",
     },
   ],
-  owner: [
-    {
-      required: true,
-      message: "Please enter product owner",
-    },
-  ],
-  status: [
-    {
-      required: true,
-      message: "Please select product status",
-    },
-  ],
+  // owner: [
+  //   {
+  //     required: true,
+  //     message: "Please enter owner",
+  //   },
+  // ],
+  // status: [
+  //   {
+  //     required: true,
+  //     message: "Please select product status",
+  //   },
+  // ],
   media: [
     {
       required: true,
@@ -179,24 +186,15 @@ const GeneralField = (props) => {
           <Form.Item name="model" label="Model" rules={rules.description}>
             <Input placeholder="Model name and number" />
           </Form.Item>
-          <Form.Item name="owner" label="Owner" rules={rules.owner}>
+          {/* <Form.Item name="owner" label="Owner" rules={rules.owner}>
             <Input placeholder="Product Name" />
-          </Form.Item>
-
-          {/* <Form.Item name="status" label="Status" rules={rules.status}>
-            <Select placeholder="Please select a status">
-              <Option value="Pending">Pending</Option>
-              <Option value="Stolen">Stolen</Option>
-            </Select>
           </Form.Item> */}
-
-          {/* addedd fields */}
           <Form.Item
             name="serialNumber"
             label="Serial Number"
             rules={rules.serialNumber}
           >
-            <Input placeholder="Product Serial number" />
+            <Input placeholder="Serial number" />
           </Form.Item>
 
           <Form.Item

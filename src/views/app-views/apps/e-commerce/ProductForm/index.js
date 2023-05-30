@@ -4,7 +4,7 @@ import { Card, Tabs, Form, Button, message, Row, Col } from "antd";
 import Flex from "components/shared-components/Flex";
 import GeneralField from "./GeneralField";
 import { useLocation } from "react-router-dom";
-import { AUTH_TOKEN } from "../../../../../constants/AuthConstant";
+import { AUTH_TOKEN, EMILUS_USER } from "../../../../../constants/AuthConstant";
 import WatchImg from "../../../../../assets/svg/watch.jpeg";
 import {
   getStorage,
@@ -90,7 +90,7 @@ const ProductForm = (props) => {
                       body: JSON.stringify({
                         name: values.name,
                         model: values.model,
-                        owner: values.owner,
+                        owner: localStorage.getItem(EMILUS_USER),
                         price: values.price,
                         imgUrl: url,
                         status: "Pending",
@@ -138,7 +138,7 @@ const ProductForm = (props) => {
                     message.success(`Created ${values.name} to watches list`, [
                       5,
                     ]);
-                    navigate(`/app/apps/watches/product-list`);
+                    navigate(`/app/apps/watches/watch-list`);
                   })
                   .catch((error) => {
                     // A full list of error codes is available at
@@ -192,11 +192,10 @@ const ProductForm = (props) => {
                       _id: lastSegmentId,
                       name: values.name,
                       model: values.model,
-                      owner: values.owner,
+                      owner: localStorage.getItem(EMILUS_USER),
                       price: values.price,
                       imgUrl: url,
                       status: values.status,
-
                       serialNumber: values.serialNumber,
                       caseMaterial: values.caseMaterial,
                       braceletMaterial: values.braceletMaterial,
@@ -234,11 +233,10 @@ const ProductForm = (props) => {
                   _id: lastSegmentId,
                   name: values.name,
                   model: values.model,
-                  owner: values.owner,
+                  owner: localStorage.getItem(EMILUS_USER),
                   price: values.price,
                   imgUrl: img[0].imgUrl,
                   status: values.status,
-
                   serialNumber: values.serialNumber,
                   caseMaterial: values.caseMaterial,
                   braceletMaterial: values.braceletMaterial,
@@ -259,7 +257,7 @@ const ProductForm = (props) => {
                   .then((data) => console.log("result ==>", data));
                 setSubmitLoading(false);
                 message.success(`Edited ${values.name} to watches list`, [5]);
-                navigate(`/app/apps/watches/product-list`);
+                navigate(`/app/apps/watches/watch-list`);
               } catch (error) {
                 console.log("error", error);
               }
@@ -288,7 +286,6 @@ const ProductForm = (props) => {
             owner: list[0].owner,
             status: list[0].status,
             media: list[0].imgUrl,
-
             serialNumber: list[0].serialNumber,
             caseMaterial: list[0].caseMaterial,
             braceletMaterial: list[0].braceletMaterial,

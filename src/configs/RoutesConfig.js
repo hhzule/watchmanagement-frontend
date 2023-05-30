@@ -213,7 +213,7 @@ export const protectedRoutes = [
   },
   {
     key: "apps.watches.product-list",
-    path: `${APP_PREFIX_PATH}/apps/watches/product-list`,
+    path: `${APP_PREFIX_PATH}/apps/watches/watch-list`,
     component: React.lazy(() =>
       import("views/app-views/apps/e-commerce/product-list")
     ),

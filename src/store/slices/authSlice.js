@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AUTH_TOKEN, AUTH_ROLE, EMILUS_USER } from "constants/AuthConstant";
 import FirebaseService from "services/FirebaseService";
-import { Amplify, Auth } from "aws-amplify";
-import { AwsConfigAuth } from "../../configs/Auth";
+// import { Amplify, Auth } from "aws-amplify";
+// import { AwsConfigAuth } from "../../configs/Auth";
 
-Amplify.configure({ Auth: AwsConfigAuth });
+// Amplify.configure({ Auth: AwsConfigAuth });
 
 export const initialState = {
   loading: false,
