@@ -303,6 +303,7 @@ const ProductForm = (props) => {
             {
               name: ["serialNumber"],
               value: list[0].serialNumber,
+              
             },
             {
               name: ["caseMaterial"],

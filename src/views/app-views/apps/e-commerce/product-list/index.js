@@ -133,7 +133,8 @@ const ProductList = () => {
       )
         .then((response) => response.json())
         .then((data) => {
-          setList((prev) => [data, ...prev]);
+          const listData = removeObjectWithId(list, data.id);
+          setList(listData);
           setSelected([]);
         });
       setLoading(false);
