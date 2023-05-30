@@ -1,0 +1,12 @@
+[[redirects]]
+from = "/api/*"
+to = "http://3.83.201.73/:splat"
+status = 200
+
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
+
+

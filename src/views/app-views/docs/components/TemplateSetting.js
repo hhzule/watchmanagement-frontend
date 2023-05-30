@@ -1,6 +1,6 @@
-import React from 'react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import React from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const appConfigStr = `import { SIDE_NAV_LIGHT, NAV_TYPE_SIDE, DIR_LTR } from 'constants/ThemeConstant';
 import { env } from './EnvironmentConfig'
@@ -10,7 +10,8 @@ export const API_BASE_URL = env.API_ENDPOINT_URL
 export const APP_PREFIX_PATH = '/app';
 export const AUTH_PREFIX_PATH = '/auth';
 export const REDIRECT_URL_KEY = 'redirect'
-export const AUTHENTICATED_ENTRY = '/app/dashboards/default';
+export const AUTHENTICATED_ENTRY = '/app/profile';
+// export const AUTHENTICATED_ENTRY = '/app/apps/watches/product-list';
 export const UNAUTHENTICATED_ENTRY = '/login'
 
 export const THEME_CONFIG = {
@@ -25,7 +26,7 @@ export const THEME_CONFIG = {
 	direction: DIR_LTR,
 	blankLayout: false
 };
-`
+`;
 
 const themeConfig = `export const baseTheme = {
     borderRadius: 10,
@@ -46,7 +47,7 @@ const themeConfig = `export const baseTheme = {
     fontSizeHeading2: 22,
     fontSizeHeading4: 17
 }
-`
+`;
 
 const darkThemeConfigStr = `
 export const THEME_CONFIG = {
@@ -60,7 +61,7 @@ export const THEME_CONFIG = {
 	currentTheme: 'dark',
 	direction: DIR_LTR
 };
-`
+`;
 
 const directionConfigStr = `
 export const THEME_CONFIG = {
@@ -75,44 +76,74 @@ export const THEME_CONFIG = {
 	direction: DIR_RTL,
 	blankLayout: false
 }
-`
-
+`;
 
 const TemplateSetting = () => {
-	return (
-		<div>
-			<h2>Template Setting</h2>
-			<p>Emilus comes with a variety of different theme & layout, you can try them from quick view panel in our demo and copy the config to your project.</p>
-			<div className="mt-4">
-				<h4 className="font-weight-bold">Config Template basic</h4>
-				<p>You can change your template basic setup at <code>src/configs/AppConfigs.js</code></p>
-				<SyntaxHighlighter className="hl-code" language="javascript" style={atomDark}>
-					{appConfigStr}
-				</SyntaxHighlighter>
-			</div>
-			<div className="mt-4">
-				<h4 className="font-weight-bold">Config Theme</h4>
-				<p>You can config theme colors & antd base styling at <code>src/configs/ThemeConfig.js</code></p>
-				<SyntaxHighlighter className="hl-code" language="javascript" style={atomDark}>
-					{themeConfig}
-				</SyntaxHighlighter>
-			</div>
-			<div className="mt-4">
-				<h4 className="font-weight-bold">Use Dark Theme</h4>
-				<p>Dark theme can be set via <code>src/configs/AppConfigs.js</code>.</p>
-				<SyntaxHighlighter className="hl-code" language="javascript" style={atomDark}>
-					{darkThemeConfigStr}
-				</SyntaxHighlighter>
-			</div>
-			<div className="mt-4">
-				<h4 className="font-weight-bold">Direction</h4>
-				<p>Direction can be set by value <code>ltr</code> or <code>rtl</code> in <code>src/configs/AppConfigs.js</code>.</p>
-				<SyntaxHighlighter className="hl-code" language="javascript" style={atomDark}>
-					{directionConfigStr}
-				</SyntaxHighlighter>
-			</div>
-		</div>
-	)
-}
+  return (
+    <div>
+      <h2>Template Setting</h2>
+      <p>
+        Emilus comes with a variety of different theme & layout, you can try
+        them from quick view panel in our demo and copy the config to your
+        project.
+      </p>
+      <div className="mt-4">
+        <h4 className="font-weight-bold">Config Template basic</h4>
+        <p>
+          You can change your template basic setup at{" "}
+          <code>src/configs/AppConfigs.js</code>
+        </p>
+        <SyntaxHighlighter
+          className="hl-code"
+          language="javascript"
+          style={atomDark}
+        >
+          {appConfigStr}
+        </SyntaxHighlighter>
+      </div>
+      <div className="mt-4">
+        <h4 className="font-weight-bold">Config Theme</h4>
+        <p>
+          You can config theme colors & antd base styling at{" "}
+          <code>src/configs/ThemeConfig.js</code>
+        </p>
+        <SyntaxHighlighter
+          className="hl-code"
+          language="javascript"
+          style={atomDark}
+        >
+          {themeConfig}
+        </SyntaxHighlighter>
+      </div>
+      <div className="mt-4">
+        <h4 className="font-weight-bold">Use Dark Theme</h4>
+        <p>
+          Dark theme can be set via <code>src/configs/AppConfigs.js</code>.
+        </p>
+        <SyntaxHighlighter
+          className="hl-code"
+          language="javascript"
+          style={atomDark}
+        >
+          {darkThemeConfigStr}
+        </SyntaxHighlighter>
+      </div>
+      <div className="mt-4">
+        <h4 className="font-weight-bold">Direction</h4>
+        <p>
+          Direction can be set by value <code>ltr</code> or <code>rtl</code> in{" "}
+          <code>src/configs/AppConfigs.js</code>.
+        </p>
+        <SyntaxHighlighter
+          className="hl-code"
+          language="javascript"
+          style={atomDark}
+        >
+          {directionConfigStr}
+        </SyntaxHighlighter>
+      </div>
+    </div>
+  );
+};
 
-export default TemplateSetting
+export default TemplateSetting;
