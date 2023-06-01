@@ -97,8 +97,8 @@ const CustomForm = (props) => {
                 emergencyNumber: values.emergencyNumber,
                 businessAddress: values.businessAddress,
                 brandName: values.brandName,
-                serialNumber: values.serialNumber,
-                model: values.model,
+                // serialNumber: values.serialNumber,
+                // model: values.model,
                 offers: values.offers,
               };
             } else if (userApi == "customer") {
@@ -150,8 +150,8 @@ const CustomForm = (props) => {
                 emergencyNumber: values.emergencyNumber,
                 businessAddress: values.businessAddress,
                 brandName: values.brandName,
-                serialNumber: values.serialNumber,
-                model: values.model,
+                // serialNumber: values.serialNumber,
+                // model: values.model,
                 offers: values.offers,
               };
             } else if (userApi == "customer") {
@@ -248,14 +248,14 @@ const CustomForm = (props) => {
               name: ["brandName"],
               value: list[0].brandName,
             },
-            {
-              name: ["serialNumber"],
-              value: list[0].serialNumber,
-            },
-            {
-              name: ["model"],
-              value: list[0].model,
-            },
+            // {
+            //   name: ["serialNumber"],
+            //   value: list[0].serialNumber,
+            // },
+            // {
+            //   name: ["model"],
+            //   value: list[0].model,
+            // },
             {
               name: ["offers"],
               value: list[0].offers,

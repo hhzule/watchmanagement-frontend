@@ -138,7 +138,7 @@ const DealerField = (props) => {
           >
             <Input placeholder="Business Address" />
           </Form.Item>
-          {/* <Form.Item name="brandName" label="Brand name" rules={rules.brandName}>
+          <Form.Item name="brandName" label="Brand name" rules={rules.brandName}>
 				<Select placeholder="Please select a brand Name">
 						<Option value="Rolex">Rolex</Option>
 						<Option value="Patek Philippe">Patek Philippe</Option>
@@ -146,11 +146,11 @@ const DealerField = (props) => {
 						<Option value="Audemars Piguet">Audemars Piguet</Option>
 						<Option value="Vacheron">Vacheron</Option>
            			 </Select>
-				</Form.Item> */}
+				</Form.Item>
           {/* <Form.Item name="serialNumber" label="Serial Number" rules={rules.serialNumber}>
 					<Input placeholder="serial Number" />
-				</Form.Item> */}
-          {/* <Form.Item name="model" label="Watch Model" rules={rules.model}>
+				</Form.Item>
+          <Form.Item name="model" label="Watch Model" rules={rules.model}>
 					<Input placeholder="Watch Model" />
 				</Form.Item> */}
           <Form.Item
