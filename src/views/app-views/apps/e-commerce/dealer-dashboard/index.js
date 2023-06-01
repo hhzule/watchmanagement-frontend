@@ -147,7 +147,7 @@ const ProductList = () => {
             <AvatarStatus
               size={60}
               type="square"
-              src={record.imgUrl}
+              src={record.imgUrl[0]}
               name={record.name}
             />
           </div>

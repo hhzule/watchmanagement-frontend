@@ -11,8 +11,9 @@ import {
   Select,
 } from "antd";
 import { ImageSvg } from "assets/svg/icon";
+import AvatarStatus from "components/shared-components/AvatarStatus";
 import CustomIcon from "components/util-components/CustomIcon";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const { Dragger } = Upload;
 const { Option } = Select;
@@ -47,12 +48,6 @@ const rules = {
   //   {
   //     required: true,
   //     message: "Please enter owner",
-  //   },
-  // ],
-  // status: [
-  //   {
-  //     required: true,
-  //     message: "Please select product status",
   //   },
   // ],
   media: [
@@ -119,9 +114,12 @@ const rules = {
 
 const imageUploadProps = {
   name: "file",
-  multiple: false,
+  multiple: true,
   listType: "picture-card",
   showUploadList: false,
+  onDrop(e) {
+    console.log("Dropped files", e.dataTransfer.files);
+  },
   //   action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76'
 };
 
@@ -145,6 +143,15 @@ const beforeUpload = (file) => {
 
 const GeneralField = (props) => {
   const [localVal, setLocalVal] = useState({});
+  const [media, setMedia] = useState([]);
+  const length = 3;
+  let [counter, setCounter] = useState(0);
+
+  const removeFromList = (name, count) => {
+    const imageList = props.uploadedImg;
+    const updatedList = imageList.filter((item) => item.count !== count);
+    props.setImage(updatedList);
+  };
 
   const getBase64 = (img, callback) => {
     const reader = new FileReader();
@@ -160,13 +167,29 @@ const GeneralField = (props) => {
       return;
     }
     if (info.file.status === "done") {
-      // console.log("info.file.originFileObj", info.file.originFileObj);
+      console.log("info.file.originFileObj", info.file.originFileObj);
       props.setImgObj(info.file.originFileObj);
       getBase64(info.file.originFileObj, (imageUrl) => {
-        props.setImage(imageUrl);
-        props.setUploadLoading(false);
-        props.setList([localVal]);
+        if (props.uploadedImg.length < length) {
+          props.setImage((prev) => [
+            ...prev,
+            {
+              name: info.file.originFileObj.name,
+              imageUrl,
+              count: counter,
+            },
+          ]);
+          setCounter(++counter);
+          props.setUploadLoading(false);
+          props.setList([localVal]);
+        } else {
+          props.setList([localVal]);
+          props.setUploadLoading(false);
+          message.error(`Can not upload more than 3 media files`);
+        }
       });
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
     }
   };
   return (
@@ -289,47 +312,63 @@ const GeneralField = (props) => {
       </Col>
       <Col xs={24} sm={24} md={7}>
         <Card title="Media">
+          {props.uploadedImg &&
+            props.uploadedImg.map((itm, i) => {
+              console.log("itm", itm);
+              return (
+                <>
+                  <div
+                    key={i}
+                    className="d-flex flex-row justify-content-between"
+                  >
+                    {itm.name ? (
+                      <>
+                        <AvatarStatus
+                          size={90}
+                          type="square"
+                          src={itm.imageUrl}
+                        />
+                        <button
+                          onClick={(e) => removeFromList(itm.name, itm.count)}
+                        >
+                          <DeleteOutlined />
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <AvatarStatus size={90} type="square" src={itm} />
+                        <button
+                          className="height: 20px"
+                          onClick={(e) => removeFromList(itm.name, itm.count)}
+                        >
+                          <DeleteOutlined />
+                        </button>
+                      </>
+                    )}{" "}
+                  </div>
+
+                  <br />
+                </>
+              );
+            })}
           <Dragger
             {...imageUploadProps}
             customRequest={dummyRequest}
             beforeUpload={beforeUpload}
             onChange={(e) => handleUploadChange(e)}
           >
-            {props.uploadedImg ? (
-              <img src={props.uploadedImg} alt="avatar" className="img-fluid" />
-            ) : (
-              <div>
-                {props.uploadLoading ? (
-                  <div>
-                    <LoadingOutlined className="font-size-xxl text-primary" />
-                    <div className="mt-3">Uploading</div>
-                  </div>
-                ) : (
-                  <div>
-                    <CustomIcon className="display-3" svg={ImageSvg} />
-                    <p>Click or drag file to upload</p>
-                  </div>
-                )}
-              </div>
-            )}
+            <div>
+              {props.uploadLoading ? (
+                <div>
+                  <LoadingOutlined className="font-size-xxl text-primary" />
+                  <div className="mt-3">Uploading</div>
+                </div>
+              ) : (
+                <p>Click or drag file to upload</p>
+              )}
+            </div>
           </Dragger>
         </Card>
-        {/* <Card title="Organization">
-				<Form.Item name="category" label="Category" >
-					<Select className="w-100" placeholder="Category">
-						{
-							categories.map(elm => (
-								<Option key={elm} value={elm}>{elm}</Option>
-							))
-						}
-					</Select>
-				</Form.Item>
-				<Form.Item name="tags" label="Tags" >
-				<Select mode="tags" style={{ width: '100%' }} placeholder="Tags">
-					{tags.map(elm => <Option key={elm}>{elm}</Option>)}
-				</Select>
-				</Form.Item>
-			</Card> */}
       </Col>
     </Row>
   );

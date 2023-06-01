@@ -1,5 +1,4 @@
-﻿
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 import { Card, Tabs, Form, Button, message, Row, Col } from "antd";
 import Flex from "components/shared-components/Flex";
@@ -27,11 +26,11 @@ const ProductForm = (props) => {
   const location = useLocation();
   const lastSegmentId = location.pathname.split("/").pop();
   const [form] = Form.useForm();
-  const [uploadedImg, setImage] = useState("");
+  const [uploadedImg, setImage] = useState([]);
   const [imgObj, setImgObj] = useState("");
   const [uploadLoading, setUploadLoading] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
-  const [fileUrl, setFileUrl] = useState("");
+  const [fileUrl, setFileUrl] = useState([]);
   const [list, setList] = useState([{}]);
 
   useEffect(() => {
@@ -45,7 +44,7 @@ const ProductForm = (props) => {
               const fetchedValues = data.filter(
                 (obj) => obj._id == lastSegmentId
               );
-              setImage(fetchedValues[0].imgUrl);
+              setImage(fetchedValues[0]?.imgUrl);
 
               return setList(fetchedValues);
             });
@@ -65,103 +64,85 @@ const ProductForm = (props) => {
     form
       .validateFields()
       .then((values) => {
-        // console.log("values", values);
         setTimeout(async () => {
           setSubmitLoading(true);
           if (mode === ADD) {
             if (imgObj) {
               try {
-                // Create a reference to 'image'
-                const imgRef = ref(storage, imgObj.name);
-                const uploadTask = await uploadString(
-                  imgRef,
-                  uploadedImg,
-                  "data_url"
-                ).then((snapshot) => {
-                  // console.log('Uploaded a data_url string!');
-                });
-                await getDownloadURL(imgRef)
-                  .then(async (url) => {
-                    // console.log("url", url);
-                    setFileUrl(url);
-                    const creator = localStorage.getItem(AUTH_TOKEN);
-                    const requestOptions = {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        name: values.name,
-                        model: values.model,
-                        owner: localStorage.getItem(EMILUS_USER),
-                        price: values.price,
-                        imgUrl: url,
-                        status: "Pending",
-                        creator: creator,
-                        serialNumber: values.serialNumber,
-                        caseMaterial: values.caseMaterial,
-                        braceletMaterial: values.braceletMaterial,
-                        movementModel: values.movementModel,
-                        movementSerial: values.movementSerial,
-                        movementMechanism: values.movementMechanism,
-                        dialColor: values.dialColor,
-                        hands: values.hands,
-                        feature: values.feature,
-                        holderAddress: localStorage.getItem("WALLAT_ADDRRESS"),
-                      }),
-
-                      // body: JSON.stringify({
-                      //   name: "values.name",
-                      //   model: "values.model",
-                      //   owner: "values.owner",
-                      //   price: 111,
-                      //   imgUrl: url,
-                      //   status: "Pending",
-                      //   creator: creator,
-                      //   serialNumber: "values.serialNumber",
-                      //   caseMaterial: "values.caseMaterial",
-                      //   braceletMaterial: " values.braceletMaterial",
-                      //   movementModel: "values.movementModel",
-                      //   movementSerial: "values.movementSerial",
-                      //   movementMechanism: "values.movementMechanism",
-                      //   dialColor: "values.dialColor",
-                      //   hands: "values.hands",
-                      //   feature: "values.feature",
-                      //   holderAddress: localStorage.getItem("WALLAT_ADDRRESS"),
-                      // }),
-                    };
-
-                    await fetch(
-                      `${process.env.REACT_APP_BASE_PATH}/watch`,
-                      requestOptions
-                    )
-                      .then((response) => response.json())
-                      .then((data) => console.log("result ==>", data));
-                    setSubmitLoading(false);
-                    message.success(`Created ${values.name} to watches list`, [
-                      5,
-                    ]);
-                    navigate(`/app/apps/watches/watch-list`);
-                  })
-                  .catch((error) => {
-                    // A full list of error codes is available at
-                    // https://firebase.google.com/docs/storage/web/handle-errors
-                    switch (error.code) {
-                      case "storage/object-not-found":
-                        // File doesn't exist
-                        break;
-                      case "storage/unauthorized":
-                        // User doesn't have permission to access the object
-                        break;
-                      case "storage/canceled":
-                        // User canceled the upload
-                        break;
-
-                      // ...
-
-                      case "storage/unknown":
-                        // Unknown error occurred, inspect the server response
-                        break;
-                    }
+                for (let index = 0; index < uploadedImg.length; index++) {
+                  console.log("fileurl", fileUrl);
+                  const imageObject = uploadedImg[index];
+                  // Create a reference to 'image'
+                  const imgRef = ref(storage, imageObject.name);
+                  const uploadTask = await uploadString(
+                    imgRef,
+                    imageObject.imageUrl,
+                    "data_url"
+                  ).then((snapshot) => {
+                    // console.log('Uploaded a data_url string!');
                   });
+                  await getDownloadURL(imgRef)
+                    .then(async (url) => {
+                      console.log("url", url);
+                      let urls = fileUrl;
+                      urls.push(url);
+                      setFileUrl(urls);
+                    })
+                    .catch((error) => {
+                      // A full list of error codes is available at
+                      // https://firebase.google.com/docs/storage/web/handle-errors
+                      switch (error.code) {
+                        case "storage/object-not-found":
+                          // File doesn't exist
+                          break;
+                        case "storage/unauthorized":
+                          // User doesn't have permission to access the object
+                          break;
+                        case "storage/canceled":
+                          // User canceled the upload
+                          break;
+                        // ...
+                        case "storage/unknown":
+                          // Unknown error occurred, inspect the server response
+                          break;
+                      }
+                    });
+                }
+                // console.log("done", fileUrl);
+
+                const creator = localStorage.getItem(AUTH_TOKEN);
+                const requestOptions = {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    name: values.name,
+                    model: values.model,
+                    owner: localStorage.getItem(EMILUS_USER),
+                    price: values.price,
+                    imgUrl: fileUrl,
+                    status: "Pending",
+                    creator: creator,
+                    serialNumber: values.serialNumber,
+                    caseMaterial: values.caseMaterial,
+                    braceletMaterial: values.braceletMaterial,
+                    movementModel: values.movementModel,
+                    movementSerial: values.movementSerial,
+                    movementMechanism: values.movementMechanism,
+                    dialColor: values.dialColor,
+                    hands: values.hands,
+                    feature: values.feature,
+                    holderAddress: localStorage.getItem("WALLAT_ADDRRESS"),
+                  }),
+                };
+                await fetch(
+                  `${process.env.REACT_APP_BASE_PATH}/watch`,
+                  requestOptions
+                )
+                  .then((response) => response.json())
+                  .then((data) => console.log("result ==>", data));
+                setSubmitLoading(false);
+                message.success(`Created ${values.name} to watches list`, [5]);
+                navigate(`/app/apps/watches/watch-list`);
               } catch (error) {
                 message.success(`${error} creating list`);
               }
@@ -172,56 +153,82 @@ const ProductForm = (props) => {
           }
           if (mode === EDIT) {
             if (imgObj) {
-              // console.log("imgObj", imgObj)
-              // console.log("uploadedImg", uploadedImg)
               try {
-                const imgRef = ref(storage, imgObj.name);
-                const uploadTask = await uploadString(
-                  imgRef,
-                  uploadedImg,
-                  "data_url"
-                ).then((snapshot) => {
-                  // console.log("Uploaded a data_url string!");
-                });
-                await getDownloadURL(imgRef).then(async (url) => {
-                  // console.log("url", url);
-                  setFileUrl(url);
-                  const requestOptions = {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      _id: lastSegmentId,
-                      name: values.name,
-                      model: values.model,
-                      owner: localStorage.getItem(EMILUS_USER),
-                      price: values.price,
-                      imgUrl: url,
-                      status: values.status,
-                      serialNumber: values.serialNumber,
-                      caseMaterial: values.caseMaterial,
-                      braceletMaterial: values.braceletMaterial,
-                      movementModel: values.movementModel,
-                      movementSerial: values.movementSerial,
-                      movementMechanism: values.movementMechanism,
-                      dialColor: values.dialColor,
-                      hands: values.hands,
-                      feature: values.feature,
-                    }),
-                  };
+                for (let index = 0; index < uploadedImg.length; index++) {
+                  console.log("fileurl", fileUrl);
+                  const imageObject = uploadedImg[index];
+                  // Create a reference to 'image'
+                  const imgRef = ref(storage, imageObject.name);
+                  const uploadTask = await uploadString(
+                    imgRef,
+                    imageObject.imageUrl,
+                    "data_url"
+                  ).then((snapshot) => {
+                    // console.log('Uploaded a data_url string!');
+                  });
+                  await getDownloadURL(imgRef)
+                    .then(async (url) => {
+                      console.log("url", url);
+                      let urls = fileUrl;
+                      urls.push(url);
+                      setFileUrl(urls);
+                    })
+                    .catch((error) => {
+                      // A full list of error codes is available at
+                      // https://firebase.google.com/docs/storage/web/handle-errors
+                      switch (error.code) {
+                        case "storage/object-not-found":
+                          // File doesn't exist
+                          break;
+                        case "storage/unauthorized":
+                          // User doesn't have permission to access the object
+                          break;
+                        case "storage/canceled":
+                          // User canceled the upload
+                          break;
+                        // ...
+                        case "storage/unknown":
+                          // Unknown error occurred, inspect the server response
+                          break;
+                      }
+                    });
+                }
+                // console.log("done", fileUrl);
 
-                  await fetch(
-                    `${process.env.REACT_APP_BASE_PATH}/watch`,
-                    requestOptions
-                  )
-                    .then((response) => response.json())
-                    .then((data) => console.log("result ==>", data));
-                  setSubmitLoading(false);
-                  message.success(`Edited ${values.name} to watches list`, [5]);
-                  navigate(`/app/apps/watches/product-list`);
-                });
+                const requestOptions = {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    _id: lastSegmentId,
+                    name: values.name,
+                    model: values.model,
+                    owner: localStorage.getItem(EMILUS_USER),
+                    price: values.price,
+                    imgUrl: fileUrl,
+                    status: values.status,
+                    serialNumber: values.serialNumber,
+                    caseMaterial: values.caseMaterial,
+                    braceletMaterial: values.braceletMaterial,
+                    movementModel: values.movementModel,
+                    movementSerial: values.movementSerial,
+                    movementMechanism: values.movementMechanism,
+                    dialColor: values.dialColor,
+                    hands: values.hands,
+                    feature: values.feature,
+                  }),
+                };
+
+                await fetch(
+                  `${process.env.REACT_APP_BASE_PATH}/watch`,
+                  requestOptions
+                )
+                  .then((response) => response.json())
+                  .then((data) => console.log("result ==>", data));
+                setSubmitLoading(false);
+                message.success(`Edited ${values.name} to watches list`, [5]);
+                navigate(`/app/apps/watches/product-list`);
               } catch (error) {
-                // message.success(`Product saved`);
-                console.log(error);
+                console.log("error", error);
               }
             } else {
               // console.log("list", list)
@@ -286,7 +293,7 @@ const ProductForm = (props) => {
             price: list[0].price,
             owner: list[0].owner,
             status: list[0].status,
-            media: list[0].imgUrl,
+            media: uploadedImg[0],
             serialNumber: list[0].serialNumber,
             caseMaterial: list[0].caseMaterial,
             braceletMaterial: list[0].braceletMaterial,
@@ -301,7 +308,6 @@ const ProductForm = (props) => {
             {
               name: ["serialNumber"],
               value: list[0].serialNumber,
-              
             },
             {
               name: ["caseMaterial"],
@@ -358,7 +364,7 @@ const ProductForm = (props) => {
             },
             {
               name: ["media"],
-              value: list[0].imgUrl,
+              media: uploadedImg[0],
             },
           ]}
         >
@@ -425,7 +431,3 @@ const ProductForm = (props) => {
 };
 
 export default ProductForm;
-
-
-
-
