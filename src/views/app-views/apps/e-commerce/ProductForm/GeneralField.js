@@ -145,7 +145,7 @@ const GeneralField = (props) => {
   const [localVal, setLocalVal] = useState({});
   const [media, setMedia] = useState([]);
   const length = 3;
-  let [counter, setCounter] = useState(0);
+  let [counter, setCounter] = useState(props.uploadedImg.length);
 
   const removeFromList = (name, count) => {
     const imageList = props.uploadedImg;
