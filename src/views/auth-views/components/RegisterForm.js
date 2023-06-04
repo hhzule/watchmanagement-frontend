@@ -75,18 +75,17 @@ export const RegisterForm = (props) => {
 
   const navigate = useNavigate();
 
-  const onSignUp = () => {
-    console.log("onSignUp");
-    form
-      .validateFields()
-      .then((values) => {
-        values.phone = phoneValue;
-        showLoading();
-        signUp(values);
-      })
-      .catch((info) => {
-        console.log("Validate Failed:", info);
-      });
+  const onSignUp = (values) => {
+    // console.log("onSignUp");
+    showLoading();
+    values.phone = phoneValue;
+    delete values.confirm;
+    // console.log("values", values);
+
+    localStorage.setItem("Euser", JSON.stringify(values));
+    showLoading();
+    signUp(values);
+    navigate("/auth/verify");
   };
 
   useEffect(() => {

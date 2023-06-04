@@ -1,10 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AUTH_TOKEN, AUTH_ROLE, EMILUS_USER } from "constants/AuthConstant";
+import { act } from "react-dom/test-utils";
 import FirebaseService from "services/FirebaseService";
-// import { Amplify, Auth } from "aws-amplify";
-// import { AwsConfigAuth } from "../../configs/Auth";
-
-// Amplify.configure({ Auth: AwsConfigAuth });
 
 export const initialState = {
   loading: false,
@@ -107,38 +104,96 @@ export const signIn = createAsyncThunk(
 export const signUp = createAsyncThunk(
   "auth/signUp",
   async (data, { rejectWithValue }) => {
-    const { email, password, name, phone } = data;
-    console.log("from sihn up", data);
-    try {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      };
-      const response = await fetch(
-        `${process.env.REACT_APP_BASE_PATH}/customersignup`,
-        requestOptions
-      );
+    const { email, password, name, phone, otp, resend } = data;
+    console.log("from sign up", data);
+    let verify = window.location.pathname.includes("verify");
+    if (verify === true) {
+      if (resend && resend === true) {
+        console.log("from otp");
+        try {
+          const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email,
+              phone,
+            }),
+          };
+          const response = await fetch(
+            `${process.env.REACT_APP_BASE_PATH}/otp`,
+            requestOptions
+          );
+          let user = JSON.parse(localStorage.getItem("Euser"));
+          let token = user.email;
+          console.log(" user otp", user);
 
-      let data = await response.json();
-      // console.log("data", data);
-      if (!data) {
-        return rejectWithValue(data.message);
+          return;
+          // return "Token sent successfully";
+        } catch (err) {
+          console.log("error", err);
+          return rejectWithValue(err.message || "Error");
+        }
       } else {
-        console.log("auth data", data);
-        const token = data._id;
-        localStorage.setItem(AUTH_TOKEN, token);
-        localStorage.setItem(AUTH_ROLE, "customer");
-        localStorage.setItem(EMILUS_USER, data.name);
-        localStorage.setItem("WALLAT_ADDRRESS", data.walletAddress);
-        return { data, token };
+        console.log("from verify");
+        try {
+          const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name,
+              email,
+              password,
+              phone,
+              otp,
+            }),
+          };
+          let data;
+          await fetch(
+            `${process.env.REACT_APP_BASE_PATH}/verify`,
+            requestOptions
+          )
+            .then((response) => response.json())
+            .then((rdata) => {
+              data = rdata;
+            });
+          if (!data._id) {
+            return rejectWithValue(data.message);
+          } else {
+            console.log("auth data", data);
+            const token = data._id;
+            localStorage.setItem(AUTH_TOKEN, token);
+            localStorage.setItem(AUTH_ROLE, "customer");
+            localStorage.setItem(EMILUS_USER, data.name);
+            localStorage.setItem("WALLAT_ADDRRESS", data.walletAddress);
+            localStorage.removeItem("Euser");
+            return { data, token };
+          }
+        } catch (err) {
+          return rejectWithValue(err.message || "Error");
+        }
       }
-    } catch (err) {
-      return rejectWithValue(err.message || "Error");
+    } else {
+      console.log("from otp");
+      try {
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email,
+            phone,
+          }),
+        };
+        const response = await fetch(
+          `${process.env.REACT_APP_BASE_PATH}/otp`,
+          requestOptions
+        );
+        let user = JSON.parse(localStorage.getItem("Euser"));
+
+        return { user };
+      } catch (err) {
+        console.log("error", err);
+        return rejectWithValue(err.message || "Error");
+      }
     }
   }
 );
@@ -151,28 +206,6 @@ export const signOut = createAsyncThunk("auth/signOut", async () => {
   localStorage.removeItem("WALLAT_ADDRRESS");
   return response.data;
 });
-
-// export const signInWithGoogle = createAsyncThunk('auth/signInWithGoogle', async (_, { rejectWithValue }) => {
-//     const response = await FirebaseService.signInGoogleRequest()
-// 	if (response.user) {
-// 		const token = response.user.refreshToken;
-// 		localStorage.setItem(AUTH_TOKEN, response.user.refreshToken);
-// 		return token;
-// 	} else {
-// 		return rejectWithValue(response.message?.replace('Firebase: ', ''));
-// 	}
-// })
-
-// export const signInWithFacebook = createAsyncThunk('auth/signInWithFacebook', async (_, { rejectWithValue }) => {
-//     const response = await FirebaseService.signInFacebookRequest()
-// 	if (response.user) {
-// 		const token = response.user.refreshToken;
-// 		localStorage.setItem(AUTH_TOKEN, response.user.refreshToken);
-// 		return token;
-// 	} else {
-// 		return rejectWithValue(response.message?.replace('Firebase: ', ''));
-// 	}
-// })
 
 export const authSlice = createSlice({
   name: "auth",
@@ -237,10 +270,13 @@ export const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(signUp.fulfilled, (state, action) => {
+        console.log("payload", action);
+        state.showMessage = action.payload === undefined ? false : true;
+        state.message = action.payload;
         state.loading = false;
         state.redirect = "/";
-        state.token = action.payload.token;
-        state.userData = action.payload.data;
+        state.token = action.payload?.token;
+        state.userData = action.payload?.data;
       })
       .addCase(signUp.rejected, (state, action) => {
         state.message = action.payload;
@@ -260,23 +296,3 @@ export const {
 } = authSlice.actions;
 
 export default authSlice.reducer;
-
-// {
-//   "email": "dealer1@gmail.com",
-//   "name": "1dealerTest",
-//   "businessName": "string",
-//   "businessRegCertificate": "string",
-//   "phoneNumber": "string",
-//   "emergencyNumber": "string",
-//   "businessAddress": "string",
-//   "brandName": "string",
-//   "serialNumber": "string",
-//   "model": "string",
-//   "offers": "string",
-//   "walletAddress": "0x3bE264DCdf57F04dA5c3250df1Fe69b88104ac3D",
-//   "encryptedPrivateKey": "$2b$10$62HjaYfAkD..TYebVNZACO0NIgebdjN/WnBzQGMgN5m0KfjcmUxFK",
-//   "_id": "6471b507a3a1d0585cf697e3",
-//   "createdAt": "2023-05-27T07:45:11.264Z",
-//   "updatedAt": "2023-05-27T07:45:11.264Z",
-//   "__v": 0
-// }

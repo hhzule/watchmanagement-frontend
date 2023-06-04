@@ -45,6 +45,13 @@ export const publicRoutes = [
     ),
   },
   {
+    key: "verify",
+    path: `${AUTH_PREFIX_PATH}/verify`,
+    component: React.lazy(() =>
+      import("views/auth-views/authentication/verify")
+    ),
+  },
+  {
     key: "forgot-password",
     path: `${AUTH_PREFIX_PATH}/forgot-password`,
     component: React.lazy(() =>
@@ -174,6 +181,13 @@ export const protectedRoutes = [
       import("views/app-views/apps/e-commerce/edit-customer")
     ),
   },
+  // {
+  //   key: "apps.watches.otp-customer",
+  //   path: `${AUTH_PREFIX_PATH}/verify`,
+  //   component: React.lazy(() =>
+  //     import("views/auth-views/authentication/verify")
+  //   ),
+  // },
   {
     key: "apps.watches.customer-list",
     path: `${APP_PREFIX_PATH}/apps/watches/customer-list`,
