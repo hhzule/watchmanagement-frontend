@@ -123,6 +123,10 @@ export const signUp = createAsyncThunk(
             `${process.env.REACT_APP_BASE_PATH}/otp`,
             requestOptions
           );
+          console.log("response", response);
+          if (response.status === 409) {
+            return rejectWithValue("Error generating otp");
+          }
           let user = JSON.parse(localStorage.getItem("Euser"));
           let token = user.email;
           console.log(" user otp", user);
@@ -187,9 +191,13 @@ export const signUp = createAsyncThunk(
           `${process.env.REACT_APP_BASE_PATH}/otp`,
           requestOptions
         );
+        console.log("response", response);
+        if (response.status === 409) {
+          return rejectWithValue("Error generating otp");
+        }
         let user = JSON.parse(localStorage.getItem("Euser"));
-
-        return { user };
+        let name = "done";
+        return name;
       } catch (err) {
         console.log("error", err);
         return rejectWithValue(err.message || "Error");
@@ -271,7 +279,7 @@ export const authSlice = createSlice({
       })
       .addCase(signUp.fulfilled, (state, action) => {
         console.log("payload", action);
-        state.showMessage = action.payload === undefined ? false : true;
+        state.showMessage = action.payload === "done" ? false : true;
         state.message = action.payload;
         state.loading = false;
         state.redirect = "/";
