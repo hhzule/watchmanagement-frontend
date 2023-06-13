@@ -4,7 +4,11 @@ import { Card, Tabs, Form, Button, message, Row, Col } from "antd";
 import Flex from "components/shared-components/Flex";
 import GeneralField from "./GeneralField";
 import { useLocation } from "react-router-dom";
-import { AUTH_TOKEN, EMILUS_USER } from "../../../../../constants/AuthConstant";
+import {
+  AUTH_TOKEN,
+  EMILUS_USER,
+  EMILUS_USER_Email,
+} from "../../../../../constants/AuthConstant";
 import WatchImg from "../../../../../assets/svg/watch.jpeg";
 import {
   getStorage,
@@ -111,6 +115,8 @@ const ProductForm = (props) => {
                 // console.log("done", fileUrl);
 
                 const creator = localStorage.getItem(AUTH_TOKEN);
+                const creatorEmail = localStorage.getItem(EMILUS_USER_Email);
+
                 const requestOptions = {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
@@ -122,6 +128,7 @@ const ProductForm = (props) => {
                     imgUrl: fileUrl,
                     status: "Pending",
                     creator: creator,
+                    creatorEmail: creatorEmail,
                     serialNumber: values.serialNumber,
                     caseMaterial: values.caseMaterial,
                     braceletMaterial: values.braceletMaterial,
@@ -413,6 +420,7 @@ const ProductForm = (props) => {
                       setImgObj={setImgObj}
                       setList={setList}
                       formVal={form}
+                      // optionList={optionList[0]}
                     />
                   ),
                 },

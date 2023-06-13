@@ -181,13 +181,11 @@ export const protectedRoutes = [
       import("views/app-views/apps/e-commerce/edit-customer")
     ),
   },
-  // {
-  //   key: "apps.watches.otp-customer",
-  //   path: `${AUTH_PREFIX_PATH}/verify`,
-  //   component: React.lazy(() =>
-  //     import("views/auth-views/authentication/verify")
-  //   ),
-  // },
+  {
+    key: "apps.watches.cms",
+    path: `${APP_PREFIX_PATH}/apps/watches/cms`,
+    component: React.lazy(() => import("views/app-views/apps/e-commerce/cms")),
+  },
   {
     key: "apps.watches.customer-list",
     path: `${APP_PREFIX_PATH}/apps/watches/customer-list`,
@@ -204,6 +202,13 @@ export const protectedRoutes = [
     ),
   },
   // products
+  {
+    key: "apps.watches.message",
+    path: `${APP_PREFIX_PATH}/apps/watches/message`,
+    component: React.lazy(() =>
+      import("views/app-views/apps/e-commerce/message")
+    ),
+  },
   {
     key: "apps.watches.transactions",
     path: `${APP_PREFIX_PATH}/apps/watches/transactions/:id`,

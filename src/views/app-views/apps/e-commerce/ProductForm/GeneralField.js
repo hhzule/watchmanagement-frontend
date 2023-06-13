@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Input,
   Row,
@@ -23,13 +23,6 @@ const rules = {
     {
       required: true,
       message: "Please enter name",
-      validator: (_, value) => {
-        if (/^[a-zA-Z0-9]+$/.test(value)) {
-          return Promise.resolve();
-        } else {
-          return Promise.reject("Some message here");
-        }
-      },
     },
   ],
   description: [
@@ -144,9 +137,24 @@ const beforeUpload = (file) => {
 const GeneralField = (props) => {
   const [localVal, setLocalVal] = useState({});
   const [media, setMedia] = useState([]);
-  const length = 3;
+  const length = 7;
   let [counter, setCounter] = useState(props.uploadedImg.length);
-
+  const [optionList, setOptionList] = useState([{}]);
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        await fetch(`${process.env.REACT_APP_BASE_PATH}/cms`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("data", data);
+            return setOptionList(data);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchOptions();
+  }, []);
   const removeFromList = (name, count) => {
     const imageList = props.uploadedImg;
     const updatedList = imageList.filter((item) => item.count !== count);
@@ -185,7 +193,7 @@ const GeneralField = (props) => {
         } else {
           props.setList([localVal]);
           props.setUploadLoading(false);
-          message.error(`Can not upload more than 3 media files`);
+          message.error(`Can not upload more than 7 media files`);
         }
       });
     } else if (info.file.status === "error") {
@@ -197,21 +205,24 @@ const GeneralField = (props) => {
       <Col xs={24} sm={24} md={17}>
         <Card title="Basic Info">
           <Form.Item name="name" label="Brand name" rules={rules.name}>
-            {/* <Input placeholder="Product Name" /> */}
-            <Select placeholder="Please select a brand Name">
+            {/* <Select placeholder="Please select a brand Name">
               <Option value="Rolex">Rolex</Option>
               <Option value="Patek Philippe">Patek Philippe</Option>
               <Option value="Omega">Omega</Option>
               <Option value="Audemars Piguet">Audemars Piguet</Option>
               <Option value="Vacheron">Vacheron</Option>
+            </Select> */}
+            <Select placeholder="Please select a brand Name">
+              {optionList[0]?.brand?.map((unit) => (
+                <Option key={unit} value={unit}>
+                  {unit}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item name="model" label="Model" rules={rules.description}>
             <Input placeholder="Model name and number" />
           </Form.Item>
-          {/* <Form.Item name="owner" label="Owner" rules={rules.owner}>
-            <Input placeholder="Product Name" />
-          </Form.Item> */}
           <Form.Item
             name="serialNumber"
             label="Serial Number"
@@ -225,12 +236,19 @@ const GeneralField = (props) => {
             label="Case Material"
             rules={rules.caseMaterial}
           >
-            <Select placeholder="Please select a case material">
+            {/* <Select placeholder="Please select a case material">
               <Option value="Gold">Gold</Option>
               <Option value="Stainless Steel">Stainless Steel</Option>
               <Option value="Titanium">Titanium</Option>
               <Option value="Bronze">Bronze</Option>
               <Option value="Ceramic">Ceramic</Option>
+            </Select> */}
+            <Select placeholder="Please select a case material">
+              {optionList[0]?.caseMaterial?.map((unit) => (
+                <Option key={unit} value={unit}>
+                  {unit}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -239,12 +257,19 @@ const GeneralField = (props) => {
             label="Bracelet Material"
             rules={rules.braceletMaterial}
           >
-            <Select placeholder="Please select a bracelet material">
+            {/* <Select placeholder="Please select a bracelet material">
               <Option value="Leather">Leather</Option>
               <Option value="Plastic">Plastic</Option>
               <Option value="Rubber">Rubber</Option>
               <Option value="Cloth">Cloth</Option>
               <Option value="Metal">Metal</Option>
+            </Select> */}
+            <Select placeholder="Please select a bracelet material">
+              {optionList[0]?.braceletMaterial?.map((unit) => (
+                <Option key={unit} value={unit}>
+                  {unit}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -269,10 +294,17 @@ const GeneralField = (props) => {
             label="Movement Mechanism"
             rules={rules.movementMechanism}
           >
-            <Select placeholder="Please select movement mechanism">
+            {/* <Select placeholder="Please select movement mechanism">
               <Option value="Auto">Auto</Option>
               <Option value="Manula">Manual</Option>
               <Option value="Quartz">Quartz</Option>
+            </Select> */}
+            <Select placeholder="Please select movement mechanism">
+              {optionList[0]?.movementMechanism?.map((unit) => (
+                <Option key={unit} value={unit}>
+                  {unit}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
@@ -282,15 +314,21 @@ const GeneralField = (props) => {
           >
             <Input placeholder="Dial Color" />
           </Form.Item>
-
           <Form.Item name="hands" label="Hands" rules={rules.hands}>
             <Input placeholder="Hands" />
           </Form.Item>
           <Form.Item name="feature" label="Feature" rules={rules.feature}>
-            <Select placeholder="Please select feature">
+            {/* <Select placeholder="Please select feature">
               <Option value="Time">Time</Option>
               <Option value="Date">Date</Option>
               <Option value="Chronograph">Chronograph</Option>
+            </Select> */}
+            <Select placeholder="Please select feature">
+              {optionList[0]?.feature?.map((unit) => (
+                <Option key={unit} value={unit}>
+                  {unit}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
         </Card>

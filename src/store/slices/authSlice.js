@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { AUTH_TOKEN, AUTH_ROLE, EMILUS_USER } from "constants/AuthConstant";
+import {
+  AUTH_TOKEN,
+  AUTH_ROLE,
+  EMILUS_USER,
+  EMILUS_USER_Email,
+} from "constants/AuthConstant";
 import { act } from "react-dom/test-utils";
 import FirebaseService from "services/FirebaseService";
 
@@ -45,6 +50,8 @@ export const signIn = createAsyncThunk(
           localStorage.setItem(AUTH_ROLE, "admin");
           localStorage.setItem("WALLAT_ADDRRESS", filteredId[0].walletAddress);
           localStorage.setItem(EMILUS_USER, filteredId[0].name);
+          localStorage.setItem(EMILUS_USER_Email, filteredId[0].email);
+
           return token;
         } else {
           return rejectWithValue("Unauthenticated User");
@@ -70,6 +77,7 @@ export const signIn = createAsyncThunk(
           localStorage.setItem(AUTH_ROLE, "dealer");
           localStorage.setItem("WALLAT_ADDRRESS", data.walletAddress);
           localStorage.setItem(EMILUS_USER, data.name);
+          localStorage.setItem(EMILUS_USER_Email, data.email);
           return { token, data };
         }
       } catch (err) {
@@ -93,6 +101,7 @@ export const signIn = createAsyncThunk(
         localStorage.setItem(AUTH_ROLE, "customer");
         localStorage.setItem(EMILUS_USER, data.name);
         localStorage.setItem("WALLAT_ADDRRESS", data.walletAddress);
+        localStorage.setItem(EMILUS_USER_Email, data.email);
         return { token, data };
       }
     } catch (err) {
@@ -169,6 +178,7 @@ export const signUp = createAsyncThunk(
             localStorage.setItem(AUTH_ROLE, "customer");
             localStorage.setItem(EMILUS_USER, data.name);
             localStorage.setItem("WALLAT_ADDRRESS", data.walletAddress);
+            localStorage.setItem(EMILUS_USER_Email, data.email);
             localStorage.removeItem("Euser");
             return { data, token };
           }
