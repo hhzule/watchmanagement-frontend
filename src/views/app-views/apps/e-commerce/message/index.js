@@ -82,7 +82,6 @@ const MessageForm = (props) => {
         message.error("Please enter all required field ");
       });
   };
-  console.log("tab", tabKey);
   return (
     <>
       {list?.length > 0 ? (

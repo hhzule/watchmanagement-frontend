@@ -49,7 +49,6 @@ export const LoginForm = (props) => {
 
   const onLogin = (values) => {
     values.path = location.pathname;
-    console.log("login ran", values);
     showLoading();
     signIn(values);
   };

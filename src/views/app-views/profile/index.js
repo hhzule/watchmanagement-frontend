@@ -24,7 +24,7 @@ const Profile = () => {
         await fetch(`${process.env.REACT_APP_BASE_PATH}/admin`)
           .then((response) => response.json())
           .then((data) => {
-            console.log("data from", data);
+            // console.log("data from", data);
             if (data?.message) {
               localStorage.removeItem(AUTH_TOKEN);
               // navigate("/");
@@ -58,7 +58,6 @@ const Profile = () => {
         await fetch(`${process.env.REACT_APP_BASE_PATH}/dealersignin/${token}`)
           .then((response) => response.json())
           .then((data) => {
-            console.log("data from", data);
             if (data?.message) {
               localStorage.removeItem(AUTH_TOKEN);
               // navigate("/");
@@ -100,7 +99,6 @@ const Profile = () => {
                     <Card title="Profile Info">
                       {profileData &&
                         profileData.map((itm, i) => {
-                          console.log("itm", itm);
                           return (
                             <div key={i}>
                               <h5>User Id</h5>

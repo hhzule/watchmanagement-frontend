@@ -66,7 +66,6 @@ export const signIn = createAsyncThunk(
           `${process.env.REACT_APP_BASE_PATH}/signin/${fndata["email"]}`
         );
         let data = await response.json();
-        console.log("data", data);
         if (!data["password"]) {
           return rejectWithValue(data.message);
         } else if (data && data["password"] !== fndata["password"]) {

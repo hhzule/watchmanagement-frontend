@@ -87,7 +87,6 @@ const ProductForm = (props) => {
                   });
                   await getDownloadURL(imgRef)
                     .then(async (url) => {
-                      console.log("url", url);
                       let urls = fileUrl;
                       urls.push(url);
                       setFileUrl(urls);
@@ -123,7 +122,8 @@ const ProductForm = (props) => {
                   body: JSON.stringify({
                     name: values.name,
                     model: values.model,
-                    owner: localStorage.getItem(EMILUS_USER),
+                    owner: creator,
+                    ownerEmail: creatorEmail,
                     price: values.price,
                     imgUrl: fileUrl,
                     status: "Pending",
@@ -146,7 +146,7 @@ const ProductForm = (props) => {
                   requestOptions
                 )
                   .then((response) => response.json())
-                  .then((data) => console.log("result ==>", data));
+                  .then((data) => data);
                 setSubmitLoading(false);
                 message.success(`Created ${values.name} to watches list`, [5]);
                 navigate(`/app/apps/watches/watch-list`);
@@ -201,6 +201,8 @@ const ProductForm = (props) => {
                     });
                 }
                 // console.log("done", fileUrl);
+                const creator = localStorage.getItem(AUTH_TOKEN);
+                const creatorEmail = localStorage.getItem(EMILUS_USER_Email);
 
                 const requestOptions = {
                   method: "PUT",
@@ -209,7 +211,8 @@ const ProductForm = (props) => {
                     _id: lastSegmentId,
                     name: values.name,
                     model: values.model,
-                    owner: localStorage.getItem(EMILUS_USER),
+                    owner: creator,
+                    ownerEmail: creatorEmail,
                     price: values.price,
                     imgUrl: fileUrl,
                     status: values.status,
@@ -240,6 +243,8 @@ const ProductForm = (props) => {
             } else {
               // console.log("list", list)
               const img = list?.filter((obj) => obj._id == lastSegmentId);
+              const creator = localStorage.getItem(AUTH_TOKEN);
+              const creatorEmail = localStorage.getItem(EMILUS_USER_Email);
 
               const requestOptions = {
                 method: "PUT",
@@ -248,7 +253,8 @@ const ProductForm = (props) => {
                   _id: lastSegmentId,
                   name: values.name,
                   model: values.model,
-                  owner: localStorage.getItem(EMILUS_USER),
+                  owner: creator,
+                  ownerEmail: creatorEmail,
                   price: values.price,
                   imgUrl: img[0].imgUrl,
                   status: values.status,
@@ -299,6 +305,7 @@ const ProductForm = (props) => {
             model: list[0].model,
             price: list[0].price,
             owner: list[0].owner,
+            ownerEmail: list[0].ownerEmail,
             status: list[0].status,
             media: uploadedImg[0],
             serialNumber: list[0].serialNumber,
@@ -364,6 +371,10 @@ const ProductForm = (props) => {
             {
               name: ["owner"],
               value: list[0].owner,
+            },
+            {
+              name: ["ownerEmail"],
+              value: list[0].ownerEmail,
             },
             {
               name: ["status"],

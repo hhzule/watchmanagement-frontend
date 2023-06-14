@@ -146,7 +146,6 @@ const GeneralField = (props) => {
         await fetch(`${process.env.REACT_APP_BASE_PATH}/cms`)
           .then((response) => response.json())
           .then((data) => {
-            console.log("data", data);
             return setOptionList(data);
           });
       } catch (error) {
@@ -175,7 +174,6 @@ const GeneralField = (props) => {
       return;
     }
     if (info.file.status === "done") {
-      console.log("info.file.originFileObj", info.file.originFileObj);
       props.setImgObj(info.file.originFileObj);
       getBase64(info.file.originFileObj, (imageUrl) => {
         if (props.uploadedImg.length < length) {
@@ -352,7 +350,6 @@ const GeneralField = (props) => {
         <Card title="Media">
           {props.uploadedImg &&
             props.uploadedImg.map((itm, i) => {
-              console.log("itm", itm);
               return (
                 <>
                   <div

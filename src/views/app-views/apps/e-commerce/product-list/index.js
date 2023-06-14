@@ -4,6 +4,7 @@ import {
   Table,
   Select,
   Input,
+  InputNumber,
   Button,
   Checkbox,
   Modal,
@@ -87,14 +88,27 @@ const ProductList = () => {
   };
 
   const onFinish = (mode) => {
-    // console.log("row", rowData);
-
+    console.log("row", mode);
     form
       .validateFields()
       .then((values) => {
         setTimeout(async () => {
           setSubmitLoading(true);
-          if (values.quote === "" && values.text === "") {
+          console.log("values.quote", values);
+          console.log("values.text", values.text);
+          if (mode === "quote" && values.quote.length <= 0) {
+            message.error(`Please enter ${mode}, must be numbers`);
+            setSubmitLoading(false);
+            // setIsModalOpen(false);
+            return;
+          }
+          if (mode === "message" && values.text === "") {
+            message.error(`Please enter ${mode}`);
+            setSubmitLoading(false);
+            // setIsModalOpen(false);
+            return;
+          }
+          if (mode === "message" && values.text === undefined) {
             message.error(`Please enter ${mode}`);
             setSubmitLoading(false);
             // setIsModalOpen(false);
@@ -106,8 +120,9 @@ const ProductList = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               firstUserId: senderId,
-              secondUserId: rowData.creator,
-              secondUserEmail: rowData.creatorEmail,
+              firstUserEmail: senderEmail,
+              secondUserId: rowData.owner,
+              secondUserEmail: rowData.ownerEmail,
               Chat: [
                 {
                   message: chatmessage,
@@ -115,24 +130,24 @@ const ProductList = () => {
                   fromId: senderId,
                   fromRole: senderRole,
                   fromEmail: senderEmail,
-                  toId: rowData.creator,
-                  toEmail: rowData.creatorEmail,
+                  toId: rowData.owner,
+                  toEmail: rowData.ownerEmail,
                   accept: "string",
                   reject: "string",
-                  read: false,
+                  switched: false,
                   watchId: rowData._id,
                 },
               ],
             }),
           };
+          console.log("reqOpt", requestOptions);
           try {
-            console.log("reop", requestOptions);
             await fetch(
               `${process.env.REACT_APP_BASE_PATH}/message`,
               requestOptions
             )
               .then((response) => response.json())
-              .then((data) => console.log("result ==>", data));
+              .then((data) => data);
             setSubmitLoading(false);
             message.success(`Message sent`, [5]);
 
@@ -140,6 +155,7 @@ const ProductList = () => {
           } catch (error) {
             console.log("error", error);
           }
+          // form.setFieldsValue({ quote: "", text: "" });
         }, 500);
       })
       .catch((info) => {
@@ -176,7 +192,7 @@ const ProductList = () => {
             <span className="ml-2">{"Transtactions"}</span>
           </Flex>
         </Menu.Item>
-        {senderEmail === row.creatorEmail ? null : (
+        {senderEmail === row.ownerEmail ? null : (
           <>
             <Menu.Item onClick={() => messageF(row)}>
               <Flex alignItems="center">
@@ -207,7 +223,7 @@ const ProductList = () => {
             <span className="ml-2">{"Edit"}</span>
           </Flex>
         </Menu.Item>
-        {senderEmail === row.creatorEmail ? null : (
+        {senderEmail === row.ownerEmail ? null : (
           <>
             <Menu.Item onClick={() => messageF(row)}>
               <Flex alignItems="center">
@@ -237,7 +253,7 @@ const ProductList = () => {
             <span className="ml-2">{"Edit"}</span>
           </Flex>
         </Menu.Item>
-        {senderEmail === row.creatorEmail ? null : (
+        {senderEmail === row.ownerEmail ? null : (
           <>
             <Menu.Item onClick={() => messageF(row)}>
               <Flex alignItems="center">
@@ -359,6 +375,10 @@ const ProductList = () => {
     {
       title: "Owner",
       dataIndex: "owner",
+    },
+    {
+      title: "Email",
+      dataIndex: "ownerEmail",
     },
     {
       title: "Watch",
@@ -549,6 +569,15 @@ const ProductList = () => {
       console.log(error);
     }
   };
+  // const rules = {
+  //   quote: [
+  //     {
+  //       // required: true,
+  //       message: "Number must be entered",
+  //       pattern: new RegExp(/^[0-9]+$/),
+  //     },
+  //   ],
+  // };
 
   return (
     <>
@@ -690,6 +719,7 @@ const ProductList = () => {
                     <h5>Name: {list[0].name} </h5>
                     <h5>Model :{list[0].model}</h5>
                     <h5>Owner : {list[0].owner} </h5>
+                    <h5>Owner Email: {list[0].ownerEmail} </h5>
                     {/* <h5>Creator</h5>
                     <p>{list[0].creator}</p>
                     <h5>Case Material</h5>
@@ -750,12 +780,8 @@ const ProductList = () => {
                     className="ant-advanced-search-form"
                   >
                     <Col xs={24} sm={24} md={17}>
-                      <Form.Item
-                        name="quote"
-                        label="Quote"
-                        //  rules={rules.quote}
-                      >
-                        <Input placeholder="Give a quote" />
+                      <Form.Item name="quote" label="Quote">
+                        <InputNumber maxLength={6} controls={false} />
                       </Form.Item>
                       <Button
                         type="primary"
@@ -786,11 +812,7 @@ const ProductList = () => {
                     className="ant-advanced-search-form"
                   >
                     <Col xs={24} sm={24} md={17}>
-                      <Form.Item
-                        name="text"
-                        label="Text"
-                        //  rules={rules.quote}
-                      >
+                      <Form.Item name="text" label="Text">
                         <TextArea placeholder="Give a message" />
                       </Form.Item>
                       <Button
